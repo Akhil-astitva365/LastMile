@@ -1,0 +1,152 @@
+import React, { useState } from 'react';
+import { useAuth } from '../context/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { authApi } from '../services/api';
+import { Truck, ArrowRight } from 'lucide-react';
+import { Role } from '../types';
+
+export const Register: React.FC = () => {
+  const navigate = useNavigate();
+  const { login } = useAuth();
+
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [role, setRole] = useState<Role>('CUSTOMER');
+  const [companyName, setCompanyName] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+    try {
+      await authApi.register({
+        name,
+        email,
+        password,
+        phone,
+        role,
+        companyName,
+      });
+      await login(email, password);
+      navigate('/');
+    } catch (err: any) {
+      setError(err.response?.data?.message || 'Registration failed');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
+      <div className="w-full max-w-md space-y-6">
+        <div className="text-center space-y-2">
+          <div className="inline-flex p-3 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 shadow-xl text-slate-950">
+            <Truck className="w-8 h-8" />
+          </div>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-100">Create an Account</h2>
+          <p className="text-xs text-slate-400">Join the Last-Mile Delivery Network</p>
+        </div>
+
+        <div className="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+          {error && (
+            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs text-center font-medium">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+            <div>
+              <label className="block text-slate-400 font-semibold mb-1">Full Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-400 font-semibold mb-1">Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-400 font-semibold mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                required
+                minLength={6}
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-400 font-semibold mb-1">Phone Number</label>
+              <input
+                type="text"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                placeholder="+91 98765 43210"
+              />
+            </div>
+
+            <div>
+              <label className="block text-slate-400 font-semibold mb-1">Account Role</label>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value as Role)}
+                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+              >
+                <option value="CUSTOMER">Customer</option>
+                <option value="DELIVERY_AGENT">Delivery Agent</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+            </div>
+
+            {role === 'CUSTOMER' && (
+              <div>
+                <label className="block text-slate-400 font-semibold mb-1">Company Name (Optional)</label>
+                <input
+                  type="text"
+                  value={companyName}
+                  onChange={(e) => setCompanyName(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                />
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2 text-sm shadow-lg shadow-cyan-500/20 disabled:opacity-50"
+            >
+              {isSubmitting ? 'Registering...' : 'Complete Registration'}
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </form>
+
+          <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800">
+            Already have an account?{' '}
+            <Link to="/login" className="text-cyan-400 font-bold hover:underline">
+              Sign in
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
