@@ -5,7 +5,7 @@ import { Order } from '../types';
 import { OrderCard } from '../components/OrderCard';
 import { MapView } from '../components/MapView';
 import { AIAgentModal } from '../components/AIAgentModal';
-import { Plus, RefreshCw, Bot, ChevronLeft, ChevronRight, MapPin } from 'lucide-react';
+import { Plus, RefreshCw, Bot, ChevronLeft, ChevronRight, MapPin, Maximize2, Minimize2 } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -16,6 +16,7 @@ export const CustomerDashboard: React.FC = () => {
   const [showAIModal, setShowAIModal] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [selectedOrderForMap, setSelectedOrderForMap] = useState<Order | null>(null);
+  const [isLargeMapOpen, setIsLargeMapOpen] = useState<boolean>(false);
 
   const fetchOrders = async () => {
     setIsLoading(true);
@@ -188,9 +189,13 @@ export const CustomerDashboard: React.FC = () => {
                   {selectedOrderForMap ? `Order #${selectedOrderForMap.orderNumber}` : 'Select Order for Map'}
                 </span>
               </div>
-              <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">
-                LARGE MAP VIEW
-              </span>
+              <button
+                onClick={() => setIsLargeMapOpen(true)}
+                className="px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-white font-bold text-[10px] hover:bg-white hover:text-black transition-all flex items-center gap-1.5 active:scale-95 shadow-sm font-helvetica"
+              >
+                <Maximize2 className="w-3 h-3" />
+                <span>LARGE MAP VIEW</span>
+              </button>
             </div>
 
             {selectedOrderForMap ? (
@@ -219,6 +224,41 @@ export const CustomerDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* 16:9 Large Map Modal triggered by LARGE MAP VIEW button */}
+      {isLargeMapOpen && selectedOrderForMap && (
+        <div className="fixed inset-0 z-[1000] p-4 sm:p-6 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center space-y-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-6xl ios-glass-panel p-4 rounded-2xl bg-black border border-neutral-800 flex items-center justify-between shadow-2xl">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-full bg-white text-black">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white tracking-wide font-playfair">16:9 LARGE MAP VIEW — ORDER #{selectedOrderForMap.orderNumber}</h3>
+                <p className="text-xs text-neutral-400 font-helvetica">{selectedOrderForMap.pickupAddress} ➔ {selectedOrderForMap.dropAddress}</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsLargeMapOpen(false)}
+              className="px-4 py-2 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-1.5 shadow-lg active:scale-95 font-helvetica"
+            >
+              <Minimize2 className="w-4 h-4" /> CLOSE 16:9 VIEW
+            </button>
+          </div>
+
+          <div className="w-full max-w-6xl aspect-video rounded-3xl overflow-hidden border border-white/30 shadow-2xl relative bg-neutral-950">
+            <MapView
+              pickupLat={selectedOrderForMap.pickupLatitude || 23.2599}
+              pickupLon={selectedOrderForMap.pickupLongitude || 77.4126}
+              dropLat={selectedOrderForMap.dropLatitude || 22.7196}
+              dropLon={selectedOrderForMap.dropLongitude || 75.8577}
+              agentName={selectedOrderForMap.assignedAgentName}
+              showExpandButton={false}
+            />
+          </div>
+        </div>
+      )}
 
       {/* AI Agent Modal */}
       <AIAgentModal
