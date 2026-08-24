@@ -129,17 +129,17 @@ export const CustomerDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Dashboard Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 glass-panel p-6 rounded-3xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-100 tracking-tight">Customer Dashboard</h2>
-          <p className="text-xs text-slate-400 mt-1">
+          <h2 className="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight">Customer Dashboard</h2>
+          <p className="text-xs text-slate-400 mt-1 font-medium">
             Create shipping orders, preview volumetric rate quotes, and track real-time delivery events.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={fetchOrders}
-            className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-cyan-400 transition-all"
+            className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 text-slate-300 hover:text-cyan-400 active:scale-95 transition-all shadow-md"
             title="Refresh Orders"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -150,15 +150,12 @@ export const CustomerDashboard: React.FC = () => {
               setQuote(null);
               setShowCreateModal(true);
             }}
-            className="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold hover:brightness-110 transition-all flex items-center gap-2 shadow-lg shadow-cyan-500/20 text-xs uppercase tracking-wider"
+            className="px-6 py-3.5 rounded-full ios-button-primary text-slate-950 font-black hover:brightness-110 active:scale-95 transition-all flex items-center gap-2 text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/25"
           >
             <Plus className="w-4 h-4" /> Create Order
           </button>
         </div>
       </div>
-
-      {/* mi UI Inspired Section Ticks Divider */}
-      <div className="ticks" />
 
       {/* Main Grid: Orders & Timeline */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -171,14 +168,14 @@ export const CustomerDashboard: React.FC = () => {
           </div>
 
           {isLoading ? (
-            <div className="glass-panel p-8 rounded-2xl text-center text-slate-400 text-sm">
+            <div className="ios-glass-panel p-8 rounded-3xl text-center text-slate-400 text-sm font-medium">
               Loading orders...
             </div>
           ) : orders.length === 0 ? (
-            <div className="glass-panel p-12 rounded-3xl text-center space-y-4 border border-dashed border-slate-800">
+            <div className="ios-glass-panel p-12 rounded-3xl text-center space-y-4 border border-dashed border-slate-800">
               <Package className="w-12 h-12 text-slate-600 mx-auto" />
-              <div className="text-sm font-semibold text-slate-300">No orders created yet</div>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
+              <div className="text-sm font-bold text-slate-300">No orders created yet</div>
+              <p className="text-xs text-slate-500 max-w-sm mx-auto font-medium">
                 Click "Create Order" above to calculate a volumetric rate quote and place your first delivery!
               </p>
             </div>
@@ -199,11 +196,11 @@ export const CustomerDashboard: React.FC = () => {
         {/* Right Column: Tracking Timeline & Route Map */}
         <div className="space-y-6">
           {selectedOrder ? (
-            <div className="glass-panel p-6 rounded-3xl space-y-6 sticky top-24">
+            <div className="ios-glass-panel p-6 rounded-3xl space-y-6 sticky top-24 shadow-2xl">
               <div>
-                <div className="text-[10px] uppercase font-bold text-cyan-400 tracking-wider">Live Tracker</div>
-                <h3 className="font-extrabold text-lg text-slate-100">Order #{selectedOrder.orderNumber}</h3>
-                <p className="text-xs text-slate-400 mt-1">
+                <div className="text-[10px] uppercase font-black text-cyan-400 tracking-widest">Live Tracker</div>
+                <h3 className="font-black text-xl text-slate-100 mt-0.5">Order #{selectedOrder.orderNumber}</h3>
+                <p className="text-xs text-slate-400 mt-1 font-medium truncate">
                   {selectedOrder.pickupAddress} ➔ {selectedOrder.dropAddress}
                 </p>
               </div>

@@ -21,13 +21,13 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   const canReschedule = (order.status === 'FAILED' || order.status === 'FAILED_DELIVERY' || order.status === 'RESCHEDULED');
 
   return (
-    <div className="glass-card p-5 rounded-2xl flex flex-col justify-between space-y-4 hover:border-cyan-500/30 transition-all">
+    <div className="ios-glass-card p-5 sm:p-6 rounded-3xl flex flex-col justify-between space-y-4">
       <div>
         {/* Header */}
-        <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+        <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
           <div>
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Order ID</span>
-            <h4 className="text-base font-bold text-cyan-400 tracking-tight">{order.orderNumber}</h4>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">Order ID</span>
+            <h4 className="text-base font-extrabold text-cyan-400 tracking-tight">{order.orderNumber}</h4>
           </div>
           <StatusBadge status={order.status} />
         </div>

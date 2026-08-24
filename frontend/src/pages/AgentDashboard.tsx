@@ -93,24 +93,24 @@ export const AgentDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Top Header */}
-      <div className="glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="ios-glass-panel p-6 sm:p-8 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xl">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-2xl bg-purple-500/20 text-purple-400 border border-purple-500/30">
+          <div className="p-3.5 rounded-2xl bg-gradient-to-tr from-purple-500 to-indigo-600 text-white shadow-lg shadow-purple-500/30">
             <Truck className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-2xl font-extrabold text-slate-100 tracking-tight">Delivery Agent Portal</h2>
-            <p className="text-xs text-slate-400">Manage assigned deliveries and broadcast real-time GPS updates</p>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight">Delivery Agent Portal</h2>
+            <p className="text-xs text-slate-400 font-medium">Manage assigned deliveries and broadcast real-time GPS updates</p>
           </div>
         </div>
 
         {/* Location & Availability Toolbar */}
-        <div className="flex items-center gap-2 bg-slate-950 p-2 rounded-2xl border border-slate-800 text-xs">
-          <span className="text-[10px] font-bold text-slate-400 uppercase px-2">Status:</span>
+        <div className="flex items-center gap-2 bg-slate-950/70 p-2 rounded-full border border-slate-800/80 text-xs shadow-inner">
+          <span className="text-[10px] font-black text-slate-400 uppercase tracking-wider px-2">Status:</span>
           <select
             value={availability}
             onChange={(e) => setAvailability(e.target.value)}
-            className="bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-1 text-slate-200 font-semibold focus:outline-none"
+            className="bg-slate-900 border border-slate-800 rounded-full px-3 py-1 text-slate-200 font-bold focus:outline-none"
           >
             <option value="AVAILABLE">AVAILABLE</option>
             <option value="BUSY">BUSY</option>
@@ -119,15 +119,12 @@ export const AgentDashboard: React.FC = () => {
 
           <button
             onClick={handleUpdateLocation}
-            className="px-3 py-1 rounded-xl bg-purple-500 text-white font-bold hover:bg-purple-400 transition-all flex items-center gap-1"
+            className="px-4 py-1.5 rounded-full ios-button-primary text-white font-black hover:brightness-110 active:scale-95 transition-all flex items-center gap-1.5 shadow-md"
           >
-            <Navigation className="w-3 h-3" /> Update GPS
+            <Navigation className="w-3.5 h-3.5" /> Update GPS
           </button>
         </div>
       </div>
-
-      {/* mi UI Inspired Section Ticks Divider */}
-      <div className="ticks" />
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">

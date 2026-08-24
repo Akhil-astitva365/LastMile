@@ -74,20 +74,20 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Admin Header */}
-      <div className="glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="ios-glass-panel p-6 sm:p-8 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-2xl">
         <div className="flex items-center gap-3">
-          <div className="p-3 rounded-2xl bg-amber-500/20 text-amber-400 border border-amber-500/30">
+          <div className="p-3.5 rounded-2xl bg-gradient-to-tr from-amber-400 to-orange-500 text-slate-950 shadow-lg shadow-amber-500/30">
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-2xl font-extrabold text-slate-100 tracking-tight">Admin Control Center</h2>
-            <p className="text-xs text-slate-400">Configure rate cards, monitor agent availability, and manage logistics orders</p>
+            <h2 className="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight">Admin Control Center</h2>
+            <p className="text-xs text-slate-400 font-medium">Configure rate cards, monitor agent availability, and manage logistics orders</p>
           </div>
         </div>
 
         <button
           onClick={fetchAdminData}
-          className="p-3 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-amber-400 transition-all flex items-center gap-2 text-xs font-bold"
+          className="p-3.5 rounded-full bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-amber-400 active:scale-95 transition-all flex items-center gap-2 text-xs font-black uppercase tracking-wider shadow-md"
         >
           <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> Refresh Telemetry
         </button>
@@ -95,44 +95,41 @@ export const AdminDashboard: React.FC = () => {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        <div className="glass-card p-4 rounded-2xl border-l-4 border-l-cyan-500 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400">Total Revenue</span>
-          <div className="text-xl font-extrabold text-cyan-400 flex items-center gap-1">
+        <div className="ios-glass-card p-5 rounded-3xl border-l-4 border-l-cyan-400 space-y-1">
+          <span className="text-[10px] uppercase font-black tracking-wider text-slate-400">Total Revenue</span>
+          <div className="text-2xl font-black text-cyan-400 flex items-center gap-1">
             <DollarSign className="w-5 h-5" /> ₹{totalRevenue.toFixed(0)}
           </div>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl border-l-4 border-l-purple-500 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400">Active Orders</span>
-          <div className="text-xl font-extrabold text-purple-400 flex items-center gap-1">
+        <div className="ios-glass-card p-5 rounded-3xl border-l-4 border-l-purple-400 space-y-1">
+          <span className="text-[10px] uppercase font-black tracking-wider text-slate-400">Active Orders</span>
+          <div className="text-2xl font-black text-purple-400 flex items-center gap-1">
             <Package className="w-5 h-5" /> {activeCount}
           </div>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl border-l-4 border-l-emerald-500 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400">Delivered</span>
-          <div className="text-xl font-extrabold text-emerald-400 flex items-center gap-1">
+        <div className="ios-glass-card p-5 rounded-3xl border-l-4 border-l-emerald-400 space-y-1">
+          <span className="text-[10px] uppercase font-black tracking-wider text-slate-400">Delivered</span>
+          <div className="text-2xl font-black text-emerald-400 flex items-center gap-1">
             <UserCheck className="w-5 h-5" /> {deliveredCount}
           </div>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl border-l-4 border-l-rose-500 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400">Failed Count</span>
-          <div className="text-xl font-extrabold text-rose-400 flex items-center gap-1">
+        <div className="ios-glass-card p-5 rounded-3xl border-l-4 border-l-rose-400 space-y-1">
+          <span className="text-[10px] uppercase font-black tracking-wider text-slate-400">Failed Count</span>
+          <div className="text-2xl font-black text-rose-400 flex items-center gap-1">
             <AlertTriangle className="w-5 h-5" /> {failedCount}
           </div>
         </div>
 
-        <div className="glass-card p-4 rounded-2xl border-l-4 border-l-amber-500 space-y-1">
-          <span className="text-[10px] uppercase font-bold text-slate-400">Available Agents</span>
-          <div className="text-xl font-extrabold text-amber-400 flex items-center gap-1">
+        <div className="ios-glass-card p-5 rounded-3xl border-l-4 border-l-amber-400 space-y-1">
+          <span className="text-[10px] uppercase font-black tracking-wider text-slate-400">Available Agents</span>
+          <div className="text-2xl font-black text-amber-400 flex items-center gap-1">
             <Users className="w-5 h-5" /> {availableAgentsCount}
           </div>
         </div>
       </div>
-
-      {/* mi UI Inspired Section Ticks Divider */}
-      <div className="ticks" />
 
       {/* Navigation Tabs */}
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 text-xs font-bold">

@@ -41,75 +41,75 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4">
+    <div className="min-h-[calc(100vh-6rem)] flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-6">
-        <div className="text-center space-y-2">
-          <div className="inline-flex p-3 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 shadow-xl text-slate-950">
-            <Truck className="w-8 h-8" />
+        <div className="text-center space-y-3">
+          <div className="inline-flex p-4 rounded-3xl bg-gradient-to-tr from-cyan-400 via-sky-500 to-blue-600 shadow-2xl shadow-cyan-500/30 text-slate-950">
+            <Truck className="w-9 h-9" />
           </div>
-          <h2 className="text-2xl font-bold tracking-tight text-slate-100">Create an Account</h2>
-          <p className="text-xs text-slate-400">Join the Last-Mile Delivery Network</p>
+          <h2 className="text-3xl font-black tracking-tight text-slate-100">Create Account</h2>
+          <p className="text-xs text-slate-400 font-medium">Join the Last-Mile Logistics Network</p>
         </div>
 
-        <div className="glass-panel p-6 rounded-2xl border border-slate-800 space-y-4">
+        <div className="ios-glass-panel p-8 rounded-3xl space-y-5 border border-slate-800">
           {error && (
-            <div className="p-3 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs text-center font-medium">
+            <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs text-center font-bold">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             <div>
-              <label className="block text-slate-400 font-semibold mb-1">Full Name</label>
+              <label className="block text-slate-300 font-bold mb-1.5 pl-1">Full Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full ios-input rounded-2xl px-4 py-3 text-slate-100 font-medium focus:outline-none placeholder:text-slate-600"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 font-semibold mb-1">Email Address</label>
+              <label className="block text-slate-300 font-bold mb-1.5 pl-1">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full ios-input rounded-2xl px-4 py-3 text-slate-100 font-medium focus:outline-none placeholder:text-slate-600"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 font-semibold mb-1">Password</label>
+              <label className="block text-slate-300 font-bold mb-1.5 pl-1">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full ios-input rounded-2xl px-4 py-3 text-slate-100 font-medium focus:outline-none placeholder:text-slate-600"
                 required
                 minLength={6}
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 font-semibold mb-1">Phone Number</label>
+              <label className="block text-slate-300 font-bold mb-1.5 pl-1">Phone Number</label>
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full ios-input rounded-2xl px-4 py-3 text-slate-100 font-medium focus:outline-none placeholder:text-slate-600"
                 placeholder="+91 98765 43210"
               />
             </div>
 
             <div>
-              <label className="block text-slate-400 font-semibold mb-1">Account Role</label>
+              <label className="block text-slate-300 font-bold mb-1.5 pl-1">Account Role</label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value as Role)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full ios-input rounded-2xl px-4 py-3 text-slate-100 font-medium focus:outline-none"
               >
                 <option value="CUSTOMER">Customer</option>
                 <option value="DELIVERY_AGENT">Delivery Agent</option>
@@ -119,12 +119,12 @@ export const Register: React.FC = () => {
 
             {role === 'CUSTOMER' && (
               <div>
-                <label className="block text-slate-400 font-semibold mb-1">Company Name (Optional)</label>
+                <label className="block text-slate-300 font-bold mb-1.5 pl-1">Company Name (Optional)</label>
                 <input
                   type="text"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-cyan-500"
+                  className="w-full ios-input rounded-2xl px-4 py-3 text-slate-100 font-medium focus:outline-none"
                 />
               </div>
             )}
@@ -132,16 +132,16 @@ export const Register: React.FC = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold hover:brightness-110 transition-all flex items-center justify-center gap-2 text-sm shadow-lg shadow-cyan-500/20 disabled:opacity-50"
+              className="w-full py-3.5 rounded-2xl ios-button-primary text-slate-950 font-black tracking-wide text-xs uppercase flex items-center justify-center gap-2 shadow-xl disabled:opacity-50"
             >
               {isSubmitting ? 'Registering...' : 'Complete Registration'}
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 
-          <div className="text-center text-xs text-slate-400 pt-2 border-t border-slate-800">
+          <div className="text-center text-xs text-slate-400 pt-3 border-t border-slate-800/80 font-medium">
             Already have an account?{' '}
-            <Link to="/login" className="text-cyan-400 font-bold hover:underline">
+            <Link to="/login" className="text-cyan-400 font-extrabold hover:underline">
               Sign in
             </Link>
           </div>
