@@ -9,8 +9,8 @@ export const Navbar: React.FC = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-4 z-40 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 space-y-2">
-      <div className="ios-glass-panel rounded-full px-6 h-16 flex items-center justify-between shadow-2xl bg-black/40 backdrop-blur-xl border border-neutral-800">
+    <header className="sticky top-4 z-40 w-full px-4 sm:px-6 lg:px-8 mb-4 space-y-2">
+      <div className="ios-glass-panel rounded-full px-6 h-16 flex items-center justify-between shadow-2xl bg-black/40 backdrop-blur-xl border border-neutral-800 w-full">
         {/* Brand */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-3">
