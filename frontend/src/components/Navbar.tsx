@@ -2,7 +2,6 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Truck, LogOut, Package, PlusCircle, ShieldCheck, DollarSign, Users } from 'lucide-react';
-import { Role } from '../types';
 
 export const Navbar: React.FC = () => {
   const { user, logout } = useAuth();
@@ -39,7 +38,7 @@ export const Navbar: React.FC = () => {
               </div>
               <button
                 onClick={logout}
-                title="Logout to switch accounts"
+                title="Logout"
                 className="p-2.5 rounded-full text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all border border-neutral-800 active:scale-95 flex items-center gap-1.5"
               >
                 <LogOut className="w-4 h-4" />
@@ -50,7 +49,7 @@ export const Navbar: React.FC = () => {
         )}
       </div>
 
-      {/* Sub-Navigation Webpage Menu Bar */}
+      {/* Sub-Navigation Menu Bar */}
       {user && (
         <div className="flex items-center gap-2 overflow-x-auto py-1 px-4 text-xs font-bold bg-neutral-950/80 rounded-2xl border border-neutral-800/80 max-w-fit mx-auto">
           {user.role === 'CUSTOMER' && (
@@ -61,7 +60,7 @@ export const Navbar: React.FC = () => {
                   location.pathname === '/customer' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
                 }`}
               >
-                <Package className="w-3.5 h-3.5" /> My Orders List
+                <Package className="w-3.5 h-3.5" /> Orders
               </Link>
               <Link
                 to="/customer/create-order"
@@ -69,7 +68,7 @@ export const Navbar: React.FC = () => {
                   location.pathname === '/customer/create-order' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
                 }`}
               >
-                <PlusCircle className="w-3.5 h-3.5" /> New Shipping Order Webpage
+                <PlusCircle className="w-3.5 h-3.5" /> Create Order
               </Link>
             </>
           )}
@@ -81,7 +80,7 @@ export const Navbar: React.FC = () => {
                 location.pathname === '/agent' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
               }`}
             >
-              <Truck className="w-3.5 h-3.5" /> Agent Deliveries & GPS Telemetry Page
+              <Truck className="w-3.5 h-3.5" /> Deliveries
             </Link>
           )}
 
@@ -93,7 +92,7 @@ export const Navbar: React.FC = () => {
                   location.pathname === '/admin' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
                 }`}
               >
-                <ShieldCheck className="w-3.5 h-3.5" /> Admin Control Center
+                <ShieldCheck className="w-3.5 h-3.5" /> Dashboard
               </Link>
               <Link
                 to="/admin/rate-cards"
@@ -101,7 +100,7 @@ export const Navbar: React.FC = () => {
                   location.pathname === '/admin/rate-cards' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
                 }`}
               >
-                <DollarSign className="w-3.5 h-3.5" /> Rate Cards & Pricing Webpage
+                <DollarSign className="w-3.5 h-3.5" /> Rate Cards
               </Link>
               <Link
                 to="/admin/agents"
@@ -109,7 +108,7 @@ export const Navbar: React.FC = () => {
                   location.pathname === '/admin/agents' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
                 }`}
               >
-                <Users className="w-3.5 h-3.5" /> Agent Roster Webpage
+                <Users className="w-3.5 h-3.5" /> Agents
               </Link>
             </>
           )}

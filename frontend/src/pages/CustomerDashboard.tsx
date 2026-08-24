@@ -138,12 +138,9 @@ export const CustomerDashboard: React.FC = () => {
         <div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
             CUSTOMER DASHBOARD
-            <span className="text-neutral-400 font-medium text-base font-normal">
-              Logistics Portal
-            </span>
           </h2>
           <p className="text-xs font-medium text-neutral-400 mt-1">
-            Create shipping orders, preview volumetric rate quotes, and track real-time delivery events.
+            Manage your shipping orders and track live package status.
           </p>
         </div>
         <div className="flex items-center gap-3">

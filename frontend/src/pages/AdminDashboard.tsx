@@ -82,8 +82,8 @@ export const AdminDashboard: React.FC = () => {
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight">Admin Control Center</h2>
-            <p className="text-xs text-slate-400 font-medium">Configure rate cards, monitor agent availability, and manage logistics orders</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">ADMIN DASHBOARD</h2>
+            <p className="text-xs text-neutral-400 font-medium">Logistics fleet, rate cards, and order dispatch management</p>
           </div>
         </div>
 
@@ -98,7 +98,7 @@ export const AdminDashboard: React.FC = () => {
             onClick={fetchAdminData}
             className="p-3.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white active:scale-95 transition-all flex items-center gap-2 text-xs font-bold shadow-md"
           >
-            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> REFRESH TELEMETRY
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> REFRESH
           </button>
         </div>
       </div>
