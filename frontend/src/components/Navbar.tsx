@@ -25,23 +25,21 @@ export const Navbar: React.FC = () => {
           </Link>
         </div>
 
-        {/* User Info */}
+        {/* User Info & Logout Sign at Very Right */}
         {user && (
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-3 border-neutral-800">
-              <div className="text-right hidden sm:block text-xs">
-                <div className="font-bold text-white tracking-wide text-sm">{user.name}</div>
-                <div className="text-neutral-400 text-xs uppercase font-semibold">{user.role}</div>
-              </div>
-              <button
-                onClick={logout}
-                title="Logout"
-                className="p-2.5 rounded-full text-neutral-400 hover:text-white hover:bg-neutral-800 transition-all border border-neutral-800 active:scale-95 flex items-center gap-1.5"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="text-[10px] font-bold uppercase hidden md:inline">Logout</span>
-              </button>
+          <div className="flex items-center gap-3 ml-auto">
+            <div className="text-right hidden sm:block text-xs">
+              <div className="font-bold text-white tracking-wide text-sm">{user.name}</div>
+              <div className="text-neutral-400 text-xs uppercase font-semibold">{user.role}</div>
             </div>
+            <button
+              onClick={logout}
+              title="Logout"
+              className="p-2.5 rounded-full bg-neutral-900 border border-neutral-700 text-white hover:bg-white hover:text-black transition-all active:scale-95 flex items-center gap-1.5 shadow-md shrink-0"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="text-[10px] font-bold uppercase hidden md:inline">Logout</span>
+            </button>
           </div>
         )}
       </div>
