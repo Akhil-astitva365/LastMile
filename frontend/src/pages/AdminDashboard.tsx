@@ -39,12 +39,13 @@ export const AdminDashboard: React.FC = () => {
         adminApi.getZones(),
         adminApi.getRates(),
       ]);
-      setOrders(orderList);
+      const sortedOrders = [...orderList].sort((a, b) => b.id - a.id);
+      setOrders(sortedOrders);
       setAgents(agentList);
       setZones(zoneList);
       setRates(rateList);
-      if (orderList.length > 0 && !selectedOrderForMap) {
-        setSelectedOrderForMap(orderList[0]);
+      if (sortedOrders.length > 0) {
+        setSelectedOrderForMap(sortedOrders[0]);
       }
     } catch (e) {
       console.error(e);

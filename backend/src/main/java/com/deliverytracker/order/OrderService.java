@@ -159,11 +159,11 @@ public class OrderService {
 
     public List<OrderResponse> getUserOrders(User currentUser) {
         if (currentUser.getRole() == Role.ADMIN) {
-            return orderRepository.findAll().stream().map(this::mapToResponse).toList();
+            return orderRepository.findAllByOrderByIdDesc().stream().map(this::mapToResponse).toList();
         } else if (currentUser.getRole() == Role.CUSTOMER) {
             CustomerProfile customer = customerRepository.findByUser(currentUser)
                     .orElseThrow(() -> new IllegalArgumentException("Customer profile not found"));
-            return orderRepository.findByCustomer(customer).stream().map(this::mapToResponse).toList();
+            return orderRepository.findByCustomerOrderByIdDesc(customer).stream().map(this::mapToResponse).toList();
         } else {
             return getAgentAssignedOrders(currentUser);
         }

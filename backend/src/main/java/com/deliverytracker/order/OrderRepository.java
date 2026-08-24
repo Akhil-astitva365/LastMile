@@ -13,5 +13,7 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
     Optional<Order> findByOrderNumber(String orderNumber);
     List<Order> findByCustomerIdOrderByCreatedAtDesc(Long customerId);
     List<Order> findByCustomer(CustomerProfile customer);
+    List<Order> findByCustomerOrderByIdDesc(CustomerProfile customer);
+    List<Order> findAllByOrderByIdDesc();
     List<Order> findByStatus(OrderStatus status);
 }

@@ -22,9 +22,10 @@ export const CustomerDashboard: React.FC = () => {
     setIsLoading(true);
     try {
       const data = await orderApi.getMyOrders();
-      setOrders(data);
-      if (data.length > 0 && !selectedOrderForMap) {
-        setSelectedOrderForMap(data[0]);
+      const sortedData = [...data].sort((a, b) => b.id - a.id);
+      setOrders(sortedData);
+      if (sortedData.length > 0) {
+        setSelectedOrderForMap(sortedData[0]);
       }
     } catch (e: any) {
       console.error('Error fetching orders:', e);
