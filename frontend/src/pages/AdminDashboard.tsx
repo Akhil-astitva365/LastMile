@@ -90,7 +90,6 @@ export const AdminDashboard: React.FC = () => {
           </div>
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-playfair">ADMIN DASHBOARD</h2>
-            <p className="text-xs text-neutral-400 font-medium font-helvetica">Logistics fleet, rate cards, and order dispatch management</p>
           </div>
         </div>
 
