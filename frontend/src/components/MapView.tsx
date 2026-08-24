@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
+import { Maximize2, Minimize2, X, MapPin } from 'lucide-react';
 
 // Leaflet default icon configuration
 const defaultIcon = L.icon({
@@ -23,13 +24,14 @@ interface MapViewProps {
   agentLat?: number;
   agentLon?: number;
   agentName?: string;
+  showExpandButton?: boolean;
 }
 
 function MapRecenter({ center, bounds }: { center: [number, number]; bounds: [number, number][] }) {
   const map = useMap();
   useEffect(() => {
     if (bounds.length > 0) {
-      map.fitBounds(bounds, { padding: [30, 30] });
+      map.fitBounds(bounds, { padding: [40, 40] });
     } else {
       map.setView(center, 9);
     }
@@ -45,7 +47,10 @@ export const MapView: React.FC<MapViewProps> = ({
   agentLat,
   agentLon,
   agentName = 'Assigned Agent',
+  showExpandButton = true,
 }) => {
+  const [isExpanded, setIsExpanded] = useState<boolean>(false);
+
   const centerLat = (pickupLat + dropLat) / 2;
   const centerLon = (pickupLon + dropLon) / 2;
 
@@ -58,45 +63,91 @@ export const MapView: React.FC<MapViewProps> = ({
     positions.push([agentLat, agentLon]);
   }
 
+  const renderMapContainer = (heightClass: string = "h-full") => (
+    <MapContainer
+      center={[centerLat, centerLon]}
+      zoom={8}
+      scrollWheelZoom={true}
+      className={`w-full ${heightClass}`}
+    >
+      <MapRecenter center={[centerLat, centerLon]} bounds={positions} />
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+
+      {/* Pickup Marker */}
+      <Marker position={[pickupLat, pickupLon]} icon={defaultIcon}>
+        <Popup>
+          <div className="text-xs font-bold text-black">📍 Pickup Location</div>
+        </Popup>
+      </Marker>
+
+      {/* Drop Marker */}
+      <Marker position={[dropLat, dropLon]} icon={defaultIcon}>
+        <Popup>
+          <div className="text-xs font-bold text-black">🏁 Drop Location</div>
+        </Popup>
+      </Marker>
+
+      {/* Agent Marker if available */}
+      {agentLat && agentLon && (
+        <Marker position={[agentLat, agentLon]} icon={defaultIcon}>
+          <Popup>
+            <div className="text-xs font-bold text-black">🚚 {agentName}</div>
+          </Popup>
+        </Marker>
+      )}
+
+      <Polyline positions={[[pickupLat, pickupLon], [dropLat, dropLon]]} color="#ffffff" weight={5} dashArray="6, 8" />
+    </MapContainer>
+  );
+
   return (
-    <div className="w-full h-64 rounded-2xl overflow-hidden border border-orange-500/30 shadow-inner relative z-0">
-      <MapContainer
-        center={[centerLat, centerLon]}
-        zoom={8}
-        scrollWheelZoom={false}
-        className="w-full h-full"
-      >
-        <MapRecenter center={[centerLat, centerLon]} bounds={positions} />
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+    <>
+      {/* Standard Map Frame */}
+      <div className="w-full h-full min-h-[300px] rounded-2xl overflow-hidden border border-neutral-800 shadow-inner relative z-0 group">
+        {renderMapContainer("h-full")}
 
-        {/* Pickup Marker */}
-        <Marker position={[pickupLat, pickupLon]} icon={defaultIcon}>
-          <Popup>
-            <div className="text-xs font-bold text-black">📍 Pickup Location</div>
-          </Popup>
-        </Marker>
-
-        {/* Drop Marker */}
-        <Marker position={[dropLat, dropLon]} icon={defaultIcon}>
-          <Popup>
-            <div className="text-xs font-bold text-black">🏁 Drop Location</div>
-          </Popup>
-        </Marker>
-
-        {/* Agent Marker if available */}
-        {agentLat && agentLon && (
-          <Marker position={[agentLat, agentLon]} icon={defaultIcon}>
-            <Popup>
-              <div className="text-xs font-bold text-black">🚚 {agentName}</div>
-            </Popup>
-          </Marker>
+        {showExpandButton && (
+          <button
+            onClick={() => setIsExpanded(true)}
+            className="absolute top-3 right-3 z-[400] px-3 py-1.5 rounded-full bg-black/90 border border-white/30 text-white font-bold text-xs hover:bg-white hover:text-black transition-all flex items-center gap-1.5 shadow-xl active:scale-95"
+            title="Expand Map to Fullscreen"
+          >
+            <Maximize2 className="w-3.5 h-3.5" />
+            <span>EXPAND MAP</span>
+          </button>
         )}
+      </div>
 
-        <Polyline positions={[[pickupLat, pickupLon], [dropLat, dropLon]]} color="#ffffff" weight={4} dashArray="6, 8" />
-      </MapContainer>
-    </div>
+      {/* Full-Screen Expanded Map Modal */}
+      {isExpanded && (
+        <div className="fixed inset-0 z-[1000] p-4 sm:p-6 bg-black/90 backdrop-blur-md flex flex-col space-y-4 animate-in fade-in duration-200">
+          <div className="flex items-center justify-between ios-glass-panel p-4 rounded-2xl bg-black border border-neutral-800">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-full bg-white text-black">
+                <MapPin className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white tracking-wide font-playfair">FULL-SCREEN MAP VIEW</h3>
+                <p className="text-xs text-neutral-400 font-helvetica">Interactive PAN-India Leaflet Route Map</p>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsExpanded(false)}
+              className="px-4 py-2 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-1.5 shadow-lg active:scale-95"
+            >
+              <Minimize2 className="w-4 h-4" /> EXIT FULLSCREEN
+            </button>
+          </div>
+
+          <div className="flex-1 w-full rounded-3xl overflow-hidden border border-white/20 shadow-2xl relative">
+            {renderMapContainer("h-full")}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
