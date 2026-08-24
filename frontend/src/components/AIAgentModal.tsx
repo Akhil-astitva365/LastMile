@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bot, Send, Sparkles, X, CheckCircle2, UserCheck, Bell, DollarSign, ArrowRight } from 'lucide-react';
+import { Bot, Send, Sparkles, X, CheckCircle2, UserCheck, Bell, DollarSign } from 'lucide-react';
 import api from '../services/api';
 
 interface AIAgentResponse {
@@ -53,9 +53,9 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="w-full max-w-2xl ios-glass-panel rounded-3xl p-6 sm:p-8 space-y-6 bg-black border border-white/30 shadow-2xl relative">
+      <div className="w-full max-w-2xl ios-glass-panel rounded-3xl p-6 sm:p-8 space-y-6 bg-black/95 shadow-2xl relative border-none">
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-neutral-800 pb-4">
+        <div className="flex items-center justify-between border-b border-neutral-800/40 pb-4">
           <div className="flex items-center gap-3">
             <div className="p-3 rounded-full bg-white text-black font-bold shadow-lg">
               <Bot className="w-6 h-6" />
@@ -79,21 +79,21 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
             <button
               type="button"
               onClick={() => handleSamplePrompt("Book an urgent 8kg package 50x40x30cm from Bhopal 462001 to Indore 452001 COD")}
-              className="p-2.5 rounded-2xl bg-neutral-950 border border-neutral-800 hover:border-white text-left text-[11px] text-neutral-300 hover:text-white transition-all"
+              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all"
             >
               🚚 Bhopal ➔ Indore (8kg COD)
             </button>
             <button
               type="button"
               onClick={() => handleSamplePrompt("Ship a 5kg parcel from Connaught Place Delhi 110001 to Bandra West Mumbai 400050 Prepaid")}
-              className="p-2.5 rounded-2xl bg-neutral-950 border border-neutral-800 hover:border-white text-left text-[11px] text-neutral-300 hover:text-white transition-all"
+              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all"
             >
               ✈️ Delhi ➔ Mumbai (5kg Prepaid)
             </button>
             <button
               type="button"
               onClick={() => handleSamplePrompt("Create a 12kg B2B enterprise shipment from Bengaluru 560001 to Chennai 600001")}
-              className="p-2.5 rounded-2xl bg-neutral-950 border border-neutral-800 hover:border-white text-left text-[11px] text-neutral-300 hover:text-white transition-all"
+              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all"
             >
               🏢 B2B Bengaluru ➔ Chennai
             </button>
@@ -114,7 +114,7 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
           </div>
 
           {errorMessage && (
-            <div className="p-3.5 rounded-2xl bg-neutral-900 border border-neutral-700 text-white text-xs font-bold">
+            <div className="p-3.5 rounded-2xl bg-neutral-900/90 text-white text-xs font-bold">
               {errorMessage}
             </div>
           )}
@@ -125,7 +125,9 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
             className="w-full py-3.5 rounded-full ios-button-primary text-black font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-xl disabled:opacity-50"
           >
             {isProcessing ? (
-              <span>AI AGENT EXECUTING AUTO-DISPATCH...</span>
+              <span className="flex items-center gap-2">
+                <Sparkles className="w-4 h-4 animate-spin" /> AI AGENT EXECUTING AUTO-DISPATCH...
+              </span>
             ) : (
               <>
                 <Send className="w-4 h-4" /> EXECUTE AI ORDER CREATION & AUTO-ASSIGN
@@ -136,8 +138,8 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
 
         {/* AI Execution Results */}
         {result && (
-          <div className="p-5 rounded-2xl bg-neutral-950 border border-white/40 space-y-4 animate-in fade-in duration-300">
-            <div className="flex items-center justify-between border-b border-neutral-800 pb-3">
+          <div className="p-5 rounded-2xl bg-neutral-950/90 space-y-4 animate-in fade-in duration-300">
+            <div className="flex items-center justify-between border-b border-neutral-800/40 pb-3">
               <span className="text-xs font-bold text-white flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-white" /> AI ORDER CREATED & DISPATCHED
               </span>
@@ -145,26 +147,26 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
-              <div className="bg-black p-2.5 rounded-xl border border-neutral-800">
+              <div className="bg-black p-2.5 rounded-xl">
                 <span className="text-[9px] font-bold text-neutral-400 uppercase block">Calculated Charge</span>
                 <span className="font-bold text-white flex items-center gap-1 text-sm">
                   <DollarSign className="w-3.5 h-3.5" /> ₹{result.finalCharge}
                 </span>
               </div>
 
-              <div className="bg-black p-2.5 rounded-xl border border-neutral-800">
+              <div className="bg-black p-2.5 rounded-xl">
                 <span className="text-[9px] font-bold text-neutral-400 uppercase block">Billable Weight</span>
                 <span className="font-bold text-white text-xs">{result.billableWeight} kg</span>
               </div>
 
-              <div className="bg-black p-2.5 rounded-xl border border-neutral-800">
+              <div className="bg-black p-2.5 rounded-xl">
                 <span className="text-[9px] font-bold text-neutral-400 uppercase block">Assigned Agent</span>
                 <span className="font-bold text-white flex items-center gap-1 text-xs">
                   <UserCheck className="w-3.5 h-3.5" /> {result.assignedAgentName}
                 </span>
               </div>
 
-              <div className="bg-black p-2.5 rounded-xl border border-neutral-800">
+              <div className="bg-black p-2.5 rounded-xl">
                 <span className="text-[9px] font-bold text-neutral-400 uppercase block">Notification</span>
                 <span className="font-bold text-white flex items-center gap-1 text-xs">
                   <Bell className="w-3.5 h-3.5" /> SMS & Email Sent
@@ -172,7 +174,7 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
               </div>
             </div>
 
-            <div className="text-xs font-mono bg-black p-3 rounded-xl border border-neutral-800 text-neutral-300 whitespace-pre-line leading-relaxed">
+            <div className="text-xs font-mono bg-black p-3 rounded-xl text-neutral-300 whitespace-pre-line leading-relaxed">
               {result.aiExplanation}
             </div>
           </div>
