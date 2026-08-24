@@ -95,14 +95,14 @@ export const AgentDashboard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      {/* Top Header */}
-      <div className="ios-glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-xl shadow-2xl">
+      {/* Top Header Console - Left Aligned */}
+      <div className="ios-glass-panel p-5 sm:p-6 rounded-3xl flex flex-wrap items-center justify-start gap-4 sm:gap-6 bg-black/40 backdrop-blur-xl shadow-2xl">
         <div className="flex items-center gap-3">
           <div className="p-3 rounded-full bg-white text-black font-bold">
             <Navigation className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white tracking-tight font-playfair">AGENT PORTAL</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-playfair whitespace-nowrap">AGENT PORTAL</h2>
           </div>
         </div>
 

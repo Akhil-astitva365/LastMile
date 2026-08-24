@@ -70,12 +70,12 @@ export const CustomerDashboard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 rounded-3xl bg-black/40 backdrop-blur-xl shadow-2xl">
+      {/* Top Header Console - Left Aligned */}
+      <div className="flex flex-wrap items-center justify-start gap-4 sm:gap-6 ios-glass-panel p-5 sm:p-6 rounded-3xl bg-black/40 backdrop-blur-xl shadow-2xl">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-playfair">CUSTOMER DASHBOARD</h2>
+          <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-white font-playfair whitespace-nowrap">CUSTOMER DASHBOARD</h2>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={fetchOrders}
             className="p-3 rounded-full bg-neutral-900 text-neutral-300 hover:text-white active:scale-95 transition-all shadow-md"
@@ -92,7 +92,7 @@ export const CustomerDashboard: React.FC = () => {
           </button>
           <button
             onClick={() => navigate('/customer/create-order')}
-            className="px-6 py-3 rounded-full ios-button-primary flex items-center gap-2 text-xs font-bold"
+            className="px-5 py-3 rounded-full ios-button-primary flex items-center gap-2 text-xs font-bold whitespace-nowrap"
           >
             <Plus className="w-4 h-4" /> CREATE ORDER
           </button>

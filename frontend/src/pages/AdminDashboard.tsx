@@ -82,28 +82,28 @@ export const AdminDashboard: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      {/* Admin Header */}
-      <div className="ios-glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-xl shadow-2xl">
+      {/* Admin Header Console - Left Aligned */}
+      <div className="ios-glass-panel p-5 sm:p-6 rounded-3xl flex flex-wrap items-center justify-start gap-4 sm:gap-6 bg-black/40 backdrop-blur-xl shadow-2xl">
         <div className="flex items-center gap-3">
-          <div className="p-3.5 rounded-full bg-white text-black font-bold">
-            <ShieldCheck className="w-6 h-6" />
+          <div className="p-3 rounded-full bg-white text-black font-bold">
+            <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-playfair">ADMIN DASHBOARD</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-playfair whitespace-nowrap">ADMIN DASHBOARD</h2>
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={fetchAdminData}
-            className="p-3.5 rounded-full bg-neutral-900 text-neutral-300 hover:text-white active:scale-95 transition-all flex items-center gap-2 text-xs font-bold shadow-md"
+            className="p-3 rounded-full bg-neutral-900 text-neutral-300 hover:text-white active:scale-95 transition-all flex items-center gap-2 text-xs font-bold shadow-md"
             title="Refresh Data"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
           <button
             onClick={() => setShowAIModal(true)}
-            className="p-3.5 rounded-full bg-neutral-900 text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-md flex items-center justify-center"
+            className="p-3 rounded-full bg-neutral-900 text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-md flex items-center justify-center"
             title="AI Agent Mode"
           >
             <Sparkles className="w-4 h-4" />
