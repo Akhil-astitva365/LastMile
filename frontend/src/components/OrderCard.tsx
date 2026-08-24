@@ -50,7 +50,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   };
 
   return (
-    <div className="ios-glass-card p-5 sm:p-6 rounded-3xl flex flex-col justify-between space-y-4 bg-black/90 border border-neutral-800 hover:border-neutral-500 transition-all">
+    <div className="ios-glass-card p-5 sm:p-6 rounded-3xl flex flex-col justify-between space-y-4 bg-black/40 backdrop-blur-md border border-neutral-800 hover:border-neutral-500 transition-all">
       <div>
         {/* Header */}
         <div className="flex items-center justify-between pb-3 border-b border-neutral-800">

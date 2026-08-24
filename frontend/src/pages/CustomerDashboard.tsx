@@ -71,7 +71,7 @@ export const CustomerDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 rounded-3xl bg-black/95 border border-neutral-800 shadow-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl">
         <div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-playfair">CUSTOMER DASHBOARD</h2>
           <p className="text-xs font-medium text-neutral-400 mt-1 font-helvetica">
@@ -181,7 +181,7 @@ export const CustomerDashboard: React.FC = () => {
 
         {/* Right Corner: Separate Large View Map */}
         <div className="lg:col-span-5 xl:col-span-5 sticky top-24">
-          <div className="ios-glass-panel p-4 rounded-3xl bg-black/95 border border-neutral-800 shadow-2xl space-y-3">
+          <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-2 px-1">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-white" />

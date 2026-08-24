@@ -83,7 +83,7 @@ export const AdminDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Admin Header */}
-      <div className="ios-glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/95 border border-neutral-800 shadow-2xl">
+      <div className="ios-glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl">
         <div className="flex items-center gap-3">
           <div className="p-3.5 rounded-full bg-white text-black font-bold">
             <ShieldCheck className="w-6 h-6" />
@@ -239,7 +239,7 @@ export const AdminDashboard: React.FC = () => {
 
         {/* Right Corner: Separate Large View Map */}
         <div className="lg:col-span-5 sticky top-24">
-          <div className="ios-glass-panel p-4 rounded-3xl bg-black/95 border border-neutral-800 shadow-2xl space-y-3">
+          <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-2 px-1">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-white" />

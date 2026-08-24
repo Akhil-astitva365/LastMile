@@ -55,7 +55,7 @@ export const Login: React.FC = () => {
         </div>
 
         {/* Demo Account Credentials Preset helper */}
-        <div className="ios-glass-card p-4 rounded-3xl space-y-2.5 bg-black/90 border border-neutral-800">
+        <div className="ios-glass-card p-4 rounded-3xl space-y-2.5 bg-black/40 backdrop-blur-xl border border-neutral-800">
           <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 text-center">
             🔒 Select Demo Credentials
           </div>
