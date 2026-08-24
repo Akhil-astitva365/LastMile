@@ -3,7 +3,7 @@ import { agentApi, orderApi } from '../services/api';
 import { Order, OrderStatus, TrackingEvent } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
 import { MapView } from '../components/MapView';
-import { Truck, MapPin, CheckCircle2, AlertCircle, RefreshCw, Navigation, X, ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
+import { Package, MapPin, CheckCircle2, AlertCircle, RefreshCw, Navigation, X, ChevronLeft, ChevronRight, Maximize2, Minimize2 } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -99,7 +99,7 @@ export const AgentDashboard: React.FC = () => {
       <div className="ios-glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-xl shadow-2xl">
         <div className="flex items-center gap-3">
           <div className="p-3 rounded-full bg-white text-black font-bold">
-            <Truck className="w-5 h-5" />
+            <Navigation className="w-5 h-5" />
           </div>
           <div>
             <h2 className="text-2xl font-bold text-white tracking-tight font-playfair">AGENT PORTAL</h2>
@@ -134,7 +134,7 @@ export const AgentDashboard: React.FC = () => {
         <div className="lg:col-span-6 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-sm text-white flex items-center gap-2">
-              <Truck className="w-4 h-4 text-white" /> Assigned Orders Queue
+              <Package className="w-4 h-4 text-white" /> Assigned Orders Queue
             </h3>
             <button onClick={fetchAssignedOrders} className="p-2 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white">
               <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -147,7 +147,7 @@ export const AgentDashboard: React.FC = () => {
             </div>
           ) : assignedOrders.length === 0 ? (
             <div className="ios-glass-panel p-12 rounded-3xl text-center space-y-2 border border-neutral-800">
-              <Truck className="w-10 h-10 text-neutral-600 mx-auto" />
+              <Package className="w-10 h-10 text-neutral-600 mx-auto" />
               <div className="text-sm font-bold text-white">No assigned delivery tasks</div>
             </div>
           ) : (

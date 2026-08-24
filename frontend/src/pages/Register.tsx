@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { authApi } from '../services/api';
-import { Truck, ArrowRight } from 'lucide-react';
+import { Package, ArrowRight } from 'lucide-react';
 import { Role } from '../types';
 
 export const Register: React.FC = () => {
@@ -48,7 +48,7 @@ export const Register: React.FC = () => {
       <div className="w-full max-w-md space-y-6">
         <div className="text-center space-y-3">
           <div className="inline-flex p-4 rounded-full bg-white text-black shadow-xl">
-            <Truck className="w-8 h-8" />
+            <Package className="w-8 h-8" />
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-white">Create Account</h2>
           <p className="text-xs text-neutral-400 font-medium">Register for Last-Mile Delivery Access</p>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-import { Truck, ArrowRight, Lock, Mail } from 'lucide-react';
+import { Package, ArrowRight, Lock, Mail } from 'lucide-react';
 
 export const Login: React.FC = () => {
   const { login } = useAuth();
@@ -44,7 +44,7 @@ export const Login: React.FC = () => {
         {/* Logo & Headline */}
         <div className="text-center space-y-3">
           <div className="inline-flex p-4 rounded-full bg-white text-black shadow-xl">
-            <Truck className="w-8 h-8" />
+            <Package className="w-8 h-8" />
           </div>
           <h2 className="text-3xl font-bold tracking-tight text-white flex items-center justify-center gap-2">
             LOGISTICS AUTHENTICATION

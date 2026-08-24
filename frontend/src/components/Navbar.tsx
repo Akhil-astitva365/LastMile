@@ -14,9 +14,6 @@ export const Navbar: React.FC = () => {
         {/* Brand */}
         <div className="flex items-center gap-3">
           <Link to="/" className="flex items-center gap-3">
-            <div className="p-2.5 rounded-full bg-white text-black font-bold active:scale-95 transition-all shadow-md">
-              <Truck className="w-4 h-4" />
-            </div>
             <div>
               <h1 className="font-syne font-extrabold text-lg sm:text-xl tracking-wider text-white flex items-center gap-2">
                 LAST-MILE
@@ -75,7 +72,7 @@ export const Navbar: React.FC = () => {
                 location.pathname === '/agent' ? 'bg-white text-black font-bold' : 'text-neutral-400 hover:text-white'
               }`}
             >
-              <Truck className="w-3.5 h-3.5" /> Deliveries
+              <Package className="w-3.5 h-3.5" /> Deliveries
             </Link>
           )}
 
