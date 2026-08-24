@@ -40,27 +40,36 @@ export const MapView: React.FC<MapViewProps> = ({
   // External Google Maps Route Navigation Link
   const externalGoogleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${validPickupLat},${validPickupLon}&destination=${validDropLat},${validDropLon}&travelmode=driving`;
 
-  const handleZoomIn = () => {
+  const handleZoomIn = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
     setZoomLevel((prev) => {
-      const next = Math.min(prev + 1, 18);
+      const next = Math.min(Math.round((prev + 0.4) * 10) / 10, 16);
       if (googleMapInstance.current) {
-        googleMapInstance.current.setZoom(next);
+        googleMapInstance.current.setZoom(Math.round(next));
       }
       return next;
     });
   };
 
-  const handleZoomOut = () => {
+  const handleZoomOut = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
     setZoomLevel((prev) => {
-      const next = Math.max(prev - 1, 3);
+      const next = Math.max(Math.round((prev - 0.4) * 10) / 10, 4);
       if (googleMapInstance.current) {
-        googleMapInstance.current.setZoom(next);
+        googleMapInstance.current.setZoom(Math.round(next));
       }
       return next;
     });
   };
 
-  const handleResetZoom = () => {
+  const handleResetZoom = (e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
     setZoomLevel(9);
     if (googleMapInstance.current) {
       googleMapInstance.current.setZoom(9);
@@ -174,32 +183,35 @@ export const MapView: React.FC<MapViewProps> = ({
     return (
       <div className="relative w-full h-full min-h-[350px] flex-1">
         {/* Floating Glassy Zooming Controls */}
-        <div className="absolute top-3 left-3 z-20 flex flex-col space-y-1.5">
+        <div className="absolute top-3 left-3 z-20 flex flex-col space-y-1.5 select-none">
           <button
             type="button"
             onClick={handleZoomIn}
-            title="Zoom In"
-            className="p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-neutral-700 text-white hover:bg-white hover:text-black transition-all shadow-2xl active:scale-95 flex items-center justify-center"
+            onTouchStart={handleZoomIn}
+            title="Fine Zoom In (+0.4)"
+            className="p-2 sm:p-2.5 rounded-full bg-black/75 backdrop-blur-xl border border-neutral-700 text-white hover:bg-white hover:text-black active:bg-white active:text-black transition-transform duration-75 shadow-2xl active:scale-90 flex items-center justify-center cursor-pointer"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
 
           <button
             type="button"
             onClick={handleZoomOut}
-            title="Zoom Out"
-            className="p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-neutral-700 text-white hover:bg-white hover:text-black transition-all shadow-2xl active:scale-95 flex items-center justify-center"
+            onTouchStart={handleZoomOut}
+            title="Fine Zoom Out (-0.4)"
+            className="p-2 sm:p-2.5 rounded-full bg-black/75 backdrop-blur-xl border border-neutral-700 text-white hover:bg-white hover:text-black active:bg-white active:text-black transition-transform duration-75 shadow-2xl active:scale-90 flex items-center justify-center cursor-pointer"
           >
-            <Minus className="w-4 h-4" />
+            <Minus className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </button>
 
           <button
             type="button"
             onClick={handleResetZoom}
+            onTouchStart={handleResetZoom}
             title="Reset Zoom Level"
-            className="p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-neutral-700 text-white hover:bg-white hover:text-black transition-all shadow-2xl active:scale-95 flex items-center justify-center"
+            className="p-2 sm:p-2.5 rounded-full bg-black/75 backdrop-blur-xl border border-neutral-700 text-white hover:bg-white hover:text-black active:bg-white active:text-black transition-transform duration-75 shadow-2xl active:scale-90 flex items-center justify-center cursor-pointer"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           </button>
         </div>
 
