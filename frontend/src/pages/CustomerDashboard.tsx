@@ -71,21 +71,21 @@ export const CustomerDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 rounded-3xl bg-black/40 backdrop-blur-xl shadow-2xl">
         <div>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-playfair">CUSTOMER DASHBOARD</h2>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={fetchOrders}
-            className="p-3 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white active:scale-95 transition-all shadow-md"
+            className="p-3 rounded-full bg-neutral-900 text-neutral-300 hover:text-white active:scale-95 transition-all shadow-md"
             title="Refresh Orders"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
           <button
             onClick={() => setShowAIModal(true)}
-            className="p-3 rounded-full bg-neutral-900 border border-neutral-700 text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-md flex items-center justify-center"
+            className="p-3 rounded-full bg-neutral-900 text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-md flex items-center justify-center"
             title="AI Agent Mode"
           >
             <Sparkles className="w-4 h-4" />
@@ -179,8 +179,8 @@ export const CustomerDashboard: React.FC = () => {
 
         {/* Right Corner: Separate Large View Map */}
         <div className="lg:col-span-6 xl:col-span-6 sticky top-24">
-          <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl space-y-3">
-            <div className="flex items-center justify-between border-b border-neutral-800 pb-2 px-1">
+          <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl shadow-2xl space-y-3">
+            <div className="flex items-center justify-between border-b border-neutral-800/40 pb-2 px-1">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-white" />
                 <span className="text-xs font-bold text-white tracking-wide">
@@ -189,7 +189,7 @@ export const CustomerDashboard: React.FC = () => {
               </div>
               <button
                 onClick={() => setIsLargeMapOpen(true)}
-                className="px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700 text-white font-bold text-[10px] hover:bg-white hover:text-black transition-all flex items-center gap-1.5 active:scale-95 shadow-sm font-helvetica"
+                className="px-3 py-1 rounded-full bg-neutral-900 text-white font-bold text-[10px] hover:bg-white hover:text-black transition-all flex items-center gap-1.5 active:scale-95 shadow-sm font-helvetica"
               >
                 <Maximize2 className="w-3 h-3" />
                 <span>LARGE MAP VIEW</span>

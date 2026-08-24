@@ -96,7 +96,7 @@ export const AgentDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Top Header */}
-      <div className="ios-glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl">
+      <div className="ios-glass-panel p-6 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 bg-black/40 backdrop-blur-xl shadow-2xl">
         <div className="flex items-center gap-3">
           <div className="p-3 rounded-full bg-white text-black font-bold">
             <Truck className="w-5 h-5" />
@@ -107,12 +107,12 @@ export const AgentDashboard: React.FC = () => {
         </div>
 
         {/* Location & Availability Toolbar */}
-        <div className="flex items-center gap-2 bg-neutral-950 p-2 rounded-full border border-neutral-800 text-xs">
+        <div className="flex items-center gap-2 bg-neutral-950 p-2 rounded-full text-xs">
           <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider px-2">Status:</span>
           <select
             value={availability}
             onChange={(e) => setAvailability(e.target.value)}
-            className="bg-black border border-neutral-800 rounded-full px-3 py-1 text-white font-bold focus:outline-none"
+            className="bg-black rounded-full px-3 py-1 text-white font-bold focus:outline-none"
           >
             <option value="AVAILABLE">AVAILABLE</option>
             <option value="BUSY">BUSY</option>
@@ -158,7 +158,7 @@ export const AgentDashboard: React.FC = () => {
                   <div
                     key={o.id}
                     onClick={() => setSelectedOrder(o)}
-                    className={`ios-glass-card p-5 rounded-3xl space-y-3 bg-black/40 backdrop-blur-md border border-neutral-800 cursor-pointer transition-all h-full flex flex-col justify-between ${
+                    className={`ios-glass-card p-5 rounded-3xl space-y-3 bg-black/40 backdrop-blur-md cursor-pointer transition-all h-full flex flex-col justify-between ${
                       selectedOrder?.id === o.id ? 'ring-2 ring-white' : ''
                     }`}
                   >
@@ -261,7 +261,7 @@ export const AgentDashboard: React.FC = () => {
 
         {/* Right Corner: Separate Large View Map */}
         <div className="lg:col-span-6 sticky top-24">
-          <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl space-y-3">
+          <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-2 px-1">
               <div className="flex items-center gap-2">
                 <MapPin className="w-4 h-4 text-white" />

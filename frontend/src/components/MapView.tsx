@@ -269,14 +269,14 @@ export const MapView: React.FC<MapViewProps> = ({
   return (
     <>
       {/* Standard Google Maps Frame */}
-      <div className="w-full h-full min-h-[350px] rounded-2xl overflow-hidden border border-neutral-800 shadow-xl relative z-0 group bg-neutral-900">
+      <div className="w-full h-full min-h-[350px] rounded-2xl overflow-hidden shadow-xl relative z-0 group bg-neutral-900">
         {renderGoogleMap("100%")}
       </div>
 
       {/* 16:9 Widescreen Expanded Google Map Modal */}
       {isExpanded && (
         <div className="fixed inset-0 z-[1000] p-4 sm:p-6 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center space-y-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-6xl ios-glass-panel p-4 rounded-2xl bg-black border border-neutral-800 flex items-center justify-between shadow-2xl">
+          <div className="w-full max-w-6xl ios-glass-panel p-4 rounded-2xl bg-black flex items-center justify-between shadow-2xl">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-full bg-white text-black">
                 <MapPin className="w-5 h-5" />
@@ -296,7 +296,7 @@ export const MapView: React.FC<MapViewProps> = ({
           </div>
 
           {/* 16:9 Widescreen Container */}
-          <div className="w-full max-w-6xl aspect-video rounded-3xl overflow-hidden border border-white/30 shadow-2xl relative bg-neutral-950">
+          <div className="w-full max-w-6xl aspect-video rounded-3xl overflow-hidden shadow-2xl relative bg-neutral-950">
             {renderGoogleMap("100%")}
           </div>
         </div>

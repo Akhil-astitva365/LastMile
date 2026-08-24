@@ -92,7 +92,7 @@ export const CreateOrderPage: React.FC = () => {
         <h2 className="text-xl font-bold text-white tracking-wide">NEW ORDER</h2>
       </div>
 
-      <div className="ios-glass-panel p-6 sm:p-8 rounded-3xl space-y-6 bg-black/95 border border-neutral-800 shadow-2xl">
+      <div className="ios-glass-panel p-6 sm:p-8 rounded-3xl space-y-6 bg-black/40 backdrop-blur-xl shadow-2xl">
         <div className="border-b border-neutral-800 pb-4">
           <h3 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2">
             <Calculator className="w-6 h-6 text-white" /> Shipping Quote & Order
