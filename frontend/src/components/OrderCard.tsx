@@ -113,22 +113,22 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         </div>
       </div>
 
-      {/* Action Buttons Footer - Zero Text Wrapping on all buttons */}
-      <div className="flex items-center gap-1.5 sm:gap-2 pt-2.5 border-t border-neutral-800 min-h-[50px]">
+      {/* Action Buttons Footer - Auto-Fitted Sizing & Zero Text Overflow */}
+      <div className="flex items-center gap-1 sm:gap-1.5 pt-2.5 border-t border-neutral-800 min-h-[48px]">
         <button
           onClick={handleTrackClick}
-          className="flex-1 min-w-0 h-9 sm:h-10 px-2 sm:px-3.5 rounded-full ios-button-primary text-[10px] sm:text-xs font-bold flex items-center justify-center gap-1 shrink-0 whitespace-nowrap"
+          className="flex-1 min-w-0 h-8 sm:h-9 px-2 sm:px-3 rounded-full ios-button-primary text-[9px] sm:text-[11px] font-bold tracking-tight flex items-center justify-center gap-1 shrink-0 whitespace-nowrap leading-none"
         >
-          <span className="truncate whitespace-nowrap">LIVE TRACKING</span>
-          <ArrowRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+          <span className="whitespace-nowrap">LIVE TRACKING</span>
+          <ArrowRight className="w-3 h-3 shrink-0" />
         </button>
 
         {canReschedule && (
           <button
             onClick={handleRescheduleClick}
-            className="h-9 sm:h-10 px-2.5 sm:px-3.5 rounded-full bg-neutral-900 border border-neutral-600 text-white font-bold text-[10px] sm:text-xs hover:bg-white hover:text-black transition-all flex items-center justify-center gap-1 shrink-0 whitespace-nowrap"
+            className="h-8 sm:h-9 px-2 sm:px-3 rounded-full bg-neutral-900 border border-neutral-600 text-white font-bold text-[9px] sm:text-[11px] tracking-tight hover:bg-white hover:text-black transition-all flex items-center justify-center gap-1 shrink-0 whitespace-nowrap leading-none"
           >
-            <RefreshCcw className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+            <RefreshCcw className="w-3 h-3 shrink-0" />
             <span>RESCHEDULE</span>
           </button>
         )}
@@ -138,16 +138,16 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <button
             onClick={handleDeleteClick}
             title="Delete Order"
-            className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-400 hover:text-white hover:border-white transition-all active:scale-95 flex items-center justify-center shrink-0"
+            className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-400 hover:text-white hover:border-white transition-all active:scale-95 flex items-center justify-center shrink-0"
           >
-            <Trash2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            <Trash2 className="w-3.5 h-3.5" />
           </button>
         )}
 
         {onAction && actionLabel && (
           <button
             onClick={(e) => { e.stopPropagation(); onAction(order); }}
-            className="h-9 sm:h-10 px-2.5 sm:px-3.5 rounded-full ios-button-emerald text-[10px] sm:text-xs shrink-0 whitespace-nowrap"
+            className="h-8 sm:h-9 px-2 sm:px-3 rounded-full ios-button-emerald text-[9px] sm:text-[11px] font-bold tracking-tight shrink-0 whitespace-nowrap leading-none"
           >
             {actionLabel}
           </button>
