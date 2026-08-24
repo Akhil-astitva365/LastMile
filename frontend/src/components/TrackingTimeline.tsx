@@ -33,7 +33,7 @@ export const TrackingTimeline: React.FC<TrackingTimelineProps> = ({ events }) =>
             <div className="bg-neutral-950 p-4 rounded-2xl border border-neutral-800 space-y-2">
               <div className="flex items-center justify-between">
                 <span className="font-bold text-sm tracking-wide text-white">
-                  {event.newStatus.replace(/_/g, ' ')}
+                  {(event.newStatus || (event as any).status || 'UPDATED').replace(/_/g, ' ')}
                 </span>
                 <span className="text-[11px] text-neutral-400 flex items-center gap-1 font-medium">
                   <Clock className="w-3 h-3 text-neutral-400" />

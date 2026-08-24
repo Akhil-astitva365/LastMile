@@ -107,7 +107,8 @@ export interface TrackingEvent {
   id: number;
   orderId: number;
   previousStatus?: OrderStatus;
-  newStatus: OrderStatus;
+  newStatus?: OrderStatus;
+  status?: OrderStatus;
   actorId?: number;
   actorRole: string;
   latitude?: number;

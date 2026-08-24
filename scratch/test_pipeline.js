@@ -130,7 +130,7 @@ async function runTest() {
   const tracking = await get(`/orders/${order.id}/tracking`, custToken);
   console.log(`   [PASS] Tracking Events Recorded (${tracking.length} events logged):`);
   tracking.forEach((ev) => {
-    console.log(`   • [${ev.status}] ${ev.remarks}`);
+    console.log(`   • [${ev.newStatus || ev.status || 'EVENT'}] ${ev.remarks}`);
   });
 
   // 5. Multi-Channel Notifications Check
