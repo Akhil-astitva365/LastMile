@@ -84,7 +84,7 @@ public class GeocodingService {
             return cache.get(normalized);
         }
 
-        // 1. Direct match with PAN-India locations
+        // 1. Direct match with PAN-India city dictionary
         for (Map.Entry<String, LocationCoordinates> entry : PAN_INDIA_LOCATIONS.entrySet()) {
             if (normalized.contains(entry.getKey())) {
                 logger.info("[GEOCODING PAN-INDIA] Matched '{}' to {} ({}, {})", address, entry.getValue().getPlaceName(), entry.getValue().getLatitude(), entry.getValue().getLongitude());
@@ -93,9 +93,9 @@ public class GeocodingService {
             }
         }
 
-        // 2. Try OpenStreetMap Nominatim live geocoding service for exact PAN-India addresses
+        // 2. Try OpenStreetMap Nominatim live geocoding service for exact real-world addresses
         try {
-            String url = "https://nominatim.openstreetmap.org/search?q=" + java.net.URLEncoder.encode(address + ", India", java.nio.charset.StandardCharsets.UTF_8) + "&format=json&countrycodes=in&limit=1";
+            String url = "https://nominatim.openstreetmap.org/search?q=" + java.net.URLEncoder.encode(address, java.nio.charset.StandardCharsets.UTF_8) + "&format=json&limit=1";
             HttpHeaders headers = new HttpHeaders();
             headers.set("User-Agent", "LastMileDeliveryTracker/1.0 (contact@deliverytracker.com)");
             headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -114,14 +114,32 @@ public class GeocodingService {
                 return coords;
             }
         } catch (Exception e) {
-            logger.warn("[GEOCODING NOMINATIM FALLBACK] Online geocoding API warning for '{}': {}", address, e.getMessage());
+            logger.warn("[GEOCODING NOMINATIM] Online geocoding API warning for '{}': {}", address, e.getMessage());
         }
 
-        // 3. Fallback based on pincode extraction or regional default
+        // 3. Deterministic Hash Location Generator for ANY random, custom, or fictional location not present on standard maps
+        LocationCoordinates customCoords = generateDeterministicCoordinates(address);
+        cache.put(normalized, customCoords);
+        return customCoords;
+    }
+
+    private LocationCoordinates generateDeterministicCoordinates(String address) {
+        int hash = address.toLowerCase().hashCode();
+        
+        // Generate realistic, distinct latitude between 8.0 N and 35.0 N
+        double lat = 8.0 + (Math.abs(hash % 270000) / 10000.0);
+        // Generate realistic, distinct longitude between 68.0 E and 96.0 E
+        double lon = 68.0 + (Math.abs((hash / 31) % 280000) / 10000.0);
+
         String pincode = extractPincode(address);
-        LocationCoordinates fallback = new LocationCoordinates(23.2599, 77.4126, "PAN-India Regional Hub (" + address + ")", pincode);
-        cache.put(normalized, fallback);
-        return fallback;
+        LocationCoordinates customLoc = new LocationCoordinates(
+                Math.round(lat * 10000.0) / 10000.0,
+                Math.round(lon * 10000.0) / 10000.0,
+                "Custom Location (" + address + ")",
+                pincode
+        );
+        logger.info("[GEOCODING CUSTOM LOCATION] Generated distinct coordinates for random/unknown address '{}' -> ({}, {})", address, customLoc.getLatitude(), customLoc.getLongitude());
+        return customLoc;
     }
 
     private String extractPincode(String text) {
