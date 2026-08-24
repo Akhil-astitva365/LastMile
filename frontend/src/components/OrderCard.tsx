@@ -56,7 +56,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         <div className="flex items-center justify-between pb-3 border-b border-neutral-800 gap-2">
           <div className="min-w-0 flex-1">
             <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 block">ORDER NUMBER</span>
-            <h4 className="text-base sm:text-lg font-bold text-white tracking-wide font-sreda truncate whitespace-nowrap">{order.orderNumber}</h4>
+            <h4 className="text-xs sm:text-sm font-bold text-white tracking-wider font-sreda whitespace-nowrap">{order.orderNumber}</h4>
           </div>
           <div className="shrink-0">
             <StatusBadge status={order.status} />

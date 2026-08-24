@@ -104,7 +104,7 @@ export const CustomerDashboard: React.FC = () => {
       {/* Main Grid: Left Orders (Max 6), Right Corner Map */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: Orders List & 6-Item Pagination */}
-        <div className="lg:col-span-7 xl:col-span-7 space-y-6">
+        <div className="lg:col-span-6 xl:col-span-6 space-y-6">
           {isLoading ? (
             <div className="ios-glass-panel p-12 text-center text-neutral-400 font-bold text-sm">
               Loading orders...
@@ -180,7 +180,7 @@ export const CustomerDashboard: React.FC = () => {
         </div>
 
         {/* Right Corner: Separate Large View Map */}
-        <div className="lg:col-span-5 xl:col-span-5 sticky top-24">
+        <div className="lg:col-span-6 xl:col-span-6 sticky top-24">
           <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-2 px-1">
               <div className="flex items-center gap-2">

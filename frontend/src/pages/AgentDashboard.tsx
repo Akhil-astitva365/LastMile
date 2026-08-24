@@ -131,8 +131,8 @@ export const AgentDashboard: React.FC = () => {
 
       {/* Main Grid: Left Orders (Max 6), Right Corner Large Map */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* Left Column: Assigned Delivery Cards & 6-Item Pagination */}
-        <div className="lg:col-span-7 space-y-4">
+        {/* Left Column: Assigned Delivery Queue */}
+        <div className="lg:col-span-6 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-sm text-white flex items-center gap-2">
               <Truck className="w-4 h-4 text-white" /> Assigned Orders Queue
@@ -261,7 +261,7 @@ export const AgentDashboard: React.FC = () => {
         </div>
 
         {/* Right Corner: Separate Large View Map */}
-        <div className="lg:col-span-5 sticky top-24">
+        <div className="lg:col-span-6 sticky top-24">
           <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-2 px-1">
               <div className="flex items-center gap-2">

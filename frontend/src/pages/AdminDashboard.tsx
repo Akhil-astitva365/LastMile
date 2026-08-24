@@ -133,7 +133,7 @@ export const AdminDashboard: React.FC = () => {
       {/* Main Content Grid: Left 6 Orders Per Page, Right Corner Map */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column: 6 Orders List & Controls */}
-        <div className="lg:col-span-7 space-y-4">
+        <div className="lg:col-span-6 space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="font-bold text-sm text-white flex items-center gap-2">
               <Package className="w-4 h-4 text-white" /> Orders Matrix
@@ -238,7 +238,7 @@ export const AdminDashboard: React.FC = () => {
         </div>
 
         {/* Right Corner: Separate Large View Map */}
-        <div className="lg:col-span-5 sticky top-24">
+        <div className="lg:col-span-6 sticky top-24">
           <div className="ios-glass-panel p-4 rounded-3xl bg-black/40 backdrop-blur-xl border border-neutral-800 shadow-2xl space-y-3">
             <div className="flex items-center justify-between border-b border-neutral-800 pb-2 px-1">
               <div className="flex items-center gap-2">
