@@ -126,6 +126,9 @@ export const AgentDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* mi UI Inspired Section Ticks Divider */}
+      <div className="ticks" />
+
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Assigned Jobs Queue */}

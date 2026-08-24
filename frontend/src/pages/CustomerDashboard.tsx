@@ -157,6 +157,9 @@ export const CustomerDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* mi UI Inspired Section Ticks Divider */}
+      <div className="ticks" />
+
       {/* Main Grid: Orders & Timeline */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Orders List */}

@@ -131,6 +131,9 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* mi UI Inspired Section Ticks Divider */}
+      <div className="ticks" />
+
       {/* Navigation Tabs */}
       <div className="flex items-center gap-2 border-b border-slate-800 pb-3 text-xs font-bold">
         <button

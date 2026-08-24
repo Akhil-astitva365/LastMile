@@ -2,36 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --mi-accent: #c084fc;
+  --mi-accent-bg: rgba(192, 132, 252, 0.15);
+  --mi-accent-border: rgba(192, 132, 252, 0.5);
+  --mi-cyan-accent: #38bdf8;
+  --mi-border: rgba(255, 255, 255, 0.08);
+}
+
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 min-h-screen overflow-x-hidden;
+    @apply bg-slate-950 text-slate-100 min-h-screen overflow-x-hidden antialiased;
   }
 }
 
-/* Glassmorphism custom utilities */
+/* mi UI Inspired Custom Glassmorphism & Ticks Utilities */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--mi-border);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .glass-card {
-  background: rgba(30, 41, 59, 0.5);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all 0.2s ease-in-out;
+  background: rgba(30, 41, 59, 0.55);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-card:hover {
-  border-color: rgba(56, 189, 248, 0.3);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  border-color: var(--mi-accent-border);
+  box-shadow: 0 12px 36px 0 rgba(192, 132, 252, 0.15);
+  transform: translateY(-2px);
 }
 
-/* Leaflet map dark mode overrides */
+/* mi UI Ticks Divider */
+.ticks {
+  position: relative;
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 1.5rem 0;
+}
+
+.ticks::before,
+.ticks::after {
+  content: '';
+  position: absolute;
+  top: -4.5px;
+  border: 5px solid transparent;
+}
+
+.ticks::before {
+  left: 0;
+  border-left-color: var(--mi-accent);
+}
+
+.ticks::after {
+  right: 0;
+  border-right-color: var(--mi-cyan-accent);
+}
+
+/* Leaflet map overrides */
 .leaflet-container {
   width: 100%;
   height: 100%;
-  border-radius: 0.75rem;
+  border-radius: 1rem;
   z-index: 10;
 }
