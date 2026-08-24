@@ -21,20 +21,15 @@
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 
-.font-impact, .font-royale, .font-cinzel {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif !important;
-}
-
-/* Monochromatic Black with Orange Finish Glassmorphism */
+/* Pure Monochromatic Black & White Glassmorphism */
 .ios-glass-panel {
   background: rgba(10, 10, 10, 0.95);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 102, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 
     inset 0 1px 1px 0 rgba(255, 255, 255, 0.1),
-    0 15px 40px -10px rgba(0, 0, 0, 0.9),
-    0 0 15px 0 rgba(255, 102, 0, 0.08);
+    0 15px 40px -10px rgba(0, 0, 0, 0.9);
 }
 
 .ios-glass-card {
@@ -48,45 +43,41 @@
 
 .ios-glass-card:hover {
   background: rgba(25, 25, 25, 0.95);
-  border-color: rgba(255, 102, 0, 0.5);
+  border-color: rgba(255, 255, 255, 0.3);
   transform: translateY(-2px);
   box-shadow: 
     0 12px 30px -6px rgba(0, 0, 0, 0.9),
-    0 0 20px 0 rgba(255, 102, 0, 0.2);
+    0 0 20px 0 rgba(255, 255, 255, 0.08);
 }
 
 .ios-input {
   background: #0a0a0a;
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #ffffff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   transition: all 0.2s ease;
 }
 
 .ios-input:focus {
-  border-color: #ff6600;
-  box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.25);
+  border-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.2);
 }
 
 .ios-button-primary {
-  background: linear-gradient(135deg, #ff6600 0%, #d94800 100%);
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  box-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.3),
-    0 8px 20px -4px rgba(255, 102, 0, 0.5);
+  box-shadow: 0 8px 20px -4px rgba(255, 255, 255, 0.2);
   transition: all 0.2s ease;
 }
 
 .ios-button-primary:hover {
-  filter: brightness(1.15);
+  background: #e5e5e5;
   transform: translateY(-1px);
-  box-shadow: 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.4),
-    0 12px 25px -4px rgba(255, 102, 0, 0.6);
+  box-shadow: 0 12px 25px -4px rgba(255, 255, 255, 0.3);
 }
 
 .ios-button-primary:active {
@@ -95,8 +86,8 @@
 
 .ios-button-emerald {
   background: #151515;
-  border: 1px solid #ff6600;
-  color: #ff6600;
+  border: 1px solid #ffffff;
+  color: #ffffff;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -104,8 +95,8 @@
 }
 
 .ios-button-emerald:hover {
-  background: #ff6600;
-  color: #ffffff;
+  background: #ffffff;
+  color: #000000;
 }
 
 /* Custom Scrollbar */
@@ -121,7 +112,7 @@
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff6600;
+  background: #ffffff;
 }
 
 /* Leaflet map frame */
@@ -129,6 +120,6 @@
   width: 100%;
   height: 100%;
   border-radius: 1rem;
-  border: 1px solid rgba(255, 102, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 10;
 }

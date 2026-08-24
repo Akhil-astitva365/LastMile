@@ -75,14 +75,14 @@ export const MapView: React.FC<MapViewProps> = ({
         {/* Pickup Marker */}
         <Marker position={[pickupLat, pickupLon]} icon={defaultIcon}>
           <Popup>
-            <div className="text-xs font-bold text-orange-600">📍 Pickup Location</div>
+            <div className="text-xs font-bold text-black">📍 Pickup Location</div>
           </Popup>
         </Marker>
 
         {/* Drop Marker */}
         <Marker position={[dropLat, dropLon]} icon={defaultIcon}>
           <Popup>
-            <div className="text-xs font-bold text-orange-600">🏁 Drop Location</div>
+            <div className="text-xs font-bold text-black">🏁 Drop Location</div>
           </Popup>
         </Marker>
 
@@ -90,12 +90,12 @@ export const MapView: React.FC<MapViewProps> = ({
         {agentLat && agentLon && (
           <Marker position={[agentLat, agentLon]} icon={defaultIcon}>
             <Popup>
-              <div className="text-xs font-bold text-orange-600">🚚 {agentName}</div>
+              <div className="text-xs font-bold text-black">🚚 {agentName}</div>
             </Popup>
           </Marker>
         )}
 
-        <Polyline positions={[[pickupLat, pickupLon], [dropLat, dropLon]]} color="#ff6600" weight={4} dashArray="6, 8" />
+        <Polyline positions={[[pickupLat, pickupLon], [dropLat, dropLon]]} color="#ffffff" weight={4} dashArray="6, 8" />
       </MapContainer>
     </div>
   );
