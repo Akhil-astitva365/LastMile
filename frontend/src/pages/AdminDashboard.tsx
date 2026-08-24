@@ -3,7 +3,8 @@ import { adminApi } from '../services/api';
 import { DeliveryAgent, Order, OrderStatus, RateCard, Zone } from '../types';
 import { StatusBadge } from '../components/StatusBadge';
 import { ManualAssignModal } from '../components/ManualAssignModal';
-import { ShieldCheck, Package, DollarSign, AlertTriangle, Users, Map, Settings, RefreshCw, UserCheck, Zap } from 'lucide-react';
+import { AIAgentModal } from '../components/AIAgentModal';
+import { ShieldCheck, Package, DollarSign, AlertTriangle, Users, Map, Settings, RefreshCw, UserCheck, Zap, Bot } from 'lucide-react';
 
 export const AdminDashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -11,6 +12,7 @@ export const AdminDashboard: React.FC = () => {
   const [zones, setZones] = useState<Zone[]>([]);
   const [rates, setRates] = useState<RateCard[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showAIModal, setShowAIModal] = useState<boolean>(false);
 
   // Filters state
   const [filterStatus, setFilterStatus] = useState<string>('');
@@ -85,12 +87,20 @@ export const AdminDashboard: React.FC = () => {
           </div>
         </div>
 
-        <button
-          onClick={fetchAdminData}
-          className="p-3.5 rounded-full bg-slate-900/80 border border-slate-800 text-slate-400 hover:text-amber-400 active:scale-95 transition-all flex items-center gap-2 text-xs font-black uppercase tracking-wider shadow-md"
-        >
-          <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> Refresh Telemetry
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => setShowAIModal(true)}
+            className="px-5 py-3.5 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2 shadow-lg shadow-white/10 active:scale-95"
+          >
+            <Bot className="w-4 h-4" /> 🤖 AI AGENT MODE
+          </button>
+          <button
+            onClick={fetchAdminData}
+            className="p-3.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white active:scale-95 transition-all flex items-center gap-2 text-xs font-bold shadow-md"
+          >
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> REFRESH TELEMETRY
+          </button>
+        </div>
       </div>
 
       {/* Metrics Row */}
@@ -385,6 +395,13 @@ export const AdminDashboard: React.FC = () => {
           onAssign={handleManualAssignSubmit}
         />
       )}
+
+      {/* AI Agent Mode Modal */}
+      <AIAgentModal
+        isOpen={showAIModal}
+        onClose={() => setShowAIModal(false)}
+        onOrderCreated={fetchAdminData}
+      />
     </div>
   );
 };

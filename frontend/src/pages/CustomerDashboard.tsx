@@ -7,13 +7,15 @@ import { TrackingTimeline } from '../components/TrackingTimeline';
 import { RescheduleModal } from '../components/RescheduleModal';
 import { MapView } from '../components/MapView';
 import { LocationAutocompleteInput } from '../components/LocationAutocompleteInput';
-import { Plus, Calculator, Package, RefreshCw, X, AlertCircle } from 'lucide-react';
+import { AIAgentModal } from '../components/AIAgentModal';
+import { Plus, Calculator, Package, RefreshCw, X, AlertCircle, Bot } from 'lucide-react';
 
 export const CustomerDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
+  const [showAIModal, setShowAIModal] = useState<boolean>(false);
 
   // Selected Order for tracking timeline view
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
@@ -146,6 +148,12 @@ export const CustomerDashboard: React.FC = () => {
         </div>
         <div className="flex items-center gap-3">
           <button
+            onClick={() => setShowAIModal(true)}
+            className="px-5 py-3.5 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2 shadow-lg shadow-white/10 active:scale-95"
+          >
+            <Bot className="w-4 h-4" /> 🤖 AI AGENT MODE
+          </button>
+          <button
             onClick={fetchOrders}
             className="p-3.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white hover:border-neutral-600 active:scale-95 transition-all shadow-md"
             title="Refresh Orders"
@@ -156,7 +164,7 @@ export const CustomerDashboard: React.FC = () => {
             onClick={() => navigate('/customer/create-order')}
             className="px-6 py-3.5 rounded-full ios-button-primary flex items-center gap-2 text-xs"
           >
-            <Plus className="w-4 h-4" /> CREATE ORDER WEBPAGE
+            <Plus className="w-4 h-4" /> CREATE ORDER
           </button>
         </div>
       </div>
@@ -434,6 +442,13 @@ export const CustomerDashboard: React.FC = () => {
           onSubmit={handleRescheduleSubmit}
         />
       )}
+
+      {/* AI Agent Mode Modal */}
+      <AIAgentModal
+        isOpen={showAIModal}
+        onClose={() => setShowAIModal(false)}
+        onOrderCreated={fetchOrders}
+      />
     </div>
   );
 };

@@ -1,12 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User, Role } from '../types';
+import { User } from '../types';
 import { authApi } from '../services/api';
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   login: (email: string, pass: string) => Promise<User>;
-  quickSwitch: (role: Role) => Promise<User>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -46,13 +45,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return loggedUser;
   };
 
-  const quickSwitch = async (role: Role): Promise<User> => {
-    let email = 'customer@demo.com';
-    if (role === 'ADMIN') email = 'admin@demo.com';
-    if (role === 'DELIVERY_AGENT') email = 'agent1@demo.com';
-    return await login(email, 'password');
-  };
-
   const logout = () => {
     setUser(null);
     setToken(null);
@@ -61,7 +53,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, quickSwitch, logout, isLoading }}>
+    <AuthContext.Provider value={{ user, token, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
