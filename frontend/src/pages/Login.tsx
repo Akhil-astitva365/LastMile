@@ -18,8 +18,11 @@ export const Login: React.FC = () => {
     setError('');
     setIsSubmitting(true);
     try {
-      await login(email, password);
-      navigate('/');
+      const userRes = await login(email, password);
+      const role = userRes?.role || 'CUSTOMER';
+      if (role === 'ADMIN') navigate('/admin');
+      else if (role === 'DELIVERY_AGENT') navigate('/agent');
+      else navigate('/customer');
     } catch (err: any) {
       if (!err.response) {
         setError('Cannot connect to backend API server (http://localhost:8080). Make sure backend is running.');
@@ -36,7 +39,9 @@ export const Login: React.FC = () => {
     setIsSubmitting(true);
     try {
       await quickSwitch(role);
-      navigate('/');
+      if (role === 'ADMIN') navigate('/admin');
+      else if (role === 'DELIVERY_AGENT') navigate('/agent');
+      else navigate('/customer');
     } catch (err: any) {
       if (!err.response) {
         setError('Cannot connect to backend API server (http://localhost:8080). Make sure backend is running.');

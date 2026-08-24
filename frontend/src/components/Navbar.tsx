@@ -1,9 +1,19 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Truck, LogOut, ShieldCheck, UserCheck, Sparkles } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { Truck, LogOut, Sparkles } from 'lucide-react';
+import { Role } from '../types';
 
 export const Navbar: React.FC = () => {
   const { user, quickSwitch, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleRoleSwitch = async (targetRole: Role) => {
+    await quickSwitch(targetRole);
+    if (targetRole === 'ADMIN') navigate('/admin');
+    else if (targetRole === 'DELIVERY_AGENT') navigate('/agent');
+    else navigate('/customer');
+  };
 
   return (
     <header className="sticky top-4 z-40 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
@@ -30,7 +40,7 @@ export const Navbar: React.FC = () => {
             <div className="hidden md:flex items-center gap-1 bg-slate-950/60 p-1 rounded-full border border-slate-800/80 text-xs">
               <span className="text-[10px] font-bold text-slate-400 px-3 uppercase tracking-wider">Role:</span>
               <button
-                onClick={() => quickSwitch('CUSTOMER')}
+                onClick={() => handleRoleSwitch('CUSTOMER')}
                 className={`px-3 py-1 rounded-full font-bold text-xs transition-all ${
                   user.role === 'CUSTOMER'
                     ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-slate-950 shadow-md shadow-cyan-500/25 scale-105'
@@ -40,7 +50,7 @@ export const Navbar: React.FC = () => {
                 Customer
               </button>
               <button
-                onClick={() => quickSwitch('DELIVERY_AGENT')}
+                onClick={() => handleRoleSwitch('DELIVERY_AGENT')}
                 className={`px-3 py-1 rounded-full font-bold text-xs transition-all ${
                   user.role === 'DELIVERY_AGENT'
                     ? 'bg-gradient-to-r from-purple-500 to-indigo-600 text-white shadow-md shadow-purple-500/25 scale-105'
@@ -50,7 +60,7 @@ export const Navbar: React.FC = () => {
                 Agent
               </button>
               <button
-                onClick={() => quickSwitch('ADMIN')}
+                onClick={() => handleRoleSwitch('ADMIN')}
                 className={`px-3 py-1 rounded-full font-bold text-xs transition-all ${
                   user.role === 'ADMIN'
                     ? 'bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 shadow-md shadow-amber-500/25 scale-105'

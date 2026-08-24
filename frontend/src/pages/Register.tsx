@@ -31,8 +31,11 @@ export const Register: React.FC = () => {
         role,
         companyName,
       });
-      await login(email, password);
-      navigate('/');
+      const userRes = await login(email, password);
+      const userRole = userRes?.role || role;
+      if (userRole === 'ADMIN') navigate('/admin');
+      else if (userRole === 'DELIVERY_AGENT') navigate('/agent');
+      else navigate('/customer');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Registration failed');
     } finally {

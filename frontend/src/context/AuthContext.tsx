@@ -5,8 +5,8 @@ import { authApi } from '../services/api';
 interface AuthContextType {
   user: User | null;
   token: string | null;
-  login: (email: string, pass: string) => Promise<void>;
-  quickSwitch: (role: Role) => Promise<void>;
+  login: (email: string, pass: string) => Promise<User>;
+  quickSwitch: (role: Role) => Promise<User>;
   logout: () => void;
   isLoading: boolean;
 }
@@ -31,7 +31,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setIsLoading(false);
   }, [token]);
 
-  const login = async (email: string, pass: string) => {
+  const login = async (email: string, pass: string): Promise<User> => {
     const res = await authApi.login(email.trim().toLowerCase(), pass);
     const loggedUser: User = {
       id: res.id,
@@ -43,13 +43,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setToken(res.token);
     localStorage.setItem('token', res.token);
     localStorage.setItem('user', JSON.stringify(loggedUser));
+    return loggedUser;
   };
 
-  const quickSwitch = async (role: Role) => {
+  const quickSwitch = async (role: Role): Promise<User> => {
     let email = 'customer@demo.com';
     if (role === 'ADMIN') email = 'admin@demo.com';
     if (role === 'DELIVERY_AGENT') email = 'agent1@demo.com';
-    await login(email, 'password');
+    return await login(email, 'password');
   };
 
   const logout = () => {
