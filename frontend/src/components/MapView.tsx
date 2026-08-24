@@ -1,5 +1,5 @@
-import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from 'react-leaflet';
+import React, { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
 
 // Leaflet default icon configuration
@@ -25,6 +25,18 @@ interface MapViewProps {
   agentName?: string;
 }
 
+function MapRecenter({ center, bounds }: { center: [number, number]; bounds: [number, number][] }) {
+  const map = useMap();
+  useEffect(() => {
+    if (bounds.length > 0) {
+      map.fitBounds(bounds, { padding: [30, 30] });
+    } else {
+      map.setView(center, 9);
+    }
+  }, [map, center, bounds]);
+  return null;
+}
+
 export const MapView: React.FC<MapViewProps> = ({
   pickupLat = 23.2599,
   pickupLon = 77.4126,
@@ -42,14 +54,19 @@ export const MapView: React.FC<MapViewProps> = ({
     [dropLat, dropLon],
   ];
 
+  if (agentLat && agentLon) {
+    positions.push([agentLat, agentLon]);
+  }
+
   return (
-    <div className="w-full h-64 rounded-xl overflow-hidden border border-slate-800 shadow-inner relative">
+    <div className="w-full h-64 rounded-xl overflow-hidden border border-slate-800 shadow-inner relative z-0">
       <MapContainer
         center={[centerLat, centerLon]}
         zoom={8}
         scrollWheelZoom={false}
         className="w-full h-full"
       >
+        <MapRecenter center={[centerLat, centerLon]} bounds={positions} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -78,7 +95,7 @@ export const MapView: React.FC<MapViewProps> = ({
           </Marker>
         )}
 
-        <Polyline positions={positions} color="#0284c7" weight={3} dashArray="5, 10" />
+        <Polyline positions={[[pickupLat, pickupLon], [dropLat, dropLon]]} color="#0284c7" weight={3} dashArray="5, 10" />
       </MapContainer>
     </div>
   );

@@ -60,7 +60,7 @@ export const AgentDashboard: React.FC = () => {
       handleSelectOrder(updated);
     } catch (e: any) {
       alert(e.response?.data?.message || 'Failed to update status');
-    } fontFinally: {
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -181,18 +181,20 @@ export const AgentDashboard: React.FC = () => {
                   {/* Status Action Buttons */}
                   <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-800">
                     <div className="flex items-center gap-2">
-                      {o.status === 'ASSIGNED' && (
+                      {o.status === 'ASSIGNED' || o.status === 'DISPATCHED' ? (
                         <button
                           onClick={() => handleUpdateStatus(o.id, 'PICKED_UP')}
-                          className="px-3.5 py-1.5 rounded-xl bg-purple-500 text-white font-bold text-xs hover:bg-purple-400"
+                          disabled={isSubmitting}
+                          className="px-3.5 py-1.5 rounded-xl bg-purple-500 text-white font-bold text-xs hover:bg-purple-400 disabled:opacity-50"
                         >
                           Mark Picked Up
                         </button>
-                      )}
+                      ) : null}
                       {o.status === 'PICKED_UP' && (
                         <button
                           onClick={() => handleUpdateStatus(o.id, 'IN_TRANSIT')}
-                          className="px-3.5 py-1.5 rounded-xl bg-cyan-500 text-slate-950 font-bold text-xs hover:bg-cyan-400"
+                          disabled={isSubmitting}
+                          className="px-3.5 py-1.5 rounded-xl bg-cyan-500 text-slate-950 font-bold text-xs hover:bg-cyan-400 disabled:opacity-50"
                         >
                           Mark In Transit
                         </button>
@@ -200,7 +202,8 @@ export const AgentDashboard: React.FC = () => {
                       {o.status === 'IN_TRANSIT' && (
                         <button
                           onClick={() => handleUpdateStatus(o.id, 'OUT_FOR_DELIVERY')}
-                          className="px-3.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400"
+                          disabled={isSubmitting}
+                          className="px-3.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400 disabled:opacity-50"
                         >
                           Out for Delivery
                         </button>
@@ -208,7 +211,8 @@ export const AgentDashboard: React.FC = () => {
                       {o.status === 'OUT_FOR_DELIVERY' && (
                         <button
                           onClick={() => handleUpdateStatus(o.id, 'DELIVERED')}
-                          className="px-3.5 py-1.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 flex items-center gap-1"
+                          disabled={isSubmitting}
+                          className="px-3.5 py-1.5 rounded-xl bg-emerald-500 text-slate-950 font-bold text-xs hover:bg-emerald-400 flex items-center gap-1 disabled:opacity-50"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" /> Mark Delivered
                         </button>

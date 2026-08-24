@@ -6,12 +6,15 @@ export type ZoneType = 'INTRA_ZONE' | 'INTER_ZONE';
 export type OrderStatus =
   | 'CREATED'
   | 'ASSIGNED'
+  | 'DISPATCHED'
   | 'PICKED_UP'
   | 'IN_TRANSIT'
   | 'OUT_FOR_DELIVERY'
   | 'DELIVERED'
   | 'FAILED'
-  | 'RESCHEDULED';
+  | 'FAILED_DELIVERY'
+  | 'RESCHEDULED'
+  | 'RETURNED';
 
 export type AvailabilityStatus = 'AVAILABLE' | 'BUSY' | 'OFFLINE' | 'ON_DELIVERY';
 
