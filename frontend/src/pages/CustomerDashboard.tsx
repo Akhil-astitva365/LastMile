@@ -72,8 +72,8 @@ export const CustomerDashboard: React.FC = () => {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 rounded-3xl bg-black/95 border border-neutral-800 shadow-2xl">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">CUSTOMER DASHBOARD</h2>
-          <p className="text-xs font-medium text-neutral-400 mt-1">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white font-playfair">CUSTOMER DASHBOARD</h2>
+          <p className="text-xs font-medium text-neutral-400 mt-1 font-helvetica">
             Displaying {orders.length} total orders ({ITEMS_PER_PAGE} per page)
           </p>
         </div>

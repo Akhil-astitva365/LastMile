@@ -88,23 +88,23 @@ export const AdminDashboard: React.FC = () => {
             <ShieldCheck className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">ADMIN DASHBOARD</h2>
-            <p className="text-xs text-neutral-400 font-medium">{orders.length} orders total ({ITEMS_PER_PAGE} per page)</p>
+            <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight font-playfair">ADMIN DASHBOARD</h2>
+            <p className="text-xs text-neutral-400 font-medium font-helvetica">Logistics fleet, rate cards, and order dispatch management</p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={() => setShowAIModal(true)}
-            className="px-5 py-3 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2 shadow-md active:scale-95"
+            className="px-5 py-3.5 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2 shadow-lg shadow-white/10 active:scale-95 font-helvetica"
           >
             <Bot className="w-4 h-4" /> 🤖 AI AGENT MODE
           </button>
           <button
             onClick={fetchAdminData}
-            className="p-3 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white active:scale-95 transition-all shadow-md"
+            className="p-3.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white active:scale-95 transition-all flex items-center gap-2 text-xs font-bold shadow-md"
           >
-            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> REFRESH
           </button>
         </div>
       </div>
@@ -113,19 +113,19 @@ export const AdminDashboard: React.FC = () => {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
         <div className="ios-glass-card p-4 rounded-3xl bg-black/90 border border-neutral-800 space-y-1">
           <span className="text-[10px] uppercase font-bold text-neutral-400">Total Revenue</span>
-          <div className="text-xl font-bold text-white">₹{totalRevenue.toLocaleString()}</div>
+          <div className="text-xl font-bold text-white font-sreda">₹{totalRevenue.toLocaleString()}</div>
         </div>
         <div className="ios-glass-card p-4 rounded-3xl bg-black/90 border border-neutral-800 space-y-1">
           <span className="text-[10px] uppercase font-bold text-neutral-400">Total Orders</span>
-          <div className="text-xl font-bold text-white">{orders.length}</div>
+          <div className="text-xl font-bold text-white font-sreda">{orders.length}</div>
         </div>
         <div className="ios-glass-card p-4 rounded-3xl bg-black/90 border border-neutral-800 space-y-1">
           <span className="text-[10px] uppercase font-bold text-neutral-400">Field Agents</span>
-          <div className="text-xl font-bold text-white">{agents.length}</div>
+          <div className="text-xl font-bold text-white font-sreda">{agents.length}</div>
         </div>
         <div className="ios-glass-card p-4 rounded-3xl bg-black/90 border border-neutral-800 space-y-1">
           <span className="text-[10px] uppercase font-bold text-neutral-400">Coverage Zones</span>
-          <div className="text-xl font-bold text-white">{zones.length}</div>
+          <div className="text-xl font-bold text-white font-sreda">{zones.length}</div>
         </div>
       </div>
 

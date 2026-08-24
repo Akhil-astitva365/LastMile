@@ -101,8 +101,8 @@ export const AgentDashboard: React.FC = () => {
             <Truck className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-white tracking-tight">AGENT PORTAL</h2>
-            <p className="text-xs text-neutral-400 font-medium">Assigned delivery queue ({assignedOrders.length} total, 6 per page)</p>
+            <h2 className="text-2xl font-bold text-white tracking-tight font-playfair">AGENT PORTAL</h2>
+            <p className="text-xs text-neutral-400 font-medium font-helvetica">Assigned delivery queue ({assignedOrders.length} total, 6 per page)</p>
           </div>
         </div>
 

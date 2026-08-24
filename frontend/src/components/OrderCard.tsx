@@ -56,7 +56,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         <div className="flex items-center justify-between pb-3 border-b border-neutral-800">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-400">ORDER NUMBER</span>
-            <h4 className="text-lg font-bold text-white tracking-wider">{order.orderNumber}</h4>
+            <h4 className="text-lg font-bold text-white tracking-wider font-sreda">{order.orderNumber}</h4>
           </div>
           <StatusBadge status={order.status} />
         </div>
@@ -95,7 +95,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
 
           <div className="bg-neutral-950 p-2 rounded-xl border border-neutral-800">
             <span className="text-[9px] font-bold uppercase text-neutral-400 block">FINAL PRICE</span>
-            <span className="font-bold text-white text-sm">₹{order.finalCharge}</span>
+            <span className="font-bold text-white text-sm font-sreda">₹{order.finalCharge}</span>
           </div>
 
           <div className="bg-neutral-950 p-2 rounded-xl border border-neutral-800 col-span-2 sm:col-span-1">
