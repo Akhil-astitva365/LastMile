@@ -396,12 +396,18 @@ public class OrderService {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
 
-        if (currentUser.getRole() != Role.ADMIN) {
-            CustomerProfile customer = customerRepository.findByUserId(currentUser.getId())
-                    .orElseThrow(() -> new RuntimeException("Customer profile not found"));
-            if (!order.getCustomer().getId().equals(customer.getId())) {
+        if (currentUser != null && currentUser.getRole() != Role.ADMIN) {
+            CustomerProfile customer = customerRepository.findByUser(currentUser)
+                    .orElseGet(() -> customerRepository.findByUserId(currentUser.getId()).orElse(null));
+            if (customer != null && order.getCustomer() != null && !order.getCustomer().getId().equals(customer.getId())) {
                 throw new RuntimeException("Unauthorized to delete this order");
             }
+        }
+
+        // Clean up linked agent assignments to prevent foreign key constraint violation
+        List<AgentAssignment> assignments = assignmentRepository.findByOrderId(orderId);
+        if (assignments != null && !assignments.isEmpty()) {
+            assignmentRepository.deleteAll(assignments);
         }
 
         orderRepository.delete(order);
