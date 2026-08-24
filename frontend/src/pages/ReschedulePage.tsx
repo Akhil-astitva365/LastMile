@@ -10,7 +10,7 @@ export const ReschedulePage: React.FC = () => {
 
   const [order, setOrder] = useState<Order | null>(null);
   const [newDate, setNewDate] = useState('');
-  const [reason, setReason] = useState('Customer Request');
+  const [reason, setReason] = useState('CUSTOMER_UNAVAILABLE');
   const [notes, setNotes] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -116,10 +116,12 @@ export const ReschedulePage: React.FC = () => {
               onChange={(e) => setReason(e.target.value)}
               className="w-full ios-input rounded-2xl px-4 py-3 text-white font-medium"
             >
-              <option value="Customer Unavailable">Customer Unavailable</option>
-              <option value="Incorrect Address">Incorrect Address</option>
-              <option value="Customer Requested Delay">Customer Requested Delay</option>
-              <option value="Weather / Regional Delay">Weather / Regional Delay</option>
+              <option value="CUSTOMER_UNAVAILABLE">Customer Unavailable / Requested Delay</option>
+              <option value="WRONG_ADDRESS">Incorrect / Wrong Address</option>
+              <option value="ADDRESS_NOT_FOUND">Address Not Found</option>
+              <option value="WEATHER_ISSUE">Weather / Regional Delay</option>
+              <option value="VEHICLE_ISSUE">Vehicle / Transport Issue</option>
+              <option value="OTHER">Other Reason</option>
             </select>
           </div>
 
