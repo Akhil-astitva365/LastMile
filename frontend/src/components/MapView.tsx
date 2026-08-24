@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Maximize2, Minimize2, X, MapPin } from 'lucide-react';
+import { Maximize2, Minimize2, MapPin } from 'lucide-react';
 
 // Leaflet default icon configuration
 const defaultIcon = L.icon({
@@ -79,14 +79,14 @@ export const MapView: React.FC<MapViewProps> = ({
       {/* Pickup Marker */}
       <Marker position={[pickupLat, pickupLon]} icon={defaultIcon}>
         <Popup>
-          <div className="text-xs font-bold text-black">📍 Pickup Location</div>
+          <div className="text-xs font-bold text-black font-helvetica">📍 Pickup Location</div>
         </Popup>
       </Marker>
 
       {/* Drop Marker */}
       <Marker position={[dropLat, dropLon]} icon={defaultIcon}>
         <Popup>
-          <div className="text-xs font-bold text-black">🏁 Drop Location</div>
+          <div className="text-xs font-bold text-black font-helvetica">🏁 Drop Location</div>
         </Popup>
       </Marker>
 
@@ -94,7 +94,7 @@ export const MapView: React.FC<MapViewProps> = ({
       {agentLat && agentLon && (
         <Marker position={[agentLat, agentLon]} icon={defaultIcon}>
           <Popup>
-            <div className="text-xs font-bold text-black">🚚 {agentName}</div>
+            <div className="text-xs font-bold text-black font-helvetica">🚚 {agentName}</div>
           </Popup>
         </Marker>
       )}
@@ -112,38 +112,39 @@ export const MapView: React.FC<MapViewProps> = ({
         {showExpandButton && (
           <button
             onClick={() => setIsExpanded(true)}
-            className="absolute top-3 right-3 z-[400] px-3 py-1.5 rounded-full bg-black/90 border border-white/30 text-white font-bold text-xs hover:bg-white hover:text-black transition-all flex items-center gap-1.5 shadow-xl active:scale-95"
-            title="Expand Map to Fullscreen"
+            className="absolute top-3 right-3 z-[400] px-3 py-1.5 rounded-full bg-black/90 border border-white/30 text-white font-bold text-xs hover:bg-white hover:text-black transition-all flex items-center gap-1.5 shadow-xl active:scale-95 font-helvetica"
+            title="Expand Map to 16:9 Widescreen View"
           >
             <Maximize2 className="w-3.5 h-3.5" />
-            <span>EXPAND MAP</span>
+            <span>EXPAND 16:9 MAP</span>
           </button>
         )}
       </div>
 
-      {/* Full-Screen Expanded Map Modal */}
+      {/* 16:9 Widescreen Expanded Map Modal */}
       {isExpanded && (
-        <div className="fixed inset-0 z-[1000] p-4 sm:p-6 bg-black/90 backdrop-blur-md flex flex-col space-y-4 animate-in fade-in duration-200">
-          <div className="flex items-center justify-between ios-glass-panel p-4 rounded-2xl bg-black border border-neutral-800">
+        <div className="fixed inset-0 z-[1000] p-4 sm:p-6 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center space-y-4 animate-in fade-in duration-200">
+          <div className="w-full max-w-6xl ios-glass-panel p-4 rounded-2xl bg-black border border-neutral-800 flex items-center justify-between shadow-2xl">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-full bg-white text-black">
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white tracking-wide font-playfair">FULL-SCREEN MAP VIEW</h3>
-                <p className="text-xs text-neutral-400 font-helvetica">Interactive PAN-India Leaflet Route Map</p>
+                <h3 className="text-lg font-bold text-white tracking-wide font-playfair">16:9 WIDESCREEN MAP VIEW</h3>
+                <p className="text-xs text-neutral-400 font-helvetica">Interactive PAN-India Telemetry Route Map</p>
               </div>
             </div>
 
             <button
               onClick={() => setIsExpanded(false)}
-              className="px-4 py-2 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-1.5 shadow-lg active:scale-95"
+              className="px-4 py-2 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-1.5 shadow-lg active:scale-95 font-helvetica"
             >
-              <Minimize2 className="w-4 h-4" /> EXIT FULLSCREEN
+              <Minimize2 className="w-4 h-4" /> CLOSE 16:9 VIEW
             </button>
           </div>
 
-          <div className="flex-1 w-full rounded-3xl overflow-hidden border border-white/20 shadow-2xl relative">
+          {/* 16:9 Widescreen Aspect-Ratio Container */}
+          <div className="w-full max-w-6xl aspect-video rounded-3xl overflow-hidden border border-white/30 shadow-2xl relative bg-neutral-950">
             {renderMapContainer("h-full")}
           </div>
         </div>
