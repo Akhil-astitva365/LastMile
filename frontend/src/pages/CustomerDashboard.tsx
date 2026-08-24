@@ -5,7 +5,7 @@ import { Order } from '../types';
 import { OrderCard } from '../components/OrderCard';
 import { MapView } from '../components/MapView';
 import { AIAgentModal } from '../components/AIAgentModal';
-import { Plus, RefreshCw, Bot, ChevronLeft, ChevronRight, MapPin, Maximize2, Minimize2 } from 'lucide-react';
+import { Plus, RefreshCw, Bot, Sparkles, ChevronLeft, ChevronRight, MapPin, Maximize2, Minimize2 } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -77,17 +77,18 @@ export const CustomerDashboard: React.FC = () => {
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setShowAIModal(true)}
-            className="px-5 py-3 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2 active:scale-95 shadow-md"
-          >
-            <Bot className="w-4 h-4" /> 🤖 AI AGENT MODE
-          </button>
-          <button
             onClick={fetchOrders}
             className="p-3 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white active:scale-95 transition-all shadow-md"
             title="Refresh Orders"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+          </button>
+          <button
+            onClick={() => setShowAIModal(true)}
+            className="p-3 rounded-full bg-neutral-900 border border-neutral-700 text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-md flex items-center justify-center"
+            title="AI Agent Mode"
+          >
+            <Sparkles className="w-4 h-4" />
           </button>
           <button
             onClick={() => navigate('/customer/create-order')}

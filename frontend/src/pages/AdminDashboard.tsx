@@ -5,7 +5,7 @@ import { StatusBadge } from '../components/StatusBadge';
 import { ManualAssignModal } from '../components/ManualAssignModal';
 import { AIAgentModal } from '../components/AIAgentModal';
 import { MapView } from '../components/MapView';
-import { ShieldCheck, Package, DollarSign, Users, RefreshCw, Bot, ChevronLeft, ChevronRight, MapPin, Maximize2, Minimize2 } from 'lucide-react';
+import { ShieldCheck, Package, DollarSign, Users, RefreshCw, Bot, Sparkles, ChevronLeft, ChevronRight, MapPin, Maximize2, Minimize2 } from 'lucide-react';
 
 const ITEMS_PER_PAGE = 6;
 
@@ -95,16 +95,18 @@ export const AdminDashboard: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <button
-            onClick={() => setShowAIModal(true)}
-            className="px-5 py-3.5 rounded-full bg-white text-black font-bold text-xs hover:bg-neutral-200 transition-all flex items-center gap-2 shadow-lg shadow-white/10 active:scale-95 font-helvetica"
-          >
-            <Bot className="w-4 h-4" /> 🤖 AI AGENT MODE
-          </button>
-          <button
             onClick={fetchAdminData}
             className="p-3.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-white active:scale-95 transition-all flex items-center gap-2 text-xs font-bold shadow-md"
+            title="Refresh Data"
           >
-            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} /> REFRESH
+            <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
+          </button>
+          <button
+            onClick={() => setShowAIModal(true)}
+            className="p-3.5 rounded-full bg-neutral-900 border border-neutral-700 text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-md flex items-center justify-center"
+            title="AI Agent Mode"
+          >
+            <Sparkles className="w-4 h-4" />
           </button>
         </div>
       </div>
