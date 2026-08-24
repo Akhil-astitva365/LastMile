@@ -65,6 +65,9 @@ export const orderApi = {
     const res = await api.post(`/orders/${id}/reschedule`, { newDeliveryDate, reason, notes });
     return res.data;
   },
+  deleteOrder: async (id: number): Promise<void> => {
+    await api.delete(`/orders/${id}`);
+  },
 };
 
 export const agentApi = {

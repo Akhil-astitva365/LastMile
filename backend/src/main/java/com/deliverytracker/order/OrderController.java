@@ -94,4 +94,13 @@ public class OrderController {
     ) {
         return ResponseEntity.ok(orderService.requestReschedule(id, request, currentUser));
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(
+            @PathVariable Long id,
+            @AuthenticationPrincipal User currentUser
+    ) {
+        orderService.deleteOrder(id, currentUser);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -2,12 +2,13 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Order } from '../types';
 import { StatusBadge } from './StatusBadge';
-import { MapPin, Navigation, Calendar, Scale, ArrowRight, RefreshCcw } from 'lucide-react';
+import { MapPin, Navigation, Calendar, Scale, ArrowRight, RefreshCcw, Trash2 } from 'lucide-react';
 
 interface OrderCardProps {
   order: Order;
   onTrack?: (order: Order) => void;
   onReschedule?: (order: Order) => void;
+  onDelete?: (order: Order) => void;
   onAction?: (order: Order) => void;
   actionLabel?: string;
 }
@@ -16,13 +17,15 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   order,
   onTrack,
   onReschedule,
+  onDelete,
   onAction,
   actionLabel,
 }) => {
   const navigate = useNavigate();
   const canReschedule = (order.status === 'FAILED' || order.status === 'FAILED_DELIVERY' || order.status === 'RESCHEDULED');
 
-  const handleTrackClick = () => {
+  const handleTrackClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (onTrack) {
       onTrack(order);
     } else {
@@ -30,11 +33,19 @@ export const OrderCard: React.FC<OrderCardProps> = ({
     }
   };
 
-  const handleRescheduleClick = () => {
+  const handleRescheduleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     if (onReschedule) {
       onReschedule(order);
     } else {
       navigate(`/customer/orders/${order.id}/reschedule`);
+    }
+  };
+
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (onDelete) {
+      onDelete(order);
     }
   };
 
@@ -114,9 +125,20 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           </button>
         )}
 
+        {/* Delete Order Button (Customer Portal Only) */}
+        {onDelete && (
+          <button
+            onClick={handleDeleteClick}
+            title="Delete Order"
+            className="p-2.5 rounded-full bg-neutral-900 border border-neutral-700 text-neutral-400 hover:text-white hover:border-white transition-all active:scale-95 flex items-center justify-center"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
+        )}
+
         {onAction && actionLabel && (
           <button
-            onClick={() => onAction(order)}
+            onClick={(e) => { e.stopPropagation(); onAction(order); }}
             className="px-4 py-2.5 rounded-full ios-button-emerald text-xs"
           >
             {actionLabel}

@@ -391,6 +391,22 @@ public class OrderService {
                 .build();
     }
 
+    @Transactional
+    public void deleteOrder(Long orderId, User currentUser) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with id: " + orderId));
+
+        if (currentUser.getRole() != Role.ADMIN) {
+            CustomerProfile customer = customerRepository.findByUserId(currentUser.getId())
+                    .orElseThrow(() -> new RuntimeException("Customer profile not found"));
+            if (!order.getCustomer().getId().equals(customer.getId())) {
+                throw new RuntimeException("Unauthorized to delete this order");
+            }
+        }
+
+        orderRepository.delete(order);
+    }
+
     private ActorRole mapRoleToActorRole(Role role) {
         return switch (role) {
             case CUSTOMER -> ActorRole.CUSTOMER;

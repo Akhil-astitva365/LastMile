@@ -51,6 +51,22 @@ export const CustomerDashboard: React.FC = () => {
     setSelectedOrderForMap(order);
   };
 
+  const handleDeleteOrder = async (orderToDelete: Order) => {
+    if (!window.confirm(`Are you sure you want to delete order #${orderToDelete.orderNumber}?`)) {
+      return;
+    }
+    try {
+      await orderApi.deleteOrder(orderToDelete.id);
+      const updatedList = orders.filter((o) => o.id !== orderToDelete.id);
+      setOrders(updatedList);
+      if (selectedOrderForMap?.id === orderToDelete.id) {
+        setSelectedOrderForMap(updatedList.length > 0 ? updatedList[0] : null);
+      }
+    } catch (e: any) {
+      alert(e.response?.data?.message || 'Failed to delete order.');
+    }
+  };
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Top Header */}
@@ -114,7 +130,7 @@ export const CustomerDashboard: React.FC = () => {
                       selectedOrderForMap?.id === order.id ? 'ring-2 ring-white rounded-3xl' : ''
                     }`}
                   >
-                    <OrderCard order={order} />
+                    <OrderCard order={order} onDelete={handleDeleteOrder} />
                   </div>
                 ))}
               </div>
