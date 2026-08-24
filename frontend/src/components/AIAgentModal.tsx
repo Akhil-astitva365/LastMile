@@ -90,17 +90,8 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
           </button>
         </div>
 
-        {/* Instant Automation Button & Template Triggers */}
+        {/* Template Triggers */}
         <div className="space-y-3">
-          <button
-            type="button"
-            onClick={handleRandomAutomate}
-            disabled={isProcessing}
-            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:shadow-purple-500/50 hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
-          >
-            <Zap className="w-4 h-4 fill-white animate-bounce" /> ONE-CLICK INSTANT AI AUTOMATION & DISPATCH
-          </button>
-
           <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">💡 TAP ANY TEMPLATE FOR INSTANT EXECUTION</div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <button
