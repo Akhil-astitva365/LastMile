@@ -1,33 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
-import { Minimize2, MapPin } from 'lucide-react';
-
-// Custom High-Visibility SVG DivIcons for Leaflet Markers
-const pickupIcon = L.divIcon({
-  className: 'custom-map-marker-pickup',
-  html: `<div style="background-color: #000000; color: #ffffff; border: 2px solid #ffffff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.8);">📍</div>`,
-  iconSize: [32, 32],
-  iconAnchor: [16, 16],
-  popupAnchor: [0, -16]
-});
-
-const dropIcon = L.divIcon({
-  className: 'custom-map-marker-drop',
-  html: `<div style="background-color: #ffffff; color: #000000; border: 2px solid #000000; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.8);">🏁</div>`,
-  iconSize: [32, 32],
-  iconAnchor: [16, 16],
-  popupAnchor: [0, -16]
-});
-
-const agentIcon = L.divIcon({
-  className: 'custom-map-marker-agent',
-  html: `<div style="background-color: #000000; color: #ffffff; border: 2px solid #ffffff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 4px 14px rgba(0,0,0,0.9);">🚚</div>`,
-  iconSize: [36, 36],
-  iconAnchor: [18, 18],
-  popupAnchor: [0, -18]
-});
+import React, { useState, useEffect, useRef } from 'react';
+import { Minimize2, MapPin, ExternalLink, Navigation } from 'lucide-react';
 
 interface MapViewProps {
   pickupLat?: number;
@@ -40,27 +12,6 @@ interface MapViewProps {
   showExpandButton?: boolean;
 }
 
-function MapRecenter({ center, bounds }: { center: [number, number]; bounds: [number, number][] }) {
-  const map = useMap();
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      map.invalidateSize();
-      if (bounds && bounds.length > 0) {
-        try {
-          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 12 });
-        } catch (e) {
-          map.setView(center, 9);
-        }
-      } else {
-        map.setView(center, 9);
-      }
-    }, 150);
-
-    return () => clearTimeout(timer);
-  }, [map, center, bounds]);
-  return null;
-}
-
 export const MapView: React.FC<MapViewProps> = ({
   pickupLat = 23.2599,
   pickupLon = 77.4126,
@@ -71,74 +22,166 @@ export const MapView: React.FC<MapViewProps> = ({
   agentName = 'Assigned Agent',
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isGoogleApiLoaded, setIsGoogleApiLoaded] = useState<boolean>(false);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const googleMapInstance = useRef<any>(null);
 
   const validPickupLat = Number.isFinite(pickupLat) ? pickupLat : 23.2599;
   const validPickupLon = Number.isFinite(pickupLon) ? pickupLon : 77.4126;
   const validDropLat = Number.isFinite(dropLat) ? dropLat : 22.7196;
   const validDropLon = Number.isFinite(dropLon) ? dropLon : 75.8577;
 
-  const centerLat = (validPickupLat + validDropLat) / 2;
-  const centerLon = (validPickupLon + validDropLon) / 2;
+  const apiKey = (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || '';
 
-  const positions: [number, number][] = [
-    [validPickupLat, validPickupLon],
-    [validDropLat, validDropLon],
-  ];
+  // Google Maps Directions Embed URL (Fallback & Primary Widescreen Embed)
+  const googleMapsEmbedUrl = `https://maps.google.com/maps?saddr=${validPickupLat},${validPickupLon}&daddr=${validDropLat},${validDropLon}&t=&z=9&ie=UTF8&iwloc=&output=embed`;
 
-  if (agentLat && agentLon && Number.isFinite(agentLat) && Number.isFinite(agentLon)) {
-    positions.push([agentLat, agentLon]);
-  }
+  // External Google Maps Route Navigation Link
+  const externalGoogleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${validPickupLat},${validPickupLon}&destination=${validDropLat},${validDropLon}&travelmode=driving`;
 
-  const renderMapContainer = (heightStyle: string = "100%") => (
-    <MapContainer
-      center={[centerLat, centerLon]}
-      zoom={8}
-      scrollWheelZoom={true}
-      style={{ height: heightStyle, width: '100%', minHeight: '300px' }}
-      className="w-full h-full rounded-2xl z-0"
-    >
-      <MapRecenter center={[centerLat, centerLon]} bounds={positions} />
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+  // Load Google Maps JS API if API key is provided
+  useEffect(() => {
+    if (!apiKey) return;
 
-      {/* Pickup Marker */}
-      <Marker position={[validPickupLat, validPickupLon]} icon={pickupIcon}>
-        <Popup>
-          <div className="text-xs font-bold text-black font-helvetica">📍 Pickup Location</div>
-        </Popup>
-      </Marker>
+    if (window.google && window.google.maps) {
+      setIsGoogleApiLoaded(true);
+      return;
+    }
 
-      {/* Drop Marker */}
-      <Marker position={[validDropLat, validDropLon]} icon={dropIcon}>
-        <Popup>
-          <div className="text-xs font-bold text-black font-helvetica">🏁 Drop Location</div>
-        </Popup>
-      </Marker>
+    const scriptId = 'google-maps-js-sdk';
+    if (document.getElementById(scriptId)) return;
 
-      {/* Agent Marker if available */}
-      {agentLat && agentLon && Number.isFinite(agentLat) && Number.isFinite(agentLon) && (
-        <Marker position={[agentLat, agentLon]} icon={agentIcon}>
-          <Popup>
-            <div className="text-xs font-bold text-black font-helvetica">🚚 {agentName}</div>
-          </Popup>
-        </Marker>
-      )}
+    const script = document.createElement('script');
+    script.id = scriptId;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places,geometry`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setIsGoogleApiLoaded(true);
+    document.head.appendChild(script);
+  }, [apiKey]);
 
-      <Polyline positions={[[validPickupLat, validPickupLon], [validDropLat, validDropLon]]} color="#000000" weight={6} opacity={0.9} />
-      <Polyline positions={[[validPickupLat, validPickupLon], [validDropLat, validDropLon]]} color="#ffffff" weight={3} dashArray="6, 8" />
-    </MapContainer>
-  );
+  // Render Google Maps Native JS API canvas when loaded
+  useEffect(() => {
+    if (!isGoogleApiLoaded || !mapRef.current || !window.google?.maps) return;
+
+    const pickupPos = { lat: validPickupLat, lng: validPickupLon };
+    const dropPos = { lat: validDropLat, lng: validDropLon };
+
+    const mapOptions = {
+      center: {
+        lat: (validPickupLat + validDropLat) / 2,
+        lng: (validPickupLon + validDropLon) / 2,
+      },
+      zoom: 8,
+      disableDefaultUI: false,
+      zoomControl: true,
+      styles: [
+        { elementType: 'geometry', stylers: [{ color: '#212121' }] },
+        { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+        { elementType: 'labels.text.fill', stylers: [{ color: '#757575' }] },
+        { elementType: 'labels.text.stroke', stylers: [{ color: '#212121' }] },
+        { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#757575' }] },
+        { featureType: 'road', elementType: 'geometry.fill', stylers: [{ color: '#2c2c2c' }] },
+        { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3c3c3c' }] },
+        { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#000000' }] },
+      ],
+    };
+
+    const map = new window.google.maps.Map(mapRef.current, mapOptions);
+    googleMapInstance.current = map;
+
+    // Pickup Marker
+    new window.google.maps.Marker({
+      position: pickupPos,
+      map,
+      title: '📍 Pickup Location',
+      label: { text: '📍', fontSize: '18px' },
+    });
+
+    // Drop Marker
+    new window.google.maps.Marker({
+      position: dropPos,
+      map,
+      title: '🏁 Drop Location',
+      label: { text: '🏁', fontSize: '18px' },
+    });
+
+    // Agent Marker if available
+    if (agentLat && agentLon && Number.isFinite(agentLat) && Number.isFinite(agentLon)) {
+      new window.google.maps.Marker({
+        position: { lat: agentLat, lng: agentLon },
+        map,
+        title: `🚚 ${agentName}`,
+        label: { text: '🚚', fontSize: '20px' },
+      });
+    }
+
+    // Polyline Route
+    const routePath = [pickupPos];
+    if (agentLat && agentLon && Number.isFinite(agentLat) && Number.isFinite(agentLon)) {
+      routePath.push({ lat: agentLat, lng: agentLon });
+    }
+    routePath.push(dropPos);
+
+    new window.google.maps.Polyline({
+      path: routePath,
+      geodesic: true,
+      strokeColor: '#ffffff',
+      strokeOpacity: 0.9,
+      strokeWeight: 4,
+      map,
+    });
+
+    // Fit Bounds
+    const bounds = new window.google.maps.LatLngBounds();
+    bounds.extend(pickupPos);
+    bounds.extend(dropPos);
+    if (agentLat && agentLon) {
+      bounds.extend({ lat: agentLat, lng: agentLon });
+    }
+    map.fitBounds(bounds, { top: 40, bottom: 40, left: 40, right: 40 });
+  }, [isGoogleApiLoaded, validPickupLat, validPickupLon, validDropLat, validDropLon, agentLat, agentLon, agentName]);
+
+  const renderGoogleMap = (heightStyle: string = "100%") => {
+    if (apiKey && isGoogleApiLoaded) {
+      return <div ref={mapRef} style={{ width: '100%', height: heightStyle, minHeight: '350px' }} className="rounded-2xl" />;
+    }
+
+    return (
+      <div className="relative w-full h-full min-h-[350px] flex-1">
+        <iframe
+          title="Google Maps Route View"
+          src={googleMapsEmbedUrl}
+          className="w-full h-full border-0 rounded-2xl filter saturate-[0.85] contrast-[1.05]"
+          style={{ minHeight: '350px', height: heightStyle }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+        <div className="absolute bottom-3 right-3 z-10">
+          <a
+            href={externalGoogleMapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-3 py-1.5 rounded-full bg-black/90 border border-neutral-700 text-white text-[11px] font-bold flex items-center gap-1.5 hover:bg-white hover:text-black transition-all shadow-lg active:scale-95 font-helvetica"
+          >
+            <Navigation className="w-3.5 h-3.5" />
+            <span>OPEN IN GOOGLE MAPS</span>
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
-      {/* Standard Map Frame */}
+      {/* Standard Google Maps Frame */}
       <div className="w-full h-full min-h-[350px] rounded-2xl overflow-hidden border border-neutral-800 shadow-xl relative z-0 group bg-neutral-900">
-        {renderMapContainer("100%")}
+        {renderGoogleMap("100%")}
       </div>
 
-      {/* 16:9 Widescreen Expanded Map Modal */}
+      {/* 16:9 Widescreen Expanded Google Map Modal */}
       {isExpanded && (
         <div className="fixed inset-0 z-[1000] p-4 sm:p-6 bg-black/95 backdrop-blur-md flex flex-col items-center justify-center space-y-4 animate-in fade-in duration-200">
           <div className="w-full max-w-6xl ios-glass-panel p-4 rounded-2xl bg-black border border-neutral-800 flex items-center justify-between shadow-2xl">
@@ -147,8 +190,8 @@ export const MapView: React.FC<MapViewProps> = ({
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white tracking-wide font-playfair">16:9 WIDESCREEN MAP VIEW</h3>
-                <p className="text-xs text-neutral-400 font-helvetica">Interactive PAN-India Telemetry Route Map</p>
+                <h3 className="text-lg font-bold text-white tracking-wide font-playfair">GOOGLE MAPS 16:9 VIEW</h3>
+                <p className="text-xs text-neutral-400 font-helvetica">Official Google Maps Telemetry & Route Direction Service</p>
               </div>
             </div>
 
@@ -160,12 +203,19 @@ export const MapView: React.FC<MapViewProps> = ({
             </button>
           </div>
 
-          {/* 16:9 Widescreen Aspect-Ratio Container */}
+          {/* 16:9 Widescreen Container */}
           <div className="w-full max-w-6xl aspect-video rounded-3xl overflow-hidden border border-white/30 shadow-2xl relative bg-neutral-950">
-            {renderMapContainer("100%")}
+            {renderGoogleMap("100%")}
           </div>
         </div>
       )}
     </>
   );
 };
+
+// Global TypeScript Window definition for Google Maps
+declare global {
+  interface Window {
+    google?: any;
+  }
+}
