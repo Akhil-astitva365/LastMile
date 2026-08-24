@@ -5,7 +5,7 @@ import { OrderCard } from '../components/OrderCard';
 import { TrackingTimeline } from '../components/TrackingTimeline';
 import { RescheduleModal } from '../components/RescheduleModal';
 import { MapView } from '../components/MapView';
-import { Plus, Calculator, Package, RefreshCw, X, ShieldCheck, MapPin } from 'lucide-react';
+import { Plus, Calculator, Package, RefreshCw, X, AlertCircle } from 'lucide-react';
 
 export const CustomerDashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -20,8 +20,8 @@ export const CustomerDashboard: React.FC = () => {
   const [rescheduleOrder, setRescheduleOrder] = useState<Order | null>(null);
 
   // Order Quote & Form state
-  const [pickupAddress, setPickupAddress] = useState<string>('Bhopal, MP 462001');
-  const [dropAddress, setDropAddress] = useState<string>('Vijay Nagar, Indore, MP 452001');
+  const [pickupAddress, setPickupAddress] = useState<string>('VIT Bhopal Campus, Sehore, Bhopal 462001');
+  const [dropAddress, setDropAddress] = useState<string>('Vijay Nagar, Indore 452001');
   const [length, setLength] = useState<number>(50);
   const [breadth, setBreadth] = useState<number>(40);
   const [height, setHeight] = useState<number>(30);
@@ -32,6 +32,7 @@ export const CustomerDashboard: React.FC = () => {
   const [quote, setQuote] = useState<OrderQuoteResponse | null>(null);
   const [isCalculatingQuote, setIsCalculatingQuote] = useState<boolean>(false);
   const [isCreatingOrder, setIsCreatingOrder] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const fetchOrders = async () => {
     setIsLoading(true);
@@ -41,8 +42,8 @@ export const CustomerDashboard: React.FC = () => {
       if (data.length > 0 && !selectedOrder) {
         handleTrackOrder(data[0]);
       }
-    } catch (e) {
-      console.error(e);
+    } catch (e: any) {
+      console.error('Error fetching orders:', e);
     } finally {
       setIsLoading(false);
     }
@@ -52,8 +53,9 @@ export const CustomerDashboard: React.FC = () => {
     fetchOrders();
   }, []);
 
-  const handleCalculateQuote = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleCalculateQuote = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    setErrorMessage(null);
     setIsCalculatingQuote(true);
     try {
       const q = await orderApi.getQuote({
@@ -67,15 +69,20 @@ export const CustomerDashboard: React.FC = () => {
         paymentType,
       });
       setQuote(q);
-    } catch (e) {
+      return q;
+    } catch (e: any) {
+      const msg = e.response?.data?.message || e.message || 'Failed to calculate shipping rate.';
+      setErrorMessage(msg);
       console.error(e);
+      return null;
     } finally {
       setIsCalculatingQuote(false);
     }
   };
 
-  const handleConfirmOrder = async () => {
-    if (!quote) return;
+  const handleCreateOrderSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage(null);
     setIsCreatingOrder(true);
     try {
       await orderApi.createOrder({
@@ -91,7 +98,9 @@ export const CustomerDashboard: React.FC = () => {
       setShowCreateModal(false);
       setQuote(null);
       await fetchOrders();
-    } catch (e) {
+    } catch (e: any) {
+      const msg = e.response?.data?.message || e.message || 'Failed to create order. Please verify backend connection.';
+      setErrorMessage(msg);
       console.error(e);
     } finally {
       setIsCreatingOrder(false);
@@ -136,7 +145,11 @@ export const CustomerDashboard: React.FC = () => {
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
           <button
-            onClick={() => setShowCreateModal(true)}
+            onClick={() => {
+              setErrorMessage(null);
+              setQuote(null);
+              setShowCreateModal(true);
+            }}
             className="px-5 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-slate-950 font-bold hover:brightness-110 transition-all flex items-center gap-2 shadow-lg shadow-cyan-500/20 text-xs uppercase tracking-wider"
           >
             <Plus className="w-4 h-4" /> Create Order
@@ -226,7 +239,7 @@ export const CustomerDashboard: React.FC = () => {
                 <h3 className="font-extrabold text-xl text-slate-100 flex items-center gap-2">
                   <Calculator className="w-6 h-6 text-cyan-400" /> Create Order & Rate Estimator
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-slate-400 mt-1">
                   Dynamic pricing engine automatically calculates volumetric & billable weight.
                 </p>
               </div>
@@ -235,7 +248,17 @@ export const CustomerDashboard: React.FC = () => {
               </button>
             </div>
 
-            <form onSubmit={handleCalculateQuote} className="space-y-6 text-xs">
+            {errorMessage && (
+              <div className="p-4 rounded-xl bg-red-950/60 border border-red-800/80 text-red-200 text-xs flex items-start gap-3">
+                <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                <div>
+                  <span className="font-bold block">Order Error</span>
+                  <span>{errorMessage}</span>
+                </div>
+              </div>
+            )}
+
+            <form onSubmit={handleCreateOrderSubmit} className="space-y-6 text-xs">
               {/* Addresses */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -338,14 +361,24 @@ export const CustomerDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end">
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={() => handleCalculateQuote()}
                   disabled={isCalculatingQuote}
-                  className="px-6 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-cyan-400 font-bold hover:bg-slate-700 transition-all flex items-center gap-2"
+                  className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-800 border border-slate-700 text-cyan-400 font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-2"
                 >
                   <Calculator className="w-4 h-4" />
-                  {isCalculatingQuote ? 'Calculating...' : 'Calculate Shipping Charge'}
+                  {isCalculatingQuote ? 'Calculating...' : 'Preview Rate Quote'}
+                </button>
+
+                <button
+                  type="submit"
+                  disabled={isCreatingOrder}
+                  className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-extrabold text-sm hover:brightness-110 transition-all shadow-lg shadow-emerald-500/20 uppercase tracking-wider flex items-center justify-center gap-2"
+                >
+                  {isCreatingOrder ? 'Creating Order...' : 'CONFIRM & PLACE ORDER'}
                 </button>
               </div>
             </form>
@@ -389,14 +422,6 @@ export const CustomerDashboard: React.FC = () => {
                     <span>₹{quote.finalCharge}</span>
                   </div>
                 </div>
-
-                <button
-                  onClick={handleConfirmOrder}
-                  disabled={isCreatingOrder}
-                  className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-extrabold text-sm hover:brightness-110 transition-all shadow-lg shadow-emerald-500/20 uppercase tracking-wider"
-                >
-                  {isCreatingOrder ? 'Confirming & Auto-Assigning...' : 'CONFIRM ORDER NOW'}
-                </button>
               </div>
             )}
           </div>

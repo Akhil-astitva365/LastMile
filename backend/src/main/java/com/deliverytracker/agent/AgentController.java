@@ -29,7 +29,12 @@ public class AgentController {
         return ResponseEntity.ok(orderService.getAgentAssignedOrders(currentUser));
     }
 
-    @PutMapping("/location")
+    @GetMapping("/orders")
+    public ResponseEntity<List<OrderResponse>> getAssignedOrdersAlias(@AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(orderService.getAgentAssignedOrders(currentUser));
+    }
+
+    @RequestMapping(value = "/location", method = {RequestMethod.PUT, RequestMethod.PATCH})
     public ResponseEntity<DeliveryAgent> updateLocation(
             @AuthenticationPrincipal User currentUser,
             @RequestBody LocationUpdateRequest request

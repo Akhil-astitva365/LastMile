@@ -8,6 +8,8 @@ import com.deliverytracker.pricing.PricingEngine;
 import com.deliverytracker.pricing.dto.OrderQuoteRequest;
 import com.deliverytracker.pricing.dto.OrderQuoteResponse;
 import com.deliverytracker.reschedule.dto.RescheduleRequestDTO;
+import com.deliverytracker.tracking.TrackingEvent;
+import com.deliverytracker.tracking.TrackingService;
 import com.deliverytracker.user.User;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +24,12 @@ public class OrderController {
 
     private final OrderService orderService;
     private final PricingEngine pricingEngine;
+    private final TrackingService trackingService;
 
-    public OrderController(OrderService orderService, PricingEngine pricingEngine) {
+    public OrderController(OrderService orderService, PricingEngine pricingEngine, TrackingService trackingService) {
         this.orderService = orderService;
         this.pricingEngine = pricingEngine;
+        this.trackingService = trackingService;
     }
 
     @PostMapping("/quote")
@@ -46,6 +50,11 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getUserOrders(currentUser));
     }
 
+    @GetMapping("/my")
+    public ResponseEntity<List<OrderResponse>> getMyOrdersAlias(@AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(orderService.getUserOrders(currentUser));
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponse> getOrderById(
             @PathVariable Long id,
@@ -54,7 +63,12 @@ public class OrderController {
         return ResponseEntity.ok(orderService.getOrderById(id, currentUser));
     }
 
-    @PutMapping("/{id}/status")
+    @GetMapping("/{id}/tracking")
+    public ResponseEntity<List<TrackingEvent>> getTrackingHistory(@PathVariable Long id) {
+        return ResponseEntity.ok(trackingService.getTrackingHistory(id));
+    }
+
+    @RequestMapping(value = "/{id}/status", method = {RequestMethod.PUT, RequestMethod.PATCH})
     public ResponseEntity<OrderResponse> updateStatus(
             @PathVariable Long id,
             @Valid @RequestBody UpdateOrderStatusRequest request,
