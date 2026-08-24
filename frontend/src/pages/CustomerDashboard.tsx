@@ -85,10 +85,10 @@ export const CustomerDashboard: React.FC = () => {
           </button>
           <button
             onClick={() => setShowAIModal(true)}
-            className="p-3 rounded-full bg-neutral-900 text-white hover:bg-white hover:text-black transition-all active:scale-95 shadow-md flex items-center justify-center"
+            className="p-3 rounded-full bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 text-white shadow-[0_0_15px_rgba(168,85,247,0.6)] hover:shadow-[0_0_25px_rgba(168,85,247,0.9)] hover:scale-110 active:scale-95 border border-purple-300/40 transition-all flex items-center justify-center"
             title="AI Agent Mode"
           >
-            <Sparkles className="w-4 h-4" />
+            <Sparkles className="w-4 h-4 text-white fill-white/20 animate-pulse" />
           </button>
           <button
             onClick={() => navigate('/customer/create-order')}
