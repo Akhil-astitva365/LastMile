@@ -130,17 +130,22 @@ export const CustomerDashboard: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Dashboard Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl bg-black/90 border border-orange-500/30">
         <div>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-100 tracking-tight">Customer Dashboard</h2>
-          <p className="text-xs text-slate-400 mt-1 font-medium">
+          <h2 className="text-3xl sm:text-4xl font-impact tracking-wider text-white flex items-center gap-3">
+            CUSTOMER DASHBOARD
+            <span className="font-royale text-2xl text-orange-400 font-normal capitalize tracking-normal">
+              Royale Logistics
+            </span>
+          </h2>
+          <p className="text-xs font-medium text-neutral-400 mt-1">
             Create shipping orders, preview volumetric rate quotes, and track real-time delivery events.
           </p>
         </div>
         <div className="flex items-center gap-3">
           <button
             onClick={fetchOrders}
-            className="p-3 rounded-2xl bg-slate-900/80 border border-slate-800 text-slate-300 hover:text-cyan-400 active:scale-95 transition-all shadow-md"
+            className="p-3.5 rounded-full bg-neutral-900 border border-neutral-800 text-neutral-300 hover:text-orange-500 hover:border-orange-500 active:scale-95 transition-all shadow-md"
             title="Refresh Orders"
           >
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
@@ -151,9 +156,9 @@ export const CustomerDashboard: React.FC = () => {
               setQuote(null);
               setShowCreateModal(true);
             }}
-            className="px-6 py-3.5 rounded-full ios-button-primary text-slate-950 font-black hover:brightness-110 active:scale-95 transition-all flex items-center gap-2 text-xs uppercase tracking-wider shadow-lg shadow-cyan-500/25"
+            className="px-6 py-3.5 rounded-full ios-button-primary flex items-center gap-2 text-xs"
           >
-            <Plus className="w-4 h-4" /> Create Order
+            <Plus className="w-4 h-4" /> CREATE ORDER
           </button>
         </div>
       </div>
