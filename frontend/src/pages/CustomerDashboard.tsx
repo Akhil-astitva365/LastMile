@@ -132,10 +132,10 @@ export const CustomerDashboard: React.FC = () => {
       {/* Dashboard Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 ios-glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl bg-black/90 border border-orange-500/30">
         <div>
-          <h2 className="text-3xl sm:text-4xl font-impact tracking-wider text-white flex items-center gap-3">
+          <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-3">
             CUSTOMER DASHBOARD
-            <span className="font-royale text-2xl text-orange-400 font-normal capitalize tracking-normal">
-              Royale Logistics
+            <span className="text-orange-400 font-medium text-base font-normal">
+              Logistics Portal
             </span>
           </h2>
           <p className="text-xs font-medium text-neutral-400 mt-1">

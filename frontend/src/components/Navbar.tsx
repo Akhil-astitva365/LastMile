@@ -24,10 +24,10 @@ export const Navbar: React.FC = () => {
             <Truck className="w-4 h-4" />
           </div>
           <div>
-            <h1 className="font-impact text-lg sm:text-xl tracking-wider text-white flex items-center gap-2">
+            <h1 className="font-['Helvetica_Neue',Helvetica,Arial,sans-serif] font-bold text-lg sm:text-xl tracking-wide text-white flex items-center gap-2">
               LAST-MILE
-              <span className="font-royale text-xl text-orange-400 capitalize normal-case tracking-normal pl-1">
-                Royale Edition
+              <span className="text-orange-400 font-medium text-sm tracking-wider pl-1">
+                DELIVERY TRACKER
               </span>
             </h1>
           </div>
