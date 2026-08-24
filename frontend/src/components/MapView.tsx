@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
-import { Maximize2, Minimize2, MapPin } from 'lucide-react';
+import { Minimize2, MapPin } from 'lucide-react';
 
 // Leaflet default icon configuration
 const defaultIcon = L.icon({
@@ -47,7 +47,6 @@ export const MapView: React.FC<MapViewProps> = ({
   agentLat,
   agentLon,
   agentName = 'Assigned Agent',
-  showExpandButton = true,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
@@ -108,17 +107,6 @@ export const MapView: React.FC<MapViewProps> = ({
       {/* Standard Map Frame */}
       <div className="w-full h-full min-h-[300px] rounded-2xl overflow-hidden border border-neutral-800 shadow-inner relative z-0 group">
         {renderMapContainer("h-full")}
-
-        {showExpandButton && (
-          <button
-            onClick={() => setIsExpanded(true)}
-            className="absolute top-3 right-3 z-[400] px-3 py-1.5 rounded-full bg-black/90 border border-white/30 text-white font-bold text-xs hover:bg-white hover:text-black transition-all flex items-center gap-1.5 shadow-xl active:scale-95 font-helvetica"
-            title="Expand Map to 16:9 Widescreen View"
-          >
-            <Maximize2 className="w-3.5 h-3.5" />
-            <span>EXPAND 16:9 MAP</span>
-          </button>
-        )}
       </div>
 
       {/* 16:9 Widescreen Expanded Map Modal */}
