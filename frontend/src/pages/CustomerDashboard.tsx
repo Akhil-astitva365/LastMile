@@ -69,7 +69,7 @@ export const CustomerDashboard: React.FC = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="w-full px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       {/* Top Header Console - Left Aligned */}
       <div className="flex flex-wrap items-center justify-start gap-4 sm:gap-6 ios-glass-panel p-5 sm:p-6 rounded-3xl bg-black/40 backdrop-blur-xl shadow-2xl">
         <div>
