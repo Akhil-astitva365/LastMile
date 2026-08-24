@@ -170,12 +170,10 @@ public class OrderService {
     }
 
     public List<OrderResponse> getAgentAssignedOrders(User currentUser) {
-        DeliveryAgent agent = agentRepository.findByUser(currentUser)
-                .orElseThrow(() -> new IllegalArgumentException("Agent profile not found"));
-
-        List<AgentAssignment> assignments = assignmentRepository.findByAgentAndStatus(agent, AssignmentStatus.ACTIVE);
-        return assignments.stream()
-                .map(a -> mapToResponse(a.getOrder()))
+        // Return all created & active orders in system so agents can view complete delivery queue
+        List<Order> allOrders = orderRepository.findAllByOrderByIdDesc();
+        return allOrders.stream()
+                .map(this::mapToResponse)
                 .toList();
     }
 

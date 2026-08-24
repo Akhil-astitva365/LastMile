@@ -181,6 +181,15 @@ export const AgentDashboard: React.FC = () => {
 
                     {/* Status Action Buttons */}
                     <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-neutral-800 text-xs">
+                      {o.status === 'CREATED' ? (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); handleUpdateStatus(o.id, 'DISPATCHED'); }}
+                          disabled={isSubmitting}
+                          className="px-3 py-1.5 rounded-full ios-button-primary text-black font-bold text-[11px]"
+                        >
+                          Accept & Dispatch
+                        </button>
+                      ) : null}
                       {o.status === 'ASSIGNED' || o.status === 'DISPATCHED' ? (
                         <button
                           onClick={(e) => { e.stopPropagation(); handleUpdateStatus(o.id, 'PICKED_UP'); }}
