@@ -179,9 +179,30 @@ export const MapView: React.FC<MapViewProps> = ({
     map.fitBounds(bounds, { top: 40, bottom: 40, left: 40, right: 40 });
   }, [isGoogleApiLoaded, validPickupLat, validPickupLon, validDropLat, validDropLon, agentLat, agentLon, agentName]);
 
+  const handleWheelZoom = (e: React.WheelEvent<HTMLDivElement>) => {
+    // Scroll up = Zoom in (+0.4), Scroll down = Zoom out (-0.4)
+    if (e.deltaY < 0) {
+      setZoomLevel((prev) => {
+        const next = Math.min(Math.round((prev + 0.4) * 10) / 10, 16);
+        if (googleMapInstance.current) {
+          googleMapInstance.current.setZoom(Math.round(next));
+        }
+        return next;
+      });
+    } else if (e.deltaY > 0) {
+      setZoomLevel((prev) => {
+        const next = Math.max(Math.round((prev - 0.4) * 10) / 10, 4);
+        if (googleMapInstance.current) {
+          googleMapInstance.current.setZoom(Math.round(next));
+        }
+        return next;
+      });
+    }
+  };
+
   const renderGoogleMap = (heightStyle: string = "100%") => {
     return (
-      <div className="relative w-full h-full min-h-[350px] flex-1">
+      <div onWheel={handleWheelZoom} className="relative w-full h-full min-h-[350px] flex-1">
         {/* Floating Glassy Zooming Controls */}
         <div className="absolute top-3 left-3 z-20 flex flex-col space-y-1.5 select-none">
           <button
