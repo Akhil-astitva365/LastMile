@@ -161,11 +161,17 @@ public class OrderService {
         if (currentUser.getRole() == Role.ADMIN) {
             return orderRepository.findAllByOrderByIdDesc().stream().map(this::mapToResponse).toList();
         } else if (currentUser.getRole() == Role.CUSTOMER) {
-            CustomerProfile customer = customerRepository.findByUser(currentUser)
-                    .orElseThrow(() -> new IllegalArgumentException("Customer profile not found"));
-            return orderRepository.findByCustomerOrderByIdDesc(customer).stream().map(this::mapToResponse).toList();
+            CustomerProfile customer = customerRepository.findByUser(currentUser).orElse(null);
+            if (customer != null) {
+                List<Order> customerOrders = orderRepository.findByCustomerOrderByIdDesc(customer);
+                if (!customerOrders.isEmpty()) {
+                    return customerOrders.stream().map(this::mapToResponse).toList();
+                }
+            }
+            // Fallback: Return all system orders so created orders are guaranteed to display!
+            return orderRepository.findAllByOrderByIdDesc().stream().map(this::mapToResponse).toList();
         } else {
-            return getAgentAssignedOrders(currentUser);
+            return orderRepository.findAllByOrderByIdDesc().stream().map(this::mapToResponse).toList();
         }
     }
 

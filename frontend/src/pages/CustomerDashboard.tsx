@@ -24,6 +24,7 @@ export const CustomerDashboard: React.FC = () => {
       const data = await orderApi.getMyOrders();
       const sortedData = [...data].sort((a, b) => b.id - a.id);
       setOrders(sortedData);
+      setCurrentPage(1);
       if (sortedData.length > 0) {
         setSelectedOrderForMap(sortedData[0]);
       }

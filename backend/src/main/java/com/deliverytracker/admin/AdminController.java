@@ -7,6 +7,7 @@ import com.deliverytracker.customer.CustomerRepository;
 import com.deliverytracker.order.Order;
 import com.deliverytracker.order.OrderRepository;
 import com.deliverytracker.order.OrderService;
+import com.deliverytracker.order.OrderStatus;
 import com.deliverytracker.order.dto.OrderResponse;
 import com.deliverytracker.order.dto.UpdateOrderStatusRequest;
 import com.deliverytracker.pricing.RateCard;
@@ -63,8 +64,20 @@ public class AdminController {
     }
 
     @GetMapping("/orders")
-    public ResponseEntity<List<OrderResponse>> getAllOrders() {
-        List<Order> orders = orderRepository.findAll();
+    public ResponseEntity<List<OrderResponse>> getAllOrders(
+            @RequestParam(required = false) OrderStatus status,
+            @RequestParam(required = false) String zoneCode
+    ) {
+        List<Order> orders = orderRepository.findAllByOrderByIdDesc();
+        if (status != null) {
+            orders = orders.stream().filter(o -> o.getStatus() == status).toList();
+        }
+        if (zoneCode != null && !zoneCode.isBlank()) {
+            orders = orders.stream().filter(o ->
+                    (o.getPickupZone() != null && zoneCode.equalsIgnoreCase(o.getPickupZone().getZoneCode())) ||
+                    (o.getDropZone() != null && zoneCode.equalsIgnoreCase(o.getDropZone().getZoneCode()))
+            ).toList();
+        }
         List<OrderResponse> responses = orders.stream()
                 .map(orderService::mapToResponse)
                 .toList();
