@@ -1,20 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet';
 import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import { Minimize2, MapPin } from 'lucide-react';
 
-// Leaflet default icon configuration
-const defaultIcon = L.icon({
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+// Custom High-Visibility SVG DivIcons for Leaflet Markers
+const pickupIcon = L.divIcon({
+  className: 'custom-map-marker-pickup',
+  html: `<div style="background-color: #000000; color: #ffffff; border: 2px solid #ffffff; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.8);">📍</div>`,
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16]
 });
 
-L.Marker.prototype.options.icon = defaultIcon;
+const dropIcon = L.divIcon({
+  className: 'custom-map-marker-drop',
+  html: `<div style="background-color: #ffffff; color: #000000; border: 2px solid #000000; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; box-shadow: 0 4px 12px rgba(0,0,0,0.8);">🏁</div>`,
+  iconSize: [32, 32],
+  iconAnchor: [16, 16],
+  popupAnchor: [0, -16]
+});
+
+const agentIcon = L.divIcon({
+  className: 'custom-map-marker-agent',
+  html: `<div style="background-color: #000000; color: #ffffff; border: 2px solid #ffffff; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 4px 14px rgba(0,0,0,0.9);">🚚</div>`,
+  iconSize: [36, 36],
+  iconAnchor: [18, 18],
+  popupAnchor: [0, -18]
+});
 
 interface MapViewProps {
   pickupLat?: number;
@@ -30,11 +43,20 @@ interface MapViewProps {
 function MapRecenter({ center, bounds }: { center: [number, number]; bounds: [number, number][] }) {
   const map = useMap();
   useEffect(() => {
-    if (bounds.length > 0) {
-      map.fitBounds(bounds, { padding: [40, 40] });
-    } else {
-      map.setView(center, 9);
-    }
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+      if (bounds && bounds.length > 0) {
+        try {
+          map.fitBounds(bounds, { padding: [50, 50], maxZoom: 12 });
+        } catch (e) {
+          map.setView(center, 9);
+        }
+      } else {
+        map.setView(center, 9);
+      }
+    }, 150);
+
+    return () => clearTimeout(timer);
   }, [map, center, bounds]);
   return null;
 }
@@ -50,24 +72,30 @@ export const MapView: React.FC<MapViewProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  const centerLat = (pickupLat + dropLat) / 2;
-  const centerLon = (pickupLon + dropLon) / 2;
+  const validPickupLat = Number.isFinite(pickupLat) ? pickupLat : 23.2599;
+  const validPickupLon = Number.isFinite(pickupLon) ? pickupLon : 77.4126;
+  const validDropLat = Number.isFinite(dropLat) ? dropLat : 22.7196;
+  const validDropLon = Number.isFinite(dropLon) ? dropLon : 75.8577;
+
+  const centerLat = (validPickupLat + validDropLat) / 2;
+  const centerLon = (validPickupLon + validDropLon) / 2;
 
   const positions: [number, number][] = [
-    [pickupLat, pickupLon],
-    [dropLat, dropLon],
+    [validPickupLat, validPickupLon],
+    [validDropLat, validDropLon],
   ];
 
-  if (agentLat && agentLon) {
+  if (agentLat && agentLon && Number.isFinite(agentLat) && Number.isFinite(agentLon)) {
     positions.push([agentLat, agentLon]);
   }
 
-  const renderMapContainer = (heightClass: string = "h-full") => (
+  const renderMapContainer = (heightStyle: string = "100%") => (
     <MapContainer
       center={[centerLat, centerLon]}
       zoom={8}
       scrollWheelZoom={true}
-      className={`w-full ${heightClass}`}
+      style={{ height: heightStyle, width: '100%', minHeight: '300px' }}
+      className="w-full h-full rounded-2xl z-0"
     >
       <MapRecenter center={[centerLat, centerLon]} bounds={positions} />
       <TileLayer
@@ -76,37 +104,38 @@ export const MapView: React.FC<MapViewProps> = ({
       />
 
       {/* Pickup Marker */}
-      <Marker position={[pickupLat, pickupLon]} icon={defaultIcon}>
+      <Marker position={[validPickupLat, validPickupLon]} icon={pickupIcon}>
         <Popup>
           <div className="text-xs font-bold text-black font-helvetica">📍 Pickup Location</div>
         </Popup>
       </Marker>
 
       {/* Drop Marker */}
-      <Marker position={[dropLat, dropLon]} icon={defaultIcon}>
+      <Marker position={[validDropLat, validDropLon]} icon={dropIcon}>
         <Popup>
           <div className="text-xs font-bold text-black font-helvetica">🏁 Drop Location</div>
         </Popup>
       </Marker>
 
       {/* Agent Marker if available */}
-      {agentLat && agentLon && (
-        <Marker position={[agentLat, agentLon]} icon={defaultIcon}>
+      {agentLat && agentLon && Number.isFinite(agentLat) && Number.isFinite(agentLon) && (
+        <Marker position={[agentLat, agentLon]} icon={agentIcon}>
           <Popup>
             <div className="text-xs font-bold text-black font-helvetica">🚚 {agentName}</div>
           </Popup>
         </Marker>
       )}
 
-      <Polyline positions={[[pickupLat, pickupLon], [dropLat, dropLon]]} color="#ffffff" weight={5} dashArray="6, 8" />
+      <Polyline positions={[[validPickupLat, validPickupLon], [validDropLat, validDropLon]]} color="#000000" weight={6} opacity={0.9} />
+      <Polyline positions={[[validPickupLat, validPickupLon], [validDropLat, validDropLon]]} color="#ffffff" weight={3} dashArray="6, 8" />
     </MapContainer>
   );
 
   return (
     <>
       {/* Standard Map Frame */}
-      <div className="w-full h-full min-h-[300px] rounded-2xl overflow-hidden border border-neutral-800 shadow-inner relative z-0 group">
-        {renderMapContainer("h-full")}
+      <div className="w-full h-full min-h-[350px] rounded-2xl overflow-hidden border border-neutral-800 shadow-xl relative z-0 group bg-neutral-900">
+        {renderMapContainer("100%")}
       </div>
 
       {/* 16:9 Widescreen Expanded Map Modal */}
@@ -133,7 +162,7 @@ export const MapView: React.FC<MapViewProps> = ({
 
           {/* 16:9 Widescreen Aspect-Ratio Container */}
           <div className="w-full max-w-6xl aspect-video rounded-3xl overflow-hidden border border-white/30 shadow-2xl relative bg-neutral-950">
-            {renderMapContainer("h-full")}
+            {renderMapContainer("100%")}
           </div>
         </div>
       )}
