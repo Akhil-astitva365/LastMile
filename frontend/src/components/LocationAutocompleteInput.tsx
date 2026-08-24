@@ -15,6 +15,7 @@ interface LocationAutocompleteInputProps {
   onChange: (val: string) => void;
   placeholder?: string;
   required?: boolean;
+  excludeValue?: string;
 }
 
 export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps> = ({
@@ -23,6 +24,7 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
   onChange,
   placeholder = 'Type city, landmark, or address...',
   required = false,
+  excludeValue = '',
 }) => {
   const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -50,8 +52,20 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
       setIsLoading(true);
       try {
         const res = await api.get<LocationSuggestion[]>(`/locations/suggestions?query=${encodeURIComponent(value)}`);
-        setSuggestions(res.data || []);
-        if (res.data && res.data.length > 0) {
+        const rawList = res.data || [];
+
+        // 1. Filter out exact match with excludeValue (Pickup location cannot be Drop location)
+        const filtered = excludeValue
+          ? rawList.filter(
+              (item) => item.placeName.trim().toLowerCase() !== excludeValue.trim().toLowerCase()
+            )
+          : rawList;
+
+        // 2. Sort suggestions in ASCENDING ORDER (A to Z) by placeName
+        const sorted = filtered.slice().sort((a, b) => a.placeName.localeCompare(b.placeName));
+
+        setSuggestions(sorted);
+        if (sorted.length > 0) {
           setIsOpen(true);
         }
       } catch (err) {
@@ -62,7 +76,7 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
     }, 150);
 
     return () => clearTimeout(timer);
-  }, [value]);
+  }, [value, excludeValue]);
 
   const handleSelect = (placeName: string) => {
     onChange(placeName);
@@ -95,7 +109,7 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
       {isOpen && suggestions.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-2 z-50 bg-black rounded-2xl p-2 shadow-2xl border border-neutral-700 max-h-60 overflow-y-auto">
           <div className="text-[10px] font-bold uppercase tracking-widest text-neutral-400 px-3 py-1.5 flex items-center gap-1">
-            <Search className="w-3 h-3 text-white" /> LOCATION SUGGESTIONS
+            <Search className="w-3 h-3 text-white" /> LOCATION SUGGESTIONS (A-Z)
           </div>
           <div className="space-y-1">
             {suggestions.map((item, idx) => (

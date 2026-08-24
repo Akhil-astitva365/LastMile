@@ -172,6 +172,9 @@ public class GeocodingService {
             suggestions.add(generateDeterministicCoordinates(query));
         }
 
+        // Sort suggestions in ASCENDING ORDER (A to Z) by placeName
+        suggestions.sort(java.util.Comparator.comparing(LocationCoordinates::getPlaceName, String.CASE_INSENSITIVE_ORDER));
+
         return suggestions;
     }
 

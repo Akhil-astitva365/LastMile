@@ -27,6 +27,10 @@ export const CreateOrderPage: React.FC = () => {
       setErrorMessage('Please fill in both pickup and drop addresses');
       return;
     }
+    if (pickupAddress.trim().toLowerCase() === dropAddress.trim().toLowerCase()) {
+      setErrorMessage('Pickup location and drop location cannot be the same!');
+      return;
+    }
     setErrorMessage(null);
     setIsCalculating(true);
     try {
@@ -50,6 +54,10 @@ export const CreateOrderPage: React.FC = () => {
 
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (pickupAddress.trim().toLowerCase() === dropAddress.trim().toLowerCase()) {
+      setErrorMessage('Pickup location and drop location cannot be the same!');
+      return;
+    }
     setErrorMessage(null);
     setIsSubmitting(true);
     try {
@@ -111,6 +119,7 @@ export const CreateOrderPage: React.FC = () => {
               label="Pickup Address"
               value={pickupAddress}
               onChange={(val) => setPickupAddress(val)}
+              excludeValue={dropAddress}
               placeholder="Enter pickup address or city..."
               required
             />
@@ -118,6 +127,7 @@ export const CreateOrderPage: React.FC = () => {
               label="Drop Address"
               value={dropAddress}
               onChange={(val) => setDropAddress(val)}
+              excludeValue={pickupAddress}
               placeholder="Enter drop address or city..."
               required
             />
