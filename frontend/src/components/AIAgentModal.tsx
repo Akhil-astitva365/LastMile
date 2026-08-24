@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bot, Send, Sparkles, X, CheckCircle2, UserCheck, Bell, DollarSign } from 'lucide-react';
+import { Bot, Send, Sparkles, X, CheckCircle2, UserCheck, Bell, DollarSign, Zap } from 'lucide-react';
 import api from '../services/api';
 
 interface AIAgentResponse {
@@ -27,19 +27,14 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
 
   if (!isOpen) return null;
 
-  const handleSamplePrompt = (sample: string) => {
-    setPrompt(sample);
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!prompt.trim()) return;
+  const handleExecute = async (promptText: string) => {
+    if (!promptText.trim()) return;
     setIsProcessing(true);
     setErrorMessage(null);
     setResult(null);
 
     try {
-      const res = await api.post<AIAgentResponse>('/ai/create-order', { prompt });
+      const res = await api.post<AIAgentResponse>('/ai/create-order', { prompt: promptText });
       setResult(res.data);
       if (onOrderCreated) {
         onOrderCreated();
@@ -49,6 +44,29 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
     } finally {
       setIsProcessing(false);
     }
+  };
+
+  const handleSamplePromptClick = (sample: string) => {
+    setPrompt(sample);
+    handleExecute(sample);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleExecute(prompt);
+  };
+
+  const handleRandomAutomate = () => {
+    const randomSamples = [
+      "Book an urgent 8kg package 50x40x30cm from Bhopal 462001 to Indore 452001 COD",
+      "Ship a 5kg parcel from Connaught Place Delhi 110001 to Bandra West Mumbai 400050 Prepaid",
+      "Create a 12kg B2B enterprise shipment from Bengaluru 560001 to Chennai 600001",
+      "Express delivery 3kg parcel 30x20x15cm from VIT Bhopal Campus to MP Nagar Bhopal 462011",
+      "Automated logistics dispatch 10kg shipment from Ahmedabad 380001 to Pune 411001 COD"
+    ];
+    const picked = randomSamples[Math.floor(Math.random() * randomSamples.length)];
+    setPrompt(picked);
+    handleExecute(picked);
   };
 
   return (
@@ -72,28 +90,40 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
           </button>
         </div>
 
-        {/* Quick Sample Prompts */}
-        <div className="space-y-2">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">💡 SAMPLE AI PROMPT TEMPLATES</div>
+        {/* Instant Automation Button & Template Triggers */}
+        <div className="space-y-3">
+          <button
+            type="button"
+            onClick={handleRandomAutomate}
+            disabled={isProcessing}
+            className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg hover:shadow-purple-500/50 hover:scale-[1.01] active:scale-95 transition-all disabled:opacity-50"
+          >
+            <Zap className="w-4 h-4 fill-white animate-bounce" /> ONE-CLICK INSTANT AI AUTOMATION & DISPATCH
+          </button>
+
+          <div className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">💡 TAP ANY TEMPLATE FOR INSTANT EXECUTION</div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <button
               type="button"
-              onClick={() => handleSamplePrompt("Book an urgent 8kg package 50x40x30cm from Bhopal 462001 to Indore 452001 COD")}
-              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all"
+              disabled={isProcessing}
+              onClick={() => handleSamplePromptClick("Book an urgent 8kg package 50x40x30cm from Bhopal 462001 to Indore 452001 COD")}
+              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all border-none disabled:opacity-50"
             >
               🚚 Bhopal ➔ Indore (8kg COD)
             </button>
             <button
               type="button"
-              onClick={() => handleSamplePrompt("Ship a 5kg parcel from Connaught Place Delhi 110001 to Bandra West Mumbai 400050 Prepaid")}
-              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all"
+              disabled={isProcessing}
+              onClick={() => handleSamplePromptClick("Ship a 5kg parcel from Connaught Place Delhi 110001 to Bandra West Mumbai 400050 Prepaid")}
+              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all border-none disabled:opacity-50"
             >
               ✈️ Delhi ➔ Mumbai (5kg Prepaid)
             </button>
             <button
               type="button"
-              onClick={() => handleSamplePrompt("Create a 12kg B2B enterprise shipment from Bengaluru 560001 to Chennai 600001")}
-              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all"
+              disabled={isProcessing}
+              onClick={() => handleSamplePromptClick("Create a 12kg B2B enterprise shipment from Bengaluru 560001 to Chennai 600001")}
+              className="p-2.5 rounded-2xl bg-neutral-950/80 text-left text-[11px] text-neutral-300 hover:text-white hover:bg-neutral-900 transition-all border-none disabled:opacity-50"
             >
               🏢 B2B Bengaluru ➔ Chennai
             </button>
@@ -107,7 +137,7 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               rows={3}
-              placeholder="Describe your shipment in natural language (e.g. Ship an 8kg parcel length 50cm, breadth 40cm from Delhi to Mumbai COD)..."
+              placeholder="Or type custom prompt: (e.g. Ship an 8kg parcel length 50cm, breadth 40cm from Delhi to Mumbai COD)..."
               className="w-full ios-input rounded-2xl p-4 text-xs font-medium text-white placeholder:text-neutral-600 focus:outline-none"
               required
             />
@@ -141,7 +171,7 @@ export const AIAgentModal: React.FC<AIAgentModalProps> = ({ isOpen, onClose, onO
           <div className="p-5 rounded-2xl bg-neutral-950/90 space-y-4 animate-in fade-in duration-300">
             <div className="flex items-center justify-between border-b border-neutral-800/40 pb-3">
               <span className="text-xs font-bold text-white flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-white" /> AI ORDER CREATED & DISPATCHED
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" /> AI ORDER CREATED & DISPATCHED
               </span>
               <span className="text-xs font-bold text-white">#{result.generatedOrderNumber}</span>
             </div>
