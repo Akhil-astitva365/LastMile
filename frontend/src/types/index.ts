@@ -73,9 +73,13 @@ export interface Order {
   customerEmail: string;
   customerPhone?: string;
   pickupAddress: string;
+  pickupLatitude?: number;
+  pickupLongitude?: number;
   pickupZoneCode?: string;
   pickupZoneName?: string;
   dropAddress: string;
+  dropLatitude?: number;
+  dropLongitude?: number;
   dropZoneCode?: string;
   dropZoneName?: string;
   zoneType: ZoneType;

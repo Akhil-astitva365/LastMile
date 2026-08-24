@@ -243,7 +243,15 @@ export const AgentDashboard: React.FC = () => {
                 <h3 className="font-extrabold text-lg text-slate-100">Order #{selectedOrder.orderNumber}</h3>
               </div>
 
-              <MapView agentLat={currentLat} agentLon={currentLon} agentName="You (Agent)" />
+              <MapView
+                pickupLat={selectedOrder.pickupLatitude || 23.2599}
+                pickupLon={selectedOrder.pickupLongitude || 77.4126}
+                dropLat={selectedOrder.dropLatitude || 22.7196}
+                dropLon={selectedOrder.dropLongitude || 75.8577}
+                agentLat={currentLat}
+                agentLon={currentLon}
+                agentName="You (Agent)"
+              />
 
               <div>
                 <h4 className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">Tracking History</h4>

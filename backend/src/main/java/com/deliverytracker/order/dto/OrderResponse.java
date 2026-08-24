@@ -19,10 +19,14 @@ public class OrderResponse {
     private String customerPhone;
 
     private String pickupAddress;
+    private Double pickupLatitude;
+    private Double pickupLongitude;
     private String pickupZoneCode;
     private String pickupZoneName;
 
     private String dropAddress;
+    private Double dropLatitude;
+    private Double dropLongitude;
     private String dropZoneCode;
     private String dropZoneName;
 
@@ -53,7 +57,7 @@ public class OrderResponse {
 
     public OrderResponse() {}
 
-    public OrderResponse(Long id, String orderNumber, Long customerId, String customerName, String customerEmail, String customerPhone, String pickupAddress, String pickupZoneCode, String pickupZoneName, String dropAddress, String dropZoneCode, String dropZoneName, ZoneType zoneType, OrderType orderType, PaymentType paymentType, Double length, Double breadth, Double height, Double actualWeight, Double volumetricWeight, Double billableWeight, BigDecimal baseCharge, BigDecimal codSurcharge, BigDecimal finalCharge, OrderStatus status, LocalDate deliveryDate, Long assignedAgentId, String assignedAgentName, String assignedAgentPhone, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderResponse(Long id, String orderNumber, Long customerId, String customerName, String customerEmail, String customerPhone, String pickupAddress, Double pickupLatitude, Double pickupLongitude, String pickupZoneCode, String pickupZoneName, String dropAddress, Double dropLatitude, Double dropLongitude, String dropZoneCode, String dropZoneName, ZoneType zoneType, OrderType orderType, PaymentType paymentType, Double length, Double breadth, Double height, Double actualWeight, Double volumetricWeight, Double billableWeight, BigDecimal baseCharge, BigDecimal codSurcharge, BigDecimal finalCharge, OrderStatus status, LocalDate deliveryDate, Long assignedAgentId, String assignedAgentName, String assignedAgentPhone, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderNumber = orderNumber;
         this.customerId = customerId;
@@ -61,9 +65,13 @@ public class OrderResponse {
         this.customerEmail = customerEmail;
         this.customerPhone = customerPhone;
         this.pickupAddress = pickupAddress;
+        this.pickupLatitude = pickupLatitude;
+        this.pickupLongitude = pickupLongitude;
         this.pickupZoneCode = pickupZoneCode;
         this.pickupZoneName = pickupZoneName;
         this.dropAddress = dropAddress;
+        this.dropLatitude = dropLatitude;
+        this.dropLongitude = dropLongitude;
         this.dropZoneCode = dropZoneCode;
         this.dropZoneName = dropZoneName;
         this.zoneType = zoneType;
@@ -108,6 +116,12 @@ public class OrderResponse {
     public String getPickupAddress() { return pickupAddress; }
     public void setPickupAddress(String pickupAddress) { this.pickupAddress = pickupAddress; }
 
+    public Double getPickupLatitude() { return pickupLatitude; }
+    public void setPickupLatitude(Double pickupLatitude) { this.pickupLatitude = pickupLatitude; }
+
+    public Double getPickupLongitude() { return pickupLongitude; }
+    public void setPickupLongitude(Double pickupLongitude) { this.pickupLongitude = pickupLongitude; }
+
     public String getPickupZoneCode() { return pickupZoneCode; }
     public void setPickupZoneCode(String pickupZoneCode) { this.pickupZoneCode = pickupZoneCode; }
 
@@ -116,6 +130,12 @@ public class OrderResponse {
 
     public String getDropAddress() { return dropAddress; }
     public void setDropAddress(String dropAddress) { this.dropAddress = dropAddress; }
+
+    public Double getDropLatitude() { return dropLatitude; }
+    public void setDropLatitude(Double dropLatitude) { this.dropLatitude = dropLatitude; }
+
+    public Double getDropLongitude() { return dropLongitude; }
+    public void setDropLongitude(Double dropLongitude) { this.dropLongitude = dropLongitude; }
 
     public String getDropZoneCode() { return dropZoneCode; }
     public void setDropZoneCode(String dropZoneCode) { this.dropZoneCode = dropZoneCode; }
@@ -190,9 +210,13 @@ public class OrderResponse {
         private String customerEmail;
         private String customerPhone;
         private String pickupAddress;
+        private Double pickupLatitude;
+        private Double pickupLongitude;
         private String pickupZoneCode;
         private String pickupZoneName;
         private String dropAddress;
+        private Double dropLatitude;
+        private Double dropLongitude;
         private String dropZoneCode;
         private String dropZoneName;
         private ZoneType zoneType;
@@ -222,9 +246,13 @@ public class OrderResponse {
         public OrderResponseBuilder customerEmail(String customerEmail) { this.customerEmail = customerEmail; return this; }
         public OrderResponseBuilder customerPhone(String customerPhone) { this.customerPhone = customerPhone; return this; }
         public OrderResponseBuilder pickupAddress(String pickupAddress) { this.pickupAddress = pickupAddress; return this; }
+        public OrderResponseBuilder pickupLatitude(Double pickupLatitude) { this.pickupLatitude = pickupLatitude; return this; }
+        public OrderResponseBuilder pickupLongitude(Double pickupLongitude) { this.pickupLongitude = pickupLongitude; return this; }
         public OrderResponseBuilder pickupZoneCode(String pickupZoneCode) { this.pickupZoneCode = pickupZoneCode; return this; }
         public OrderResponseBuilder pickupZoneName(String pickupZoneName) { this.pickupZoneName = pickupZoneName; return this; }
         public OrderResponseBuilder dropAddress(String dropAddress) { this.dropAddress = dropAddress; return this; }
+        public OrderResponseBuilder dropLatitude(Double dropLatitude) { this.dropLatitude = dropLatitude; return this; }
+        public OrderResponseBuilder dropLongitude(Double dropLongitude) { this.dropLongitude = dropLongitude; return this; }
         public OrderResponseBuilder dropZoneCode(String dropZoneCode) { this.dropZoneCode = dropZoneCode; return this; }
         public OrderResponseBuilder dropZoneName(String dropZoneName) { this.dropZoneName = dropZoneName; return this; }
         public OrderResponseBuilder zoneType(ZoneType zoneType) { this.zoneType = zoneType; return this; }
@@ -248,7 +276,7 @@ public class OrderResponse {
         public OrderResponseBuilder updatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; return this; }
 
         public OrderResponse build() {
-            return new OrderResponse(id, orderNumber, customerId, customerName, customerEmail, customerPhone, pickupAddress, pickupZoneCode, pickupZoneName, dropAddress, dropZoneCode, dropZoneName, zoneType, orderType, paymentType, length, breadth, height, actualWeight, volumetricWeight, billableWeight, baseCharge, codSurcharge, finalCharge, status, deliveryDate, assignedAgentId, assignedAgentName, assignedAgentPhone, createdAt, updatedAt);
+            return new OrderResponse(id, orderNumber, customerId, customerName, customerEmail, customerPhone, pickupAddress, pickupLatitude, pickupLongitude, pickupZoneCode, pickupZoneName, dropAddress, dropLatitude, dropLongitude, dropZoneCode, dropZoneName, zoneType, orderType, paymentType, length, breadth, height, actualWeight, volumetricWeight, billableWeight, baseCharge, codSurcharge, finalCharge, status, deliveryDate, assignedAgentId, assignedAgentName, assignedAgentPhone, createdAt, updatedAt);
         }
     }
 }

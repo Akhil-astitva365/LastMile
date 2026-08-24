@@ -207,10 +207,10 @@ export const CustomerDashboard: React.FC = () => {
 
               {/* Map */}
               <MapView
-                pickupLat={23.2599}
-                pickupLon={77.4126}
-                dropLat={22.7196}
-                dropLon={75.8577}
+                pickupLat={selectedOrder.pickupLatitude || 23.2599}
+                pickupLon={selectedOrder.pickupLongitude || 77.4126}
+                dropLat={selectedOrder.dropLatitude || 22.7196}
+                dropLon={selectedOrder.dropLongitude || 75.8577}
                 agentName={selectedOrder.assignedAgentName}
               />
 

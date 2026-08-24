@@ -27,6 +27,8 @@ import com.deliverytracker.tracking.TrackingService;
 import com.deliverytracker.user.Role;
 import com.deliverytracker.user.User;
 import com.deliverytracker.user.UserRepository;
+import com.deliverytracker.zone.GeocodingService;
+import com.deliverytracker.zone.LocationCoordinates;
 import com.deliverytracker.zone.Zone;
 import com.deliverytracker.zone.ZoneDetectionService;
 import org.springframework.stereotype.Service;
@@ -45,12 +47,13 @@ public class OrderService {
     private final RescheduleRepository rescheduleRepository;
     private final UserRepository userRepository;
     private final ZoneDetectionService zoneDetectionService;
+    private final GeocodingService geocodingService;
     private final PricingEngine pricingEngine;
     private final AssignmentService assignmentService;
     private final TrackingService trackingService;
     private final NotificationService notificationService;
 
-    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository, AgentRepository agentRepository, AssignmentRepository assignmentRepository, RescheduleRepository rescheduleRepository, UserRepository userRepository, ZoneDetectionService zoneDetectionService, PricingEngine pricingEngine, AssignmentService assignmentService, TrackingService trackingService, NotificationService notificationService) {
+    public OrderService(OrderRepository orderRepository, CustomerRepository customerRepository, AgentRepository agentRepository, AssignmentRepository assignmentRepository, RescheduleRepository rescheduleRepository, UserRepository userRepository, ZoneDetectionService zoneDetectionService, GeocodingService geocodingService, PricingEngine pricingEngine, AssignmentService assignmentService, TrackingService trackingService, NotificationService notificationService) {
         this.orderRepository = orderRepository;
         this.customerRepository = customerRepository;
         this.agentRepository = agentRepository;
@@ -58,6 +61,7 @@ public class OrderService {
         this.rescheduleRepository = rescheduleRepository;
         this.userRepository = userRepository;
         this.zoneDetectionService = zoneDetectionService;
+        this.geocodingService = geocodingService;
         this.pricingEngine = pricingEngine;
         this.assignmentService = assignmentService;
         this.trackingService = trackingService;
@@ -80,6 +84,10 @@ public class OrderService {
         Zone pickupZone = zoneDetectionService.detectZoneByAddress(request.getPickupAddress());
         Zone dropZone = zoneDetectionService.detectZoneByAddress(request.getDropAddress());
 
+        // Real PAN-India Location Geocoding Resolution
+        LocationCoordinates pickupCoords = geocodingService.geocode(request.getPickupAddress());
+        LocationCoordinates dropCoords = geocodingService.geocode(request.getDropAddress());
+
         OrderQuoteRequest quoteReq = new OrderQuoteRequest();
         quoteReq.setPickupAddress(request.getPickupAddress());
         quoteReq.setDropAddress(request.getDropAddress());
@@ -98,8 +106,12 @@ public class OrderService {
                 .orderNumber(orderNum)
                 .customer(customerProfile)
                 .pickupAddress(request.getPickupAddress())
+                .pickupLatitude(pickupCoords.getLatitude())
+                .pickupLongitude(pickupCoords.getLongitude())
                 .pickupZone(pickupZone)
                 .dropAddress(request.getDropAddress())
+                .dropLatitude(dropCoords.getLatitude())
+                .dropLongitude(dropCoords.getLongitude())
                 .dropZone(dropZone)
                 .orderType(request.getOrderType())
                 .paymentType(request.getPaymentType())
@@ -123,8 +135,8 @@ public class OrderService {
                 OrderStatus.CREATED,
                 currentUser.getId(),
                 mapRoleToActorRole(currentUser.getRole()),
-                null, null,
-                "Order created successfully"
+                pickupCoords.getLatitude(), pickupCoords.getLongitude(),
+                "Order created successfully at " + pickupCoords.getPlaceName()
         );
 
         // Attempt Auto-Assignment
@@ -349,9 +361,13 @@ public class OrderService {
                 .customerEmail(order.getCustomer().getUser().getEmail())
                 .customerPhone(order.getCustomer().getUser().getPhone())
                 .pickupAddress(order.getPickupAddress())
+                .pickupLatitude(order.getPickupLatitude())
+                .pickupLongitude(order.getPickupLongitude())
                 .pickupZoneCode(order.getPickupZone() != null ? order.getPickupZone().getZoneCode() : "N/A")
                 .pickupZoneName(order.getPickupZone() != null ? order.getPickupZone().getZoneName() : "N/A")
                 .dropAddress(order.getDropAddress())
+                .dropLatitude(order.getDropLatitude())
+                .dropLongitude(order.getDropLongitude())
                 .dropZoneCode(order.getDropZone() != null ? order.getDropZone().getZoneCode() : "N/A")
                 .dropZoneName(order.getDropZone() != null ? order.getDropZone().getZoneName() : "N/A")
                 .orderType(order.getOrderType())
