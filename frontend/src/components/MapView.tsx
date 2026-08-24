@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Minimize2, MapPin, ExternalLink, Navigation } from 'lucide-react';
+import { Minimize2, MapPin, ExternalLink, Navigation, Plus, Minus, RotateCcw } from 'lucide-react';
 
 interface MapViewProps {
   pickupLat?: number;
@@ -23,6 +23,7 @@ export const MapView: React.FC<MapViewProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
   const [isGoogleApiLoaded, setIsGoogleApiLoaded] = useState<boolean>(false);
+  const [zoomLevel, setZoomLevel] = useState<number>(9);
   const mapRef = useRef<HTMLDivElement>(null);
   const googleMapInstance = useRef<any>(null);
 
@@ -33,11 +34,38 @@ export const MapView: React.FC<MapViewProps> = ({
 
   const apiKey = (import.meta as any).env?.VITE_GOOGLE_MAPS_API_KEY || '';
 
-  // Google Maps Directions Embed URL (Fallback & Primary Widescreen Embed)
-  const googleMapsEmbedUrl = `https://maps.google.com/maps?saddr=${validPickupLat},${validPickupLon}&daddr=${validDropLat},${validDropLon}&t=&z=9&ie=UTF8&iwloc=&output=embed`;
+  // Google Maps Directions Embed URL with dynamic zoom
+  const googleMapsEmbedUrl = `https://maps.google.com/maps?saddr=${validPickupLat},${validPickupLon}&daddr=${validDropLat},${validDropLon}&t=&z=${zoomLevel}&ie=UTF8&iwloc=&output=embed`;
 
   // External Google Maps Route Navigation Link
   const externalGoogleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${validPickupLat},${validPickupLon}&destination=${validDropLat},${validDropLon}&travelmode=driving`;
+
+  const handleZoomIn = () => {
+    setZoomLevel((prev) => {
+      const next = Math.min(prev + 1, 18);
+      if (googleMapInstance.current) {
+        googleMapInstance.current.setZoom(next);
+      }
+      return next;
+    });
+  };
+
+  const handleZoomOut = () => {
+    setZoomLevel((prev) => {
+      const next = Math.max(prev - 1, 3);
+      if (googleMapInstance.current) {
+        googleMapInstance.current.setZoom(next);
+      }
+      return next;
+    });
+  };
+
+  const handleResetZoom = () => {
+    setZoomLevel(9);
+    if (googleMapInstance.current) {
+      googleMapInstance.current.setZoom(9);
+    }
+  };
 
   // Load Google Maps JS API if API key is provided
   useEffect(() => {
@@ -72,9 +100,9 @@ export const MapView: React.FC<MapViewProps> = ({
         lat: (validPickupLat + validDropLat) / 2,
         lng: (validPickupLon + validDropLon) / 2,
       },
-      zoom: 8,
+      zoom: zoomLevel,
       disableDefaultUI: false,
-      zoomControl: true,
+      zoomControl: false,
       styles: [
         { elementType: 'geometry', stylers: [{ color: '#212121' }] },
         { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
@@ -143,27 +171,58 @@ export const MapView: React.FC<MapViewProps> = ({
   }, [isGoogleApiLoaded, validPickupLat, validPickupLon, validDropLat, validDropLon, agentLat, agentLon, agentName]);
 
   const renderGoogleMap = (heightStyle: string = "100%") => {
-    if (apiKey && isGoogleApiLoaded) {
-      return <div ref={mapRef} style={{ width: '100%', height: heightStyle, minHeight: '350px' }} className="rounded-2xl" />;
-    }
-
     return (
       <div className="relative w-full h-full min-h-[350px] flex-1">
-        <iframe
-          title="Google Maps Route View"
-          src={googleMapsEmbedUrl}
-          className="w-full h-full border-0 rounded-2xl filter saturate-[0.85] contrast-[1.05]"
-          style={{ minHeight: '350px', height: heightStyle }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        />
+        {/* Floating Glassy Zooming Controls */}
+        <div className="absolute top-3 left-3 z-20 flex flex-col space-y-1.5">
+          <button
+            type="button"
+            onClick={handleZoomIn}
+            title="Zoom In"
+            className="p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-neutral-700 text-white hover:bg-white hover:text-black transition-all shadow-2xl active:scale-95 flex items-center justify-center"
+          >
+            <Plus className="w-4 h-4" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleZoomOut}
+            title="Zoom Out"
+            className="p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-neutral-700 text-white hover:bg-white hover:text-black transition-all shadow-2xl active:scale-95 flex items-center justify-center"
+          >
+            <Minus className="w-4 h-4" />
+          </button>
+
+          <button
+            type="button"
+            onClick={handleResetZoom}
+            title="Reset Zoom Level"
+            className="p-2.5 rounded-full bg-black/70 backdrop-blur-md border border-neutral-700 text-white hover:bg-white hover:text-black transition-all shadow-2xl active:scale-95 flex items-center justify-center"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+          </button>
+        </div>
+
+        {apiKey && isGoogleApiLoaded ? (
+          <div ref={mapRef} style={{ width: '100%', height: heightStyle, minHeight: '350px' }} className="rounded-2xl" />
+        ) : (
+          <iframe
+            title="Google Maps Route View"
+            src={googleMapsEmbedUrl}
+            className="w-full h-full border-0 rounded-2xl filter saturate-[0.85] contrast-[1.05]"
+            style={{ minHeight: '350px', height: heightStyle }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        )}
+
         <div className="absolute bottom-3 right-3 z-10">
           <a
             href={externalGoogleMapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="px-3 py-1.5 rounded-full bg-black/90 border border-neutral-700 text-white text-[11px] font-bold flex items-center gap-1.5 hover:bg-white hover:text-black transition-all shadow-lg active:scale-95 font-helvetica"
+            className="px-3 py-1.5 rounded-full bg-black/90 backdrop-blur-md border border-neutral-700 text-white text-[11px] font-bold flex items-center gap-1.5 hover:bg-white hover:text-black transition-all shadow-lg active:scale-95 font-helvetica"
           >
             <Navigation className="w-3.5 h-3.5" />
             <span>OPEN IN GOOGLE MAPS</span>
