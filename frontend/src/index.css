@@ -7,6 +7,11 @@
 @layer base {
   body {
     background-color: #000000;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.85)), url('/lastmile.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     color: #ffffff;
     min-height: 100vh;
     overflow-x: hidden;
