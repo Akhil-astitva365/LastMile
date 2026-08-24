@@ -5,6 +5,7 @@ import { OrderCard } from '../components/OrderCard';
 import { TrackingTimeline } from '../components/TrackingTimeline';
 import { RescheduleModal } from '../components/RescheduleModal';
 import { MapView } from '../components/MapView';
+import { LocationAutocompleteInput } from '../components/LocationAutocompleteInput';
 import { Plus, Calculator, Package, RefreshCw, X, AlertCircle } from 'lucide-react';
 
 export const CustomerDashboard: React.FC = () => {
@@ -261,26 +262,20 @@ export const CustomerDashboard: React.FC = () => {
             <form onSubmit={handleCreateOrderSubmit} className="space-y-6 text-xs">
               {/* Addresses */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Pickup Address / Pincode</label>
-                  <input
-                    type="text"
-                    value={pickupAddress}
-                    onChange={(e) => setPickupAddress(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500"
-                    required
-                  />
-                </div>
-                <div>
-                  <label className="block text-slate-400 font-semibold mb-1">Drop Address / Pincode</label>
-                  <input
-                    type="text"
-                    value={dropAddress}
-                    onChange={(e) => setDropAddress(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-slate-100 focus:outline-none focus:border-cyan-500"
-                    required
-                  />
-                </div>
+                <LocationAutocompleteInput
+                  label="Pickup Address / City / Pincode"
+                  value={pickupAddress}
+                  onChange={(val) => setPickupAddress(val)}
+                  placeholder="e.g. Bhopal, Connaught Place Delhi 110001..."
+                  required
+                />
+                <LocationAutocompleteInput
+                  label="Drop Address / City / Pincode"
+                  value={dropAddress}
+                  onChange={(val) => setDropAddress(val)}
+                  placeholder="e.g. Indore, Bandra West Mumbai 400050..."
+                  required
+                />
               </div>
 
               {/* Dimensions */}

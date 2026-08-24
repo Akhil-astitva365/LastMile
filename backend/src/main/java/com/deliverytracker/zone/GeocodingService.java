@@ -123,6 +123,58 @@ public class GeocodingService {
         return customCoords;
     }
 
+    public List<LocationCoordinates> getSuggestions(String query) {
+        if (query == null || query.trim().length() < 1) {
+            return Collections.emptyList();
+        }
+
+        String normalized = query.trim().toLowerCase();
+        List<LocationCoordinates> suggestions = new java.util.ArrayList<>();
+
+        // 1. Filter PAN_INDIA_LOCATIONS
+        for (Map.Entry<String, LocationCoordinates> entry : PAN_INDIA_LOCATIONS.entrySet()) {
+            if (entry.getKey().contains(normalized) || entry.getValue().getPlaceName().toLowerCase().contains(normalized)) {
+                suggestions.add(entry.getValue());
+                if (suggestions.size() >= 6) break;
+            }
+        }
+
+        // 2. Query Nominatim API if query is >= 3 chars and we need more results
+        if (normalized.length() >= 3 && suggestions.size() < 6) {
+            try {
+                String url = "https://nominatim.openstreetmap.org/search?q=" + java.net.URLEncoder.encode(query, java.nio.charset.StandardCharsets.UTF_8) + "&format=json&limit=4";
+                HttpHeaders headers = new HttpHeaders();
+                headers.set("User-Agent", "LastMileDeliveryTracker/1.0 (contact@deliverytracker.com)");
+                headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+                HttpEntity<String> entity = new HttpEntity<>(headers);
+
+                ResponseEntity<List> response = restTemplate.exchange(url, HttpMethod.GET, entity, List.class);
+                if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+                    for (Object item : response.getBody()) {
+                        Map<String, Object> map = (Map<String, Object>) item;
+                        double lat = Double.parseDouble(map.get("lat").toString());
+                        double lon = Double.parseDouble(map.get("lon").toString());
+                        String displayName = map.get("display_name").toString();
+
+                        boolean exists = suggestions.stream().anyMatch(s -> s.getPlaceName().equalsIgnoreCase(displayName));
+                        if (!exists) {
+                            suggestions.add(new LocationCoordinates(lat, lon, displayName, extractPincode(displayName)));
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                logger.warn("[GEOCODING SUGGESTIONS] Online API fallback warning: {}", e.getMessage());
+            }
+        }
+
+        // 3. Fallback custom suggestion if no match found
+        if (suggestions.isEmpty()) {
+            suggestions.add(generateDeterministicCoordinates(query));
+        }
+
+        return suggestions;
+    }
+
     private LocationCoordinates generateDeterministicCoordinates(String address) {
         int hash = address.toLowerCase().hashCode();
         
