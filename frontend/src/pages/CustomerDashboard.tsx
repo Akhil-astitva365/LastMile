@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { orderApi } from '../services/api';
 import { Order, OrderQuoteResponse, OrderType, PaymentType, TrackingEvent } from '../types';
 import { OrderCard } from '../components/OrderCard';
@@ -9,6 +10,7 @@ import { LocationAutocompleteInput } from '../components/LocationAutocompleteInp
 import { Plus, Calculator, Package, RefreshCw, X, AlertCircle } from 'lucide-react';
 
 export const CustomerDashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showCreateModal, setShowCreateModal] = useState<boolean>(false);
@@ -151,14 +153,10 @@ export const CustomerDashboard: React.FC = () => {
             <RefreshCw className={`w-4 h-4 ${isLoading ? 'animate-spin' : ''}`} />
           </button>
           <button
-            onClick={() => {
-              setErrorMessage(null);
-              setQuote(null);
-              setShowCreateModal(true);
-            }}
+            onClick={() => navigate('/customer/create-order')}
             className="px-6 py-3.5 rounded-full ios-button-primary flex items-center gap-2 text-xs"
           >
-            <Plus className="w-4 h-4" /> CREATE ORDER
+            <Plus className="w-4 h-4" /> CREATE ORDER WEBPAGE
           </button>
         </div>
       </div>

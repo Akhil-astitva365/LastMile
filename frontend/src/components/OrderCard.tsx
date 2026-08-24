@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Order } from '../types';
 import { StatusBadge } from './StatusBadge';
 import { MapPin, Navigation, Calendar, Scale, ArrowRight, RefreshCcw } from 'lucide-react';
@@ -18,7 +19,24 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   onAction,
   actionLabel,
 }) => {
+  const navigate = useNavigate();
   const canReschedule = (order.status === 'FAILED' || order.status === 'FAILED_DELIVERY' || order.status === 'RESCHEDULED');
+
+  const handleTrackClick = () => {
+    if (onTrack) {
+      onTrack(order);
+    } else {
+      navigate(`/customer/orders/${order.id}/track`);
+    }
+  };
+
+  const handleRescheduleClick = () => {
+    if (onReschedule) {
+      onReschedule(order);
+    } else {
+      navigate(`/customer/orders/${order.id}/reschedule`);
+    }
+  };
 
   return (
     <div className="ios-glass-card p-5 sm:p-6 rounded-3xl flex flex-col justify-between space-y-4 bg-black/90 border border-neutral-800 hover:border-neutral-500 transition-all">
@@ -80,18 +98,16 @@ export const OrderCard: React.FC<OrderCardProps> = ({
 
       {/* Action Buttons */}
       <div className="flex items-center gap-2 pt-2 border-t border-neutral-800">
-        {onTrack && (
-          <button
-            onClick={() => onTrack(order)}
-            className="flex-1 py-2.5 rounded-full ios-button-primary text-xs flex items-center justify-center gap-1.5"
-          >
-            LIVE TRACKING <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-        )}
+        <button
+          onClick={handleTrackClick}
+          className="flex-1 py-2.5 rounded-full ios-button-primary text-xs flex items-center justify-center gap-1.5"
+        >
+          LIVE TRACKING <ArrowRight className="w-3.5 h-3.5" />
+        </button>
 
-        {canReschedule && onReschedule && (
+        {canReschedule && (
           <button
-            onClick={() => onReschedule(order)}
+            onClick={handleRescheduleClick}
             className="px-4 py-2.5 rounded-full bg-neutral-900 border border-neutral-600 text-white font-bold text-xs hover:bg-white hover:text-black transition-all flex items-center gap-1"
           >
             <RefreshCcw className="w-3.5 h-3.5" /> RESCHEDULE

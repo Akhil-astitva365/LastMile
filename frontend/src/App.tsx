@@ -5,8 +5,13 @@ import { Navbar } from './components/Navbar';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { CustomerDashboard } from './pages/CustomerDashboard';
+import { CreateOrderPage } from './pages/CreateOrderPage';
+import { OrderTrackingPage } from './pages/OrderTrackingPage';
+import { ReschedulePage } from './pages/ReschedulePage';
 import { AgentDashboard } from './pages/AgentDashboard';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { AdminRateCardsPage } from './pages/AdminRateCardsPage';
+import { AdminAgentsPage } from './pages/AdminAgentsPage';
 import { Role } from './types';
 
 interface ProtectedRouteProps {
@@ -19,7 +24,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles, children 
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-slate-400 text-sm font-bold">
+      <div className="min-h-screen flex items-center justify-center text-white text-sm font-bold bg-black">
         Initializing Last-Mile Delivery Platform...
       </div>
     );
@@ -29,7 +34,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ allowedRoles, children 
     return <Navigate to="/login" replace />;
   }
 
-  // Strict Panel Cross-Navigation Guard: Block user from navigating into other panels
+  // Strict Role Protection Guard
   if (!allowedRoles.includes(user.role)) {
     const userRolePath =
       user.role === 'ADMIN' ? '/admin' : user.role === 'DELIVERY_AGENT' ? '/agent' : '/customer';
@@ -44,7 +49,7 @@ const RootRedirect: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-slate-400 text-sm font-bold">
+      <div className="min-h-screen flex items-center justify-center text-white text-sm font-bold bg-black">
         Initializing Last-Mile Delivery Platform...
       </div>
     );
@@ -63,14 +68,14 @@ export const App: React.FC = () => {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
+        <div className="min-h-screen bg-black text-white flex flex-col font-['Helvetica_Neue',Helvetica,Arial,sans-serif]">
           <Navbar />
           <main className="flex-1">
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 
-              {/* Dedicated Customer Page */}
+              {/* Customer Dedicated Webpages */}
               <Route
                 path="/customer"
                 element={
@@ -79,8 +84,32 @@ export const App: React.FC = () => {
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="/customer/create-order"
+                element={
+                  <ProtectedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                    <CreateOrderPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/customer/orders/:id/track"
+                element={
+                  <ProtectedRoute allowedRoles={['CUSTOMER', 'ADMIN', 'DELIVERY_AGENT']}>
+                    <OrderTrackingPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/customer/orders/:id/reschedule"
+                element={
+                  <ProtectedRoute allowedRoles={['CUSTOMER', 'ADMIN']}>
+                    <ReschedulePage />
+                  </ProtectedRoute>
+                }
+              />
 
-              {/* Dedicated Delivery Agent Page */}
+              {/* Delivery Agent Dedicated Webpages */}
               <Route
                 path="/agent"
                 element={
@@ -90,12 +119,28 @@ export const App: React.FC = () => {
                 }
               />
 
-              {/* Dedicated Admin Control Center Page */}
+              {/* Admin Dedicated Webpages */}
               <Route
                 path="/admin"
                 element={
                   <ProtectedRoute allowedRoles={['ADMIN']}>
                     <AdminDashboard />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/rate-cards"
+                element={
+                  <ProtectedRoute allowedRoles={['ADMIN']}>
+                    <AdminRateCardsPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/agents"
+                element={
+                  <ProtectedRoute allowedRoles={['ADMIN']}>
+                    <AdminAgentsPage />
                   </ProtectedRoute>
                 }
               />
