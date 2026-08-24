@@ -2,6 +2,8 @@ package com.deliverytracker.pricing;
 
 import com.deliverytracker.pricing.dto.OrderQuoteRequest;
 import com.deliverytracker.pricing.dto.OrderQuoteResponse;
+import com.deliverytracker.zone.GeocodingService;
+import com.deliverytracker.zone.LocationCoordinates;
 import com.deliverytracker.zone.Zone;
 import com.deliverytracker.zone.ZoneDetectionService;
 import com.deliverytracker.zone.ZoneType;
@@ -17,16 +19,26 @@ public class PricingEngine {
     private final RateCardRepository rateCardRepository;
     private final CodSurchargeRepository codSurchargeRepository;
     private final ZoneDetectionService zoneDetectionService;
+    private final GeocodingService geocodingService;
 
-    public PricingEngine(RateCardRepository rateCardRepository, CodSurchargeRepository codSurchargeRepository, ZoneDetectionService zoneDetectionService) {
+    public PricingEngine(RateCardRepository rateCardRepository, CodSurchargeRepository codSurchargeRepository, ZoneDetectionService zoneDetectionService, GeocodingService geocodingService) {
         this.rateCardRepository = rateCardRepository;
         this.codSurchargeRepository = codSurchargeRepository;
         this.zoneDetectionService = zoneDetectionService;
+        this.geocodingService = geocodingService;
     }
 
     public OrderQuoteResponse calculateQuote(OrderQuoteRequest request) {
         Zone pickupZone = zoneDetectionService.detectZoneByAddress(request.getPickupAddress());
         Zone dropZone = zoneDetectionService.detectZoneByAddress(request.getDropAddress());
+
+        LocationCoordinates pickupCoords = geocodingService.geocode(request.getPickupAddress());
+        LocationCoordinates dropCoords = geocodingService.geocode(request.getDropAddress());
+
+        double distanceKm = geocodingService.calculateDistanceKm(
+                pickupCoords.getLatitude(), pickupCoords.getLongitude(),
+                dropCoords.getLatitude(), dropCoords.getLongitude()
+        );
 
         ZoneType zoneType = determineZoneType(pickupZone, dropZone);
 
@@ -40,9 +52,18 @@ public class PricingEngine {
                 .findFirst()
                 .orElseGet(() -> getDefaultFallbackRateCard(request.getOrderType(), zoneType));
 
-        BigDecimal baseCharge = rateCard.getBaseCharge()
-                .add(rateCard.getPerKgCharge().multiply(BigDecimal.valueOf(billableWeight)))
-                .setScale(2, RoundingMode.HALF_UP);
+        // Weight fee: base charge + (per kg fee * billable weight)
+        BigDecimal weightCharge = rateCard.getBaseCharge()
+                .add(rateCard.getPerKgCharge().multiply(BigDecimal.valueOf(billableWeight)));
+
+        // Dynamic Distance Fee proportional to kilometers:
+        // Intra-Zone (same city): ₹3 per km beyond 2 km
+        // Inter-Zone / Inter-City: ₹2.50 per km
+        double perKmRate = (zoneType == ZoneType.INTRA_ZONE) ? 3.0 : 2.5;
+        double billableDistanceKm = (zoneType == ZoneType.INTRA_ZONE) ? Math.max(0.0, distanceKm - 2.0) : distanceKm;
+        BigDecimal distanceCharge = BigDecimal.valueOf(billableDistanceKm * perKmRate);
+
+        BigDecimal baseCharge = weightCharge.add(distanceCharge).setScale(2, RoundingMode.HALF_UP);
 
         BigDecimal codSurcharge = BigDecimal.ZERO;
         if (request.getPaymentType() == PaymentType.COD) {
@@ -57,6 +78,7 @@ public class PricingEngine {
                 .actualWeight(request.getActualWeight())
                 .volumetricWeight(Math.round(volumetricWeight * 100.0) / 100.0)
                 .billableWeight(Math.round(billableWeight * 100.0) / 100.0)
+                .distanceKm(distanceKm)
                 .pickupZoneCode(pickupZone.getZoneCode())
                 .pickupZoneName(pickupZone.getZoneName())
                 .dropZoneCode(dropZone.getZoneCode())

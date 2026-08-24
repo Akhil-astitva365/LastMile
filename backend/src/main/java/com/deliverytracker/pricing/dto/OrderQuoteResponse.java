@@ -10,6 +10,7 @@ public class OrderQuoteResponse {
     private Double actualWeight;
     private Double volumetricWeight;
     private Double billableWeight;
+    private Double distanceKm;
 
     private String pickupZoneCode;
     private String pickupZoneName;
@@ -26,10 +27,11 @@ public class OrderQuoteResponse {
 
     public OrderQuoteResponse() {}
 
-    public OrderQuoteResponse(Double actualWeight, Double volumetricWeight, Double billableWeight, String pickupZoneCode, String pickupZoneName, String dropZoneCode, String dropZoneName, ZoneType zoneType, OrderType orderType, PaymentType paymentType, BigDecimal baseCharge, BigDecimal codSurcharge, BigDecimal finalCharge) {
+    public OrderQuoteResponse(Double actualWeight, Double volumetricWeight, Double billableWeight, Double distanceKm, String pickupZoneCode, String pickupZoneName, String dropZoneCode, String dropZoneName, ZoneType zoneType, OrderType orderType, PaymentType paymentType, BigDecimal baseCharge, BigDecimal codSurcharge, BigDecimal finalCharge) {
         this.actualWeight = actualWeight;
         this.volumetricWeight = volumetricWeight;
         this.billableWeight = billableWeight;
+        this.distanceKm = distanceKm;
         this.pickupZoneCode = pickupZoneCode;
         this.pickupZoneName = pickupZoneName;
         this.dropZoneCode = dropZoneCode;
@@ -50,6 +52,9 @@ public class OrderQuoteResponse {
 
     public Double getBillableWeight() { return billableWeight; }
     public void setBillableWeight(Double billableWeight) { this.billableWeight = billableWeight; }
+
+    public Double getDistanceKm() { return distanceKm; }
+    public void setDistanceKm(Double distanceKm) { this.distanceKm = distanceKm; }
 
     public String getPickupZoneCode() { return pickupZoneCode; }
     public void setPickupZoneCode(String pickupZoneCode) { this.pickupZoneCode = pickupZoneCode; }
@@ -87,6 +92,7 @@ public class OrderQuoteResponse {
         private Double actualWeight;
         private Double volumetricWeight;
         private Double billableWeight;
+        private Double distanceKm;
         private String pickupZoneCode;
         private String pickupZoneName;
         private String dropZoneCode;
@@ -101,6 +107,7 @@ public class OrderQuoteResponse {
         public OrderQuoteResponseBuilder actualWeight(Double actualWeight) { this.actualWeight = actualWeight; return this; }
         public OrderQuoteResponseBuilder volumetricWeight(Double volumetricWeight) { this.volumetricWeight = volumetricWeight; return this; }
         public OrderQuoteResponseBuilder billableWeight(Double billableWeight) { this.billableWeight = billableWeight; return this; }
+        public OrderQuoteResponseBuilder distanceKm(Double distanceKm) { this.distanceKm = distanceKm; return this; }
         public OrderQuoteResponseBuilder pickupZoneCode(String pickupZoneCode) { this.pickupZoneCode = pickupZoneCode; return this; }
         public OrderQuoteResponseBuilder pickupZoneName(String pickupZoneName) { this.pickupZoneName = pickupZoneName; return this; }
         public OrderQuoteResponseBuilder dropZoneCode(String dropZoneCode) { this.dropZoneCode = dropZoneCode; return this; }
@@ -113,7 +120,7 @@ public class OrderQuoteResponse {
         public OrderQuoteResponseBuilder finalCharge(BigDecimal finalCharge) { this.finalCharge = finalCharge; return this; }
 
         public OrderQuoteResponse build() {
-            return new OrderQuoteResponse(actualWeight, volumetricWeight, billableWeight, pickupZoneCode, pickupZoneName, dropZoneCode, dropZoneName, zoneType, orderType, paymentType, baseCharge, codSurcharge, finalCharge);
+            return new OrderQuoteResponse(actualWeight, volumetricWeight, billableWeight, distanceKm, pickupZoneCode, pickupZoneName, dropZoneCode, dropZoneName, zoneType, orderType, paymentType, baseCharge, codSurcharge, finalCharge);
         }
     }
 }
