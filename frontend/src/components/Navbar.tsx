@@ -18,7 +18,7 @@ export const Navbar: React.FC = () => {
               <Truck className="w-4 h-4" />
             </div>
             <div>
-              <h1 className="font-playfair font-bold text-lg sm:text-xl tracking-wide text-white flex items-center gap-2">
+              <h1 className="font-syne font-extrabold text-lg sm:text-xl tracking-wider text-white flex items-center gap-2">
                 LAST-MILE
               </h1>
             </div>
