@@ -55,14 +55,24 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   return (
     <div className="ios-glass-card p-4 sm:p-5 rounded-3xl flex flex-col justify-between space-y-3.5 bg-black/40 backdrop-blur-md border border-neutral-800 hover:border-neutral-500 transition-all h-full min-h-[350px] select-none">
       <div className="space-y-3.5 flex-1 flex flex-col justify-between">
-        {/* Header - Single line Order Number & Compact Status Badge */}
+        {/* Header - Order Number & Status Badge with Reschedule Loop Icon */}
         <div className="flex items-center justify-between pb-2.5 border-b border-neutral-800 gap-2 min-w-0">
           <div className="min-w-0 flex-1">
             <span className="text-[9px] font-bold uppercase tracking-wider text-neutral-400 block whitespace-nowrap">ORDER NUMBER</span>
             <h4 className="text-xs sm:text-sm font-bold text-white tracking-wider font-sreda whitespace-nowrap truncate">{order.orderNumber}</h4>
           </div>
-          <div className="shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0">
             <StatusBadge status={order.status} />
+            {canReschedule && (
+              <button
+                type="button"
+                onClick={handleRescheduleClick}
+                title="Reschedule Failed Delivery"
+                className="p-1 sm:p-1.5 rounded-full bg-neutral-900 border border-neutral-600 text-white hover:bg-white hover:text-black transition-all active:scale-90 flex items-center justify-center shrink-0 shadow-sm"
+              >
+                <RefreshCcw className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -113,25 +123,15 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         </div>
       </div>
 
-      {/* Action Buttons Footer - Auto-Fitted Sizing & Zero Text Overflow */}
-      <div className="flex items-center gap-1 sm:gap-1.5 pt-2.5 border-t border-neutral-800 min-h-[48px]">
+      {/* Action Buttons Footer - Clean & Uncluttered Baseline */}
+      <div className="flex items-center gap-1.5 sm:gap-2 pt-2.5 border-t border-neutral-800 min-h-[48px]">
         <button
           onClick={handleTrackClick}
-          className="flex-1 min-w-0 h-8 sm:h-9 px-2 sm:px-3 rounded-full ios-button-primary text-[9px] sm:text-[11px] font-bold tracking-tight flex items-center justify-center gap-1 shrink-0 whitespace-nowrap leading-none"
+          className="flex-1 min-w-0 h-8 sm:h-9 px-3 rounded-full ios-button-primary text-[10px] sm:text-[11px] font-bold tracking-tight flex items-center justify-center gap-1.5 shrink-0 whitespace-nowrap leading-none"
         >
           <span className="whitespace-nowrap">LIVE TRACKING</span>
-          <ArrowRight className="w-3 h-3 shrink-0" />
+          <ArrowRight className="w-3.5 h-3.5 shrink-0" />
         </button>
-
-        {canReschedule && (
-          <button
-            onClick={handleRescheduleClick}
-            className="h-8 sm:h-9 px-2 sm:px-3 rounded-full bg-neutral-900 border border-neutral-600 text-white font-bold text-[9px] sm:text-[11px] tracking-tight hover:bg-white hover:text-black transition-all flex items-center justify-center gap-1 shrink-0 whitespace-nowrap leading-none"
-          >
-            <RefreshCcw className="w-3 h-3 shrink-0" />
-            <span>RESCHEDULE</span>
-          </button>
-        )}
 
         {/* Delete Order Button (Customer Portal Only) */}
         {onDelete && (
@@ -147,7 +147,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         {onAction && actionLabel && (
           <button
             onClick={(e) => { e.stopPropagation(); onAction(order); }}
-            className="h-8 sm:h-9 px-2 sm:px-3 rounded-full ios-button-emerald text-[9px] sm:text-[11px] font-bold tracking-tight shrink-0 whitespace-nowrap leading-none"
+            className="h-8 sm:h-9 px-3 rounded-full ios-button-emerald text-[10px] sm:text-[11px] font-bold tracking-tight shrink-0 whitespace-nowrap leading-none"
           >
             {actionLabel}
           </button>
