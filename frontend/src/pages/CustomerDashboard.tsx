@@ -122,12 +122,12 @@ export const CustomerDashboard: React.FC = () => {
           ) : (
             <>
               {/* 6 Orders Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
                 {currentOrders.map((order) => (
                   <div
                     key={order.id}
                     onClick={() => handleSelectMapOrder(order)}
-                    className={`cursor-pointer transition-all ${
+                    className={`cursor-pointer transition-all h-full ${
                       selectedOrderForMap?.id === order.id ? 'ring-2 ring-white rounded-3xl' : ''
                     }`}
                   >

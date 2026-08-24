@@ -164,12 +164,12 @@ export const AdminDashboard: React.FC = () => {
           ) : (
             <>
               {/* 6 Orders Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
                 {currentOrders.map((order) => (
                   <div
                     key={order.id}
                     onClick={() => setSelectedOrderForMap(order)}
-                    className={`ios-glass-card p-5 rounded-3xl space-y-3 bg-black/90 border border-neutral-800 cursor-pointer transition-all ${
+                    className={`ios-glass-card p-5 rounded-3xl space-y-3 bg-black/40 backdrop-blur-md border border-neutral-800 cursor-pointer transition-all h-full flex flex-col justify-between ${
                       selectedOrderForMap?.id === order.id ? 'ring-2 ring-white' : ''
                     }`}
                   >

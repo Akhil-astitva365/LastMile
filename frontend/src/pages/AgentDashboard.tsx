@@ -154,12 +154,12 @@ export const AgentDashboard: React.FC = () => {
           ) : (
             <>
               {/* 6 Assigned Order Cards Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
                 {currentOrders.map((o) => (
                   <div
                     key={o.id}
                     onClick={() => setSelectedOrder(o)}
-                    className={`ios-glass-card p-5 rounded-3xl space-y-3 bg-black/90 border border-neutral-800 cursor-pointer transition-all ${
+                    className={`ios-glass-card p-5 rounded-3xl space-y-3 bg-black/40 backdrop-blur-md border border-neutral-800 cursor-pointer transition-all h-full flex flex-col justify-between ${
                       selectedOrder?.id === o.id ? 'ring-2 ring-white' : ''
                     }`}
                   >
