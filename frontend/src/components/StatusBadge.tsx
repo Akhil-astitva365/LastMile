@@ -21,9 +21,9 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold tracking-wider uppercase border whitespace-nowrap shrink-0 transition-all ${getBadgeStyle()}`}
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[8px] sm:text-[9px] font-bold tracking-wider uppercase border whitespace-nowrap shrink-0 transition-all ${getBadgeStyle()}`}
     >
-      <span className={`w-1.5 h-1.5 rounded-full ${isCompleted ? 'bg-white' : isFailed ? 'bg-neutral-400' : 'bg-white'} animate-pulse shrink-0`} />
+      <span className={`w-1 h-1 rounded-full ${isCompleted ? 'bg-white' : isFailed ? 'bg-neutral-400' : 'bg-white'} animate-pulse shrink-0`} />
       {String(status || '').replace(/_/g, ' ')}
     </span>
   );
