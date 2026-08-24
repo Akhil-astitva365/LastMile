@@ -309,6 +309,17 @@ public class OrderService {
     }
 
     @Transactional
+    public OrderResponse triggerAutoAssign(Long orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("Order not found with id: " + orderId));
+
+        assignmentService.autoAssignAgent(order);
+
+        Order updatedOrder = orderRepository.findById(orderId).orElse(order);
+        return mapToResponse(updatedOrder);
+    }
+
+    @Transactional
     public OrderResponse manualAssignAgent(Long orderId, Long agentId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new IllegalArgumentException("Order not found"));

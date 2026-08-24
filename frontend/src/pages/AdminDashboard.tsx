@@ -75,8 +75,13 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleAutoAssignTrigger = async (orderId: number) => {
-    await adminApi.autoAssign(orderId);
-    await fetchAdminData();
+    try {
+      const updated = await adminApi.autoAssign(orderId);
+      alert(`Auto-assigned agent: ${updated.assignedAgentName || 'Nearest Field Agent'}`);
+      await fetchAdminData();
+    } catch (e: any) {
+      alert(e.response?.data?.message || 'Failed to auto-assign agent.');
+    }
   };
 
   const totalRevenue = orders.reduce((sum, o) => sum + Number(o.finalCharge), 0);

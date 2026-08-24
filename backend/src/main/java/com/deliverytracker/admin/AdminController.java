@@ -81,6 +81,11 @@ public class AdminController {
         return ResponseEntity.ok(rateCardRepository.findAll());
     }
 
+    @PostMapping("/orders/{orderId}/auto-assign")
+    public ResponseEntity<OrderResponse> autoAssignAgent(@PathVariable Long orderId) {
+        return ResponseEntity.ok(orderService.triggerAutoAssign(orderId));
+    }
+
     @PostMapping("/orders/{orderId}/manual-assign")
     public ResponseEntity<OrderResponse> manualAssignAgent(
             @PathVariable Long orderId,
