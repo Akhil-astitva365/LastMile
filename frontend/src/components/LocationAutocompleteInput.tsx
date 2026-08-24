@@ -53,13 +53,25 @@ export const LocationAutocompleteInput: React.FC<LocationAutocompleteInputProps>
       try {
         const res = await api.get<LocationSuggestion[]>(`/locations/suggestions?query=${encodeURIComponent(value)}`);
         const rawList = res.data || [];
+        const sanitizePlaceName = (name: string) => {
+          if (!name) return '';
+          return name
+            .replace(/^Custom Location \((.*)\)$/i, '$1')
+            .replace(/^Custom Location\s*/i, '')
+            .trim();
+        };
+
+        const cleanedList = rawList.map((item: LocationSuggestion) => ({
+          ...item,
+          placeName: sanitizePlaceName(item.placeName),
+        }));
 
         // 1. Filter out exact match with excludeValue (Pickup location cannot be Drop location)
         const filtered = excludeValue
-          ? rawList.filter(
+          ? cleanedList.filter(
               (item) => item.placeName.trim().toLowerCase() !== excludeValue.trim().toLowerCase()
             )
-          : rawList;
+          : cleanedList;
 
         // 2. Sort suggestions in ASCENDING ORDER (A to Z) by placeName
         const sorted = filtered.slice().sort((a, b) => a.placeName.localeCompare(b.placeName));

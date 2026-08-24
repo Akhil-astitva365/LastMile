@@ -190,7 +190,7 @@ public class GeocodingService {
         LocationCoordinates customLoc = new LocationCoordinates(
                 Math.round(lat * 10000.0) / 10000.0,
                 Math.round(lon * 10000.0) / 10000.0,
-                "Custom Location (" + address + ")",
+                address,
                 pincode
         );
         logger.info("[GEOCODING CUSTOM LOCATION] Generated distinct coordinates for random/unknown address '{}' -> ({}, {})", address, customLoc.getLatitude(), customLoc.getLongitude());
